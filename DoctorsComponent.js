@@ -23,10 +23,10 @@ class DoctorsComp extends Component{
 render(){
      const{item,onConformed,onDeclined}=this.props;
     return(
-        <SafeAreaView style={{backgroundColor:'blue',paddingTop:10}}>
+        <SafeAreaView style={{backgroundColor:'#eee',paddingTop:10}}>
         <View style={{flex:1, alignItems:'center', justifyContent:'space-between',}} key={item} >
             {/* <Text>Welcome to The St.James Hospital A&E</Text> */}
-            <Text style={{color:'white'}}>{item}</Text>
+            <Text style={{color:'black'}}>{item}</Text>
         
         </View>
         <View style={{display:'flex',flexDirection:'row',justifyContent:'center',marginTop:100}}>

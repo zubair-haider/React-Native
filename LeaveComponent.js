@@ -9,7 +9,7 @@ class LastComponent extends Component{
         }
     }
 render(){
-     const{item,img,onDeclineLeave}=this.props;
+     const{item,img,onDeclineLeave,onConformedLeave}=this.props;
     return(
         <SafeAreaView style={{marginTop:20}}>
         <View style={{flex:1, alignItems:'center', justifyContent:'space-between'}} key={item} >
@@ -18,12 +18,13 @@ render(){
         
         </View>
         <View style={{display:'flex',flexDirection:'row',justifyContent:'center',marginTop:100}}>
-        {/* <View style={{width:80,marginBottom:10}}>
-        
-        </View> */}
-        <View style={{width:100,}}>
+       
+        <View style={{width:100, marginRight:10,}}>
           <Button  title='Leave'  onPress={()=>onDeclineLeave()}></Button>
           </View>
+          <View style={{width:80,marginBottom:10}}>
+        <Button  title='Reset'  onPress={()=>onConformedLeave()} style={{width:18, marginTop:30,}}></Button>
+        </View>
           </View> 
         </SafeAreaView>
     )

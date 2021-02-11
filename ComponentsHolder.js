@@ -12,12 +12,14 @@ class ComponentsHolder extends Component{
             text:[{text2:"Would you like to join the Virtual Queue"},],
             nextState:[],
             lastState:[],
+            increment:1,
         }
    this.onConform=this.onConform.bind(this);
    this.onDecline=this.onDecline.bind(this);
    this.onConformed=this.onConformed.bind(this);
    this.onDeclined=this.onDeclined.bind(this);
    this.onDeclinedLeave=this.onDeclinedLeave.bind(this);
+   this.onConformedLeave=this.onConformedLeave.bind(this);
 
     }
     onConform()
@@ -29,6 +31,8 @@ class ComponentsHolder extends Component{
        this.setState({
            nextState:[...this.state.nextState,{texts:"Have You been Seen By the Doctor?",}],
            text:[],
+           increment:2,
+          
            
        })
        console.log("state",this.state.text);
@@ -36,6 +40,7 @@ class ComponentsHolder extends Component{
      onDecline(){
      this.setState({
          text:[],
+         increment:'',
      })
      alert("are you sure you want to skip");
 
@@ -44,26 +49,40 @@ class ComponentsHolder extends Component{
                     this.setState({
                         lastState:[...this.state.lastState,{text:"18,20 people are ahead of you,your estimated time is 4-0 hours", img:"/boy.png",}],
                         nextState:[],
+                        increment:3,
                     })
     }
     onDeclined(){
        this.setState({
            nextState:[],
+           increment:'',
        })
        alert("Are You sure you want to skip at this Stage?")
     }
     onDeclinedLeave(){
         this.setState({
             lastState:[],
+            increment:'',
         })
+     }
+     onConformedLeave(){
+    // const temvar= this.state.text.map(text=> text.text)
+        this.setState({
+            text:[...this.state.text,{text2:"Would you like to join the Virtual Queue"},],
+            lastState:[],
+            increment:1,
+        });
+         
      }
 
 
 
 
-    render(){
+    render(){ 
+       
         return(
-            <SafeAreaView>
+            <SafeAreaView >
+                <View style={{width:100,height:50,backgroundColor:'#1A788D',flex:1, alignItems:'center', justifyContent:'space-between',margin:'auto'}}><Text style={{color:'white',height:30,justifyContent:'center', alignItems:'center'}}>Stage: {this.state.increment}</Text></View>
             <View>
                {/* <Text>this is paragraph</Text> */}
             {this.state.text.length >=1?this.state.text.map(item=>
@@ -82,7 +101,7 @@ class ComponentsHolder extends Component{
             }
             {this.state.lastState.length>0?   this.state.lastState.map(item=>
               
-              <LastComponent item={item.text} img={item.img} onDeclineLeave={this.onDeclinedLeave}   />
+              <LastComponent item={item.text} img={item.img} onDeclineLeave={this.onDeclinedLeave} onConformedLeave={this.onConformedLeave}  />
              
   ):null
   }

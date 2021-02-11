@@ -29,7 +29,6 @@ oncall(){
 }
 render(){
      const{item,onConform,onDecline}=this.props;
-     console.log("dddd",this.state.show);
     return(
         <SafeAreaView style={{marginTop:20}}>
         <View style={{flex:1, alignItems:'center', justifyContent:'space-between'}} key={item} >
