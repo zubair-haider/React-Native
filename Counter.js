@@ -1,21 +1,6 @@
 import React, { Component } from 'react';
 import{Image, StyleSheet, Text, View,TouchableOpacity,Button,SafeAreaView } from 'react-native';
-class IntialComponent extends Component{
-    constructor(props){
-        super(props)
-        this.state={
-            show:true,
-        }}
-// oncall(){
-//     const variable=this.state.show;
-//     this.setState(!variable);
-//     // alert("calle");
-// }
-render(){
-     const{item,onConform,onDecline}=this.props;
-     const styles={
-
-     }
+const IntialComponent=({item,onConform,onDecline})=>{
     return(
         <SafeAreaView style={{marginTop:20,display:'flex',alignItems:'center',justifyContent:'center',}}>
                 <View style={{backgroundColor:'white', }} key={item} >
@@ -31,7 +16,6 @@ render(){
                 </View>
         </SafeAreaView>
     )
-}
 
 
 }

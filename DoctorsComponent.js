@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import{Image, StyleSheet, Text, View,TouchableOpacity,Button,SafeAreaView } from 'react-native';
-class DoctorsComp extends Component{
-    constructor(props){
-        super(props)
-    }
-render(){
-     const{item,onConformed,onDeclined}=this.props;
+const DoctorsComp=({item,onConformed,onDeclined})=>{
+   
     return(
         <SafeAreaView style={{backgroundColor:'#eee',paddingTop:10}}>
                     <View style={{flex:1, alignItems:'center', justifyContent:'space-between',}} key={item} >
@@ -22,7 +18,6 @@ render(){
                     </View>
         </SafeAreaView>
     )
-}
 
 
 }

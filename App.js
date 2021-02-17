@@ -12,29 +12,13 @@ export default function App() {
     <SafeAreaView style={{flex:1, marginTop:100, width:500, margin:'auto'}} >
       <View style={{backgroundColor:'#eee'}}>
       <ComponentsHolder/>
-        {/* { shouldShow?(<Button style={{backgroundColor:'green'}} title="Hide/Show"/>):<Text>Press CLICK ME to see second Button</Text>
-
-        }
-        <Button style={styles.buttonClass} title="click me" onPress={()=> setShouldShow(!shouldShow)}>
-
-        </Button> */}
-        {/* <Counter/> */}
+       
 
       </View>
      
     
     </SafeAreaView>
-    // <View style={styles.container}>
-    //   {/* <Image source={logo} style={{width:200,height:200,margin:20}} ></Image> */}
-    //   <Text className="text" style={{color:'black',fontStyle:'italic', backgroundColor:'white',fontSize:18,width:200,height:50,justifyContent:'space-between',alignContent:'stretch'}}>welcome to the St.james Hospital A&E</Text>
-    //   <Text style={{color:'black',fontStyle:'italic', backgroundColor:'white',fontSize:18,width:300,height:50, margin:10,}}>Would you like to join virtual Queue?</Text>
-      
-    //   {/* <StatusBar style="auto" /> */}
-    //   <TouchableOpacity  style={{backgroundColor:'green',marginTop:10,}}>
-    //     <Text style={{fontSize:20,color:'#fff',margin:10,}}>Change text</Text>
-    //   </TouchableOpacity>
-    
-    // </View>
+   
   
   );
 }

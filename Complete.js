@@ -1,19 +1,11 @@
 import React, { Component } from 'react';
 import{Image, StyleSheet, Text, View,TouchableOpacity,Button,SafeAreaView } from 'react-native';
 import logo from './assets/boy.png';
-class Complete extends Component{
-    constructor(props){
-        super(props)
-        this.state={
-            show:true,
-        }
-    }
-render(){
-     const{item,img,onDeclineLeave,onReset}=this.props;
+const Complete=({item,img,onDeclineLeave,onReset})=> {
     return(
         <SafeAreaView style={{marginTop:20}}>
         <View style={{flex:1, alignItems:'center', justifyContent:'space-between'}} key={item} >
-            <Text style={{marginBottom:20,}}>{item}</Text>
+            <Text style={{marginBottom:20,color:'green',fontFamily:'sans-sarif'}}>{item}</Text>
             {/* <Image   source={logo} style={{width:200, height:200, justifyContent:'center'}}/> */}
         
         </View>
@@ -28,7 +20,7 @@ render(){
           </View> 
         </SafeAreaView>
     )
-}
+
 
 
 }
