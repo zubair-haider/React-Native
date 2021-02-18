@@ -1,25 +1,51 @@
-import React, { Component } from 'react';
-import{Image, StyleSheet, Text, View,TouchableOpacity,Button,SafeAreaView } from 'react-native';
-import logo from './assets/boy.png';
-import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
-const Complete=({item,img,onDeclineLeave,onReset})=> {
-    return(
-        <SafeAreaView style={{marginTop:20}}>
-           <View style={{backgroundColor:'rgb(160,235,239)', padding:10,borderLeftWidth:5,marginTop:10,marginBottom:10, borderLeftColor:'rgb(58,150,243)', }} key={item} >
-                    <Text style={{fontSize:20,fontFamily:'Inter-Black',color:'rgb(17,117,6))'}}   >  {item}</Text>
+import React, { Component } from "react";
+import StyleSheetMethods from "./Styles/StyleSheet";
+import "antd-mobile/dist/antd-mobile.css";
+import { Button } from "antd-mobile";
+
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  // Button,
+  SafeAreaView,
+} from "react-native";
+import logo from "./assets/boy.png";
+import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
+const Complete = ({ item, img, onDeclineLeave, onReset }) => {
+  return (
+    <SafeAreaView style={{ marginTop: 20 }}>
+      <View style={StyleSheetMethods.text} key={item}>
+        <Text style={StyleSheetMethods.viewsText}>{item}</Text>
       </View>
-       
-        <View style={{display:'flex',flexDirection:'row',justifyContent:'center',marginTop:10,}}>
-       
-       
-          <View style={{width:80,marginBottom:10}}>
-        <Button  title='Reset'  onPress={()=>onReset()} style={{width:18, marginTop:30,}}></Button>
+
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          // marginTop: 10,
+        }}
+      >
+        <View style={{ width: 80, marginBottom: 10, marginTop: 20 }}>
+          <Button //title="Reset"
+            onClick={() => onReset()}
+            style={{
+              width: 100,
+              // marginTop: 30,
+              color: "white",
+              backgroundColor: "green",
+              cursor: "pointer",
+              fontFamily: "Inter_900Black",
+            }}
+          >
+            RESET
+          </Button>
         </View>
-          </View> 
-        </SafeAreaView>
-    )
-
-
-
-}
+      </View>
+    </SafeAreaView>
+  );
+};
 export default Complete;
