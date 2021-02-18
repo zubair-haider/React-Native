@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React,{useState} from 'react';
 import Counter from './Counter';
 import ComponentsHolder from './ComponentsHolder';
+import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 
 import { Image, StyleSheet, Text, View,TouchableOpacity,Button,SafeAreaView } from 'react-native';
 import logo from './assets/boy.png';
@@ -9,34 +10,31 @@ import logo from './assets/boy.png';
 export default function App() {
   const[shouldShow,setShouldShow]=useState(false);
   return (
-    <SafeAreaView style={{flex:1, marginTop:100, width:500, margin:'auto'}} >
-      <View style={{backgroundColor:'#eee'}}>
-      <ComponentsHolder/>
-        {/* { shouldShow?(<Button style={{backgroundColor:'green'}} title="Hide/Show"/>):<Text>Press CLICK ME to see second Button</Text>
+    <SafeAreaView style={{flex:1, width:1000, margin:'auto',marginBottom:50,}} >
+       <View style={{ margin:'auto',width:400, backgroundColor:'red',borderColor:'red',shadowColor:'gray',shadowRadius:15, borderWidth:5,padding:5,marginBottom:10,}}>
+      <TitleHodler  />
+       
 
-        }
-        <Button style={styles.buttonClass} title="click me" onPress={()=> setShouldShow(!shouldShow)}>
-
-        </Button> */}
-        {/* <Counter/> */}
+      </View>
+      <View style={{backgroundColor:'rgb(255,255,255)',borderColor:'green',shadowColor:'gray',shadowRadius:5, borderWidth:5,padding:5,borderRadius:5,}}>
+      <ComponentsHolder   />
+       
 
       </View>
      
     
     </SafeAreaView>
-    // <View style={styles.container}>
-    //   {/* <Image source={logo} style={{width:200,height:200,margin:20}} ></Image> */}
-    //   <Text className="text" style={{color:'black',fontStyle:'italic', backgroundColor:'white',fontSize:18,width:200,height:50,justifyContent:'space-between',alignContent:'stretch'}}>welcome to the St.james Hospital A&E</Text>
-    //   <Text style={{color:'black',fontStyle:'italic', backgroundColor:'white',fontSize:18,width:300,height:50, margin:10,}}>Would you like to join virtual Queue?</Text>
-      
-    //   {/* <StatusBar style="auto" /> */}
-    //   <TouchableOpacity  style={{backgroundColor:'green',marginTop:10,}}>
-    //     <Text style={{fontSize:20,color:'#fff',margin:10,}}>Change text</Text>
-    //   </TouchableOpacity>
-    
-    // </View>
+   
   
   );
+}
+ const TitleHodler=()=>{
+  return(
+    <View>
+    <Text style={{height:30, fontSize:30, justifyContent:'center',textAlign:'center',fontWeight:'bold',color:'white'}}>Doctor's Appointment</Text>
+
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
