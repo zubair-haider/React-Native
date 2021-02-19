@@ -35,6 +35,7 @@ const DoctorsComp = ({ item, onConformed, onDeclined }) => {
               color: "white",
               cursor: "pointer",
               width: 100,
+              fontFamily: "Inter_900Black",
             }}
           >
             YES
@@ -47,6 +48,8 @@ const DoctorsComp = ({ item, onConformed, onDeclined }) => {
               color: "white",
               cursor: "pointer",
               width: 100,
+              // fontFamily: "Oswald-Bold",
+              fontFamily: "Inter_900Black",
             }}
             onClick={() => onDeclined()}
           >

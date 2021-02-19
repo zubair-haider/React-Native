@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
 
 const StyleSheetMethods = StyleSheet.create({
   btn: {

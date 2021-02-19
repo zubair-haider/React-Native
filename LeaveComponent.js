@@ -12,6 +12,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import logo from "./assets/boy.png";
+import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
 
 const CountDownTimer = ({ item, onDeclineLeave, onReset, setToIntial }) => {
   const [timer, setTimer] = useState(10);
@@ -36,6 +37,9 @@ const CountDownTimer = ({ item, onDeclineLeave, onReset, setToIntial }) => {
         <Text style={[StyleSheetMethods.viewsText]}>
           {timer} {item}
         </Text>
+        {/* <Text style={{ fontFamily: "Inter_900Black" }}>
+          {timer} {item}
+        </Text> */}
       </View>
       <View
         style={{
@@ -76,6 +80,7 @@ const CountDownTimer = ({ item, onDeclineLeave, onReset, setToIntial }) => {
               color: "white",
               cursor: "pointer",
               width: 100,
+              fontFamily: "Inter_900Black",
             }}
           >
             PROCEED
@@ -96,6 +101,7 @@ const CountDownTimer = ({ item, onDeclineLeave, onReset, setToIntial }) => {
               color: "white",
               backgroundColor: "green",
               cursor: "pointer",
+              fontFamily: "Inter_900Black",
             }}
           >
             RESET

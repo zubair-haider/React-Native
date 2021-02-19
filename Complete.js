@@ -38,6 +38,7 @@ const Complete = ({ item, img, onDeclineLeave, onReset }) => {
               color: "white",
               backgroundColor: "green",
               cursor: "pointer",
+              fontFamily: "Inter_900Black",
             }}
           >
             RESET

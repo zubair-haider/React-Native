@@ -53,6 +53,7 @@ const IntialComponent = ({ item, onConform, onDecline }) => {
               color: "white",
               backgroundColor: "green",
               cursor: "pointer",
+              fontFamily: "Inter_900Black",
             }}
           >
             YES
@@ -67,6 +68,7 @@ const IntialComponent = ({ item, onConform, onDecline }) => {
               color: "white",
               backgroundColor: "green",
               cursor: "pointer",
+              fontFamily: "Inter_900Black",
             }}
           >
             NO

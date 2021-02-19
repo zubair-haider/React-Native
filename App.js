@@ -2,7 +2,9 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import Counter from "./Counter";
 import ComponentsHolder from "./ComponentsHolder";
-
+import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
+import { Menu, ActivityIndicator, NavBar } from "antd-mobile";
+// import DrawerExample from "./drawer";
 import {
   Image,
   StyleSheet,
@@ -15,10 +17,14 @@ import {
 import logo from "./assets/boy.png";
 
 export default function App() {
+  let [fontsLoaded] = useFonts({
+    Inter_900Black,
+  });
   return (
     <SafeAreaView
       style={{ flex: 1, width: 1000, margin: "auto", marginBottom: 50 }}
     >
+      <View>{/* <DrawerExample /> */}</View>
       <View
         style={{
           margin: "auto",
@@ -61,6 +67,7 @@ const TitleHodler = () => {
           textAlign: "center",
           fontWeight: "bold",
           color: "white",
+          fontFamily: "Inter-Black",
         }}
       >
         Doctor's Appointment
@@ -68,18 +75,10 @@ const TitleHodler = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#eee",
-    alignItems: "center",
-    // justifyContent: 'center',
-  },
-  textContainer: {
-    color: "green",
-  },
-  buttonClass: {
-    backgroundColor: "red",
-  },
-});
+const TopHeader = () => {
+  return (
+    <View>
+      <Text>My Name Is Naeem Khalid</Text>
+    </View>
+  );
+};
