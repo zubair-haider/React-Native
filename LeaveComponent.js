@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from "react";
-import "antd-mobile/dist/antd-mobile.css";
-import { Button } from "antd-mobile";
+// import "antd-mobile/dist/antd-mobile.less";
+//import { Button } from "antd-mobile";
 import StyleSheetMethods from "./Styles/StyleSheet";
 import {
   Image,
@@ -8,7 +8,7 @@ import {
   Text,
   View,
   TouchableOpacity,
-  //Button,
+  Button,
   SafeAreaView,
 } from "react-native";
 import logo from "./assets/boy.png";
@@ -72,19 +72,7 @@ const CountDownTimer = ({ item, onDeclineLeave, onReset, setToIntial }) => {
             marginRight: 10,
           }}
         >
-          {/* <Button title="Proceed" onPress={() => onDeclineLeave()}></Button> */}
-          <Button
-            onClick={() => onDeclineLeave()}
-            style={{
-              backgroundColor: "green",
-              color: "white",
-              cursor: "pointer",
-              width: 100,
-              fontFamily: "Inter_900Black",
-            }}
-          >
-            PROCEED
-          </Button>
+          <Button title="Proceed" onPress={() => onDeclineLeave()}></Button>
         </View>
         <View
           style={{
@@ -92,20 +80,7 @@ const CountDownTimer = ({ item, onDeclineLeave, onReset, setToIntial }) => {
             marginBottom: 10,
           }}
         >
-          <Button
-            // title="Reset"
-            onClick={() => onReset()}
-            style={{
-              width: 100,
-              // marginTop: 30,
-              color: "white",
-              backgroundColor: "green",
-              cursor: "pointer",
-              fontFamily: "Inter_900Black",
-            }}
-          >
-            RESET
-          </Button>
+          <Button title="Reset" onPress={() => onReset()}></Button>
         </View>
       </View>
     </SafeAreaView>

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import StyleSheetMethods from "./Styles/StyleSheet";
-import "antd-mobile/dist/antd-mobile.css";
-import { Button } from "antd-mobile";
+// import "antd-mobile/dist/antd-mobile.less";
+//import { Button } from "antd-mobile";
 
 import {
   Image,
@@ -9,7 +9,7 @@ import {
   Text,
   View,
   TouchableOpacity,
-  // Button,
+  Button,
   SafeAreaView,
 } from "react-native";
 import logo from "./assets/boy.png";
@@ -30,19 +30,7 @@ const Complete = ({ item, img, onDeclineLeave, onReset }) => {
         }}
       >
         <View style={{ width: 80, marginBottom: 10, marginTop: 20 }}>
-          <Button //title="Reset"
-            onClick={() => onReset()}
-            style={{
-              width: 100,
-              // marginTop: 30,
-              color: "white",
-              backgroundColor: "green",
-              cursor: "pointer",
-              fontFamily: "Inter_900Black",
-            }}
-          >
-            RESET
-          </Button>
+          <Button title="Reset" onPress={() => onReset()} />
         </View>
       </View>
     </SafeAreaView>

@@ -85,7 +85,6 @@ const ComponentsHolder = () => {
         </Text>
       </View>
       <View>
-        {console.log("length", text.length)}
         {text.length > 0
           ? text.map((item) => (
               <IntialComponent
