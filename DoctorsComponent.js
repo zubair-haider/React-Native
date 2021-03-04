@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import StyleSheetMethods from "./Styles/StyleSheet";
-import "antd-mobile/dist/antd-mobile.css";
-import { Button } from "antd-mobile";
+// import "antd-mobile/dist/antd-mobile.css";
+//import { Button } from "antd-mobile";
 
 import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
 import {
@@ -10,7 +10,7 @@ import {
   Text,
   View,
   TouchableOpacity,
-  //Button,
+  Button,
   SafeAreaView,
 } from "react-native";
 const DoctorsComp = ({ item, onConformed, onDeclined }) => {
@@ -28,33 +28,10 @@ const DoctorsComp = ({ item, onConformed, onDeclined }) => {
         }}
       >
         <View style={{ width: 80, marginBottom: 10 }}>
-          <Button
-            onClick={() => onConformed()}
-            style={{
-              backgroundColor: "green",
-              color: "white",
-              cursor: "pointer",
-              width: 100,
-              fontFamily: "Inter_900Black",
-            }}
-          >
-            YES
-          </Button>
+          <Button title="Yes" onPress={() => onConformed()}></Button>
         </View>
         <View style={{ width: 100, paddingLeft: 20 }}>
-          <Button
-            style={{
-              backgroundColor: "green",
-              color: "white",
-              cursor: "pointer",
-              width: 100,
-              // fontFamily: "Oswald-Bold",
-              fontFamily: "Inter_900Black",
-            }}
-            onClick={() => onDeclined()}
-          >
-            NO
-          </Button>
+          <Button title="No" onPress={() => onDeclined()} />
         </View>
       </View>
     </SafeAreaView>

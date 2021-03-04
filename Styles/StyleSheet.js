@@ -1,11 +1,11 @@
 import { StyleSheet } from "react-native";
 
 const StyleSheetMethods = StyleSheet.create({
-  btn: {
-    backgroundColor: "green",
-    color: "white",
-    cursor: "pointer",
-  },
+  // btn: {
+  //   backgroundColor: "green",
+  //   color: "white",
+  //   cursor: "pointer",
+  // },
   text: {
     backgroundColor: "rgb(160,235,239)",
     padding: 10,
@@ -24,10 +24,10 @@ const StyleSheetMethods = StyleSheet.create({
     justifyContent: "center",
     fontFamily: "Inter_900Black",
   },
-  clikableBtn: {
-    color: "white",
-    backgroundColor: "green",
-    cursor: "pointer",
-  },
+  // clikableBtn: {
+  //   color: "white",
+  //   backgroundColor: "green",
+  //   cursor: "pointer",
+  // },
 });
 export default StyleSheetMethods;

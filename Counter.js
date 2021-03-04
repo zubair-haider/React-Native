@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import StyleSheetMethods from "./Styles/StyleSheet";
-import "antd-mobile/dist/antd-mobile.css";
-import { Button } from "antd-mobile";
 import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
 import {
   Image,
@@ -9,7 +7,7 @@ import {
   Text,
   View,
   TouchableOpacity,
-  // Button,
+  Button,
   SafeAreaView,
 } from "react-native";
 
@@ -18,7 +16,7 @@ const IntialComponent = ({ item, onConform, onDecline }) => {
     <SafeAreaView
       style={{
         marginTop: 20,
-        display: "flex",
+
         alignItems: "center",
         justifyContent: "center",
       }}
@@ -43,36 +41,29 @@ const IntialComponent = ({ item, onConform, onDecline }) => {
           marginTop: 100,
         }}
       >
-        <View style={{ marginBottom: 10 }}>
+        <View style={{ marginBottom: 10, width: 100 }}>
           <Button
-            // title="Yes"
-            onClick={() => onConform()}
+            title="Yes"
+            onPress={() => onConform()}
             style={{
               width: 100,
-              // marginTop: 30,
+
               color: "white",
               backgroundColor: "green",
-              cursor: "pointer",
-              fontFamily: "Inter_900Black",
             }}
-          >
-            YES
-          </Button>
+          ></Button>
         </View>
-        <View style={{ paddingLeft: 10 }}>
-          <Button //title="No"
-            onClick={() => onDecline()}
+        <View style={{ paddingLeft: 10, width: 100 }}>
+          <Button
+            title="No"
+            onPress={() => onDecline()}
             style={{
               width: 100,
-              // marginTop: 30,
+
               color: "white",
               backgroundColor: "green",
-              cursor: "pointer",
-              fontFamily: "Inter_900Black",
             }}
-          >
-            NO
-          </Button>
+          ></Button>
         </View>
       </View>
     </SafeAreaView>

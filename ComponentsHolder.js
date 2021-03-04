@@ -8,7 +8,7 @@ import CountDownTimer from "./LeaveComponent";
 import Complete from "./Complete";
 import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
 
-const ComponentsHolder = () => {
+const ComponentsHolder = ({ navigation }) => {
   const [text, setText] = useState([
     { text2: "Would you like to Join the Virtual Queue" },
   ]);
@@ -27,7 +27,10 @@ const ComponentsHolder = () => {
     setIncrement("2");
   };
   const onDecline = () => {
-    alert("you are at intial state");
+    navigation.navigate("Home");
+    setTimeout(function () {
+      alert("you are at intial state");
+    }, 2000);
   };
   const onProceed = () => {
     setLastState([...lastState, { lasttext: "Have You Seen By the Doctor?" }]);
@@ -35,16 +38,7 @@ const ComponentsHolder = () => {
     setIncrement("3");
   };
   const onReset = () => {
-    setText([
-      ...text,
-      {
-        text2: "Would you like to Join the Virtual Queue",
-      },
-    ]);
-    setNextState("");
-    setLastState("");
-    setComplete("");
-    setIncrement("1");
+    navigation.navigate("Home");
   };
   const onLastStateConform = () => {
     setComplete([
@@ -85,7 +79,6 @@ const ComponentsHolder = () => {
         </Text>
       </View>
       <View>
-        {console.log("length", text.length)}
         {text.length > 0
           ? text.map((item) => (
               <IntialComponent
