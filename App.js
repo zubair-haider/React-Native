@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import MyApp from "./GetLocation";
 import Counter from "./Counter";
 import Topheader from "./TopHeader";
+import Forms from "./forms/SelectForms";
 import ComponentsHolder from "./ComponentsHolder";
 import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
 import { Menu, ActivityIndicator, NavBar } from "antd-mobile";
@@ -34,8 +35,9 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={MyApp} />
-        <Stack.Screen name="Chekup" component={Topheader} />
+        <Stack.Screen name="REGISTERATION FORM" component={Forms} />
+        <Stack.Screen name="HOSPITALS LIST" component={MyApp} />
+        <Stack.Screen name="QUEUE" component={ComponentsHolder} />
       </Stack.Navigator>
     </NavigationContainer>
   );

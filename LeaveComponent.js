@@ -1,6 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
-// import "antd-mobile/dist/antd-mobile.less";
-//import { Button } from "antd-mobile";
+
 import StyleSheetMethods from "./Styles/StyleSheet";
 import {
   Image,
@@ -37,9 +36,6 @@ const CountDownTimer = ({ item, onDeclineLeave, onReset, setToIntial }) => {
         <Text style={[StyleSheetMethods.viewsText]}>
           {timer} {item}
         </Text>
-        {/* <Text style={{ fontFamily: "Inter_900Black" }}>
-          {timer} {item}
-        </Text> */}
       </View>
       <View
         style={{

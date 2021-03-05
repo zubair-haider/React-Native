@@ -43,13 +43,13 @@ const TopHeader = ({
       }}
     >
       <Text style={styles.list}>{name}</Text>
-      <Text style={styles.list}>{distance.toFixed(2)} KM</Text>
+      <Text style={styles.list}>{distance} KM</Text>
       <View style={{ width: 80 }}>
         <Button
           title="select"
           onPress={() => {
-            compState(true);
-            console.log("navigation", navigation);
+            // showAppointment();
+            navigation.navigate("Queue");
           }}
         ></Button>
       </View>

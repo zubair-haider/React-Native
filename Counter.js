@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import StyleSheetMethods from "./Styles/StyleSheet";
-// import { Button } from "antd-mobile";
 import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
 import {
   Image,
@@ -17,8 +16,7 @@ const IntialComponent = ({ item, onConform, onDecline }) => {
     <SafeAreaView
       style={{
         marginTop: 20,
-        display: "flex",
-        flex: 5,
+
         alignItems: "center",
         justifyContent: "center",
       }}
@@ -43,31 +41,27 @@ const IntialComponent = ({ item, onConform, onDecline }) => {
           marginTop: 100,
         }}
       >
-        <View style={{ marginBottom: 10 }}>
+        <View style={{ marginBottom: 10, width: 100 }}>
           <Button
             title="Yes"
             onPress={() => onConform()}
             style={{
               width: 100,
-              // marginTop: 30,
+
               color: "white",
               backgroundColor: "green",
-              //   cursor: "pointer",
-              fontFamily: "Inter_900Black",
             }}
           ></Button>
         </View>
-        <View style={{ paddingLeft: 10 }}>
+        <View style={{ paddingLeft: 10, width: 100 }}>
           <Button
             title="No"
             onPress={() => onDecline()}
             style={{
               width: 100,
-              // marginTop: 30,
+
               color: "white",
               backgroundColor: "green",
-              //   cursor: "pointer",
-              fontFamily: "Inter_900Black",
             }}
           ></Button>
         </View>

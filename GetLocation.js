@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import TopHeader from "./TopHeader";
 import Counter from "./Counter";
 import ComponentsHolder from "./ComponentsHolder";
-import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
+import { useFonts, Inter_900Black } from "expo-font";
 import { Menu, ActivityIndicator, NavBar } from "antd-mobile";
 import { Location, Permissions } from "expo";
 import { getPreciseDistance } from "geolib";
@@ -37,7 +37,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const MyApp = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
-    Inter_900Black,
+    "Oswald-Bold": require("./assets/Fonts/Oswald-Bold.ttf"),
   });
   var [active, setActive] = useState(false);
   var [intialPosition, setIntialPosition] = useState({
@@ -48,71 +48,53 @@ const MyApp = ({ navigation }) => {
   });
   var [hospitals, setHospital] = useState({
     item: [
-      { latitude: 31.4797, longitude: 74.2804, userName: "Doctors Hospital" },
-      { latitude: 31.5082, longitude: 74.3086, userName: "Sheikh Zaid" },
-      { latitude: 31.4846, longitude: 74.2974, userName: "Jinnah Hospital" },
       {
+        id: 1,
+        latitude: 31.4797,
+        longitude: 74.2804,
+        userName: "Doctors Hospital",
+      },
+      { id: 2, latitude: 31.5082, longitude: 74.3086, userName: "Sheikh Zaid" },
+      {
+        id: 3,
+        latitude: 31.4846,
+        longitude: 74.2974,
+        userName: "Jinnah Hospital",
+      },
+      {
+        id: 4,
         latitude: 31.4545,
         longitude: 74.351,
         userName: "General Hospital Lahore",
       },
     ],
   });
-  // async function requestLocationPermission() {
-  //   try {
-  //     const granted = await PermissionsAndroid.request(
-  //       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-  //       {
-  //         // title: "Example App",
-  //         // message: "Example App access to your location ",
-  //       }
-  //     );
-  //     console.log("granted", granted);
-  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-  //       console.log("You can use the location");
-  //       // alert("You can use the location");
-  //     } else granted === !PermissionsAndroid.RESULTS.GRANTED;
-  //     {
-  //       console.log(
-  //         "location permission denied",
-  //         PermissionsAndroid.RESULTS.GRANTED
-  //       );
-  //       alert("Location permission denied");
-  //     }
-  //   } catch (err) {
-  //     console.warn(err);
-  //   }
-  // }
+  async function requestLocationPermission() {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          //   title: "Finder",
+          //   message: "Finder App access to your location ",
+        }
+      );
 
-  // function distance(
-  //   lat1 = doctorsHospital.latitude,
-  //   lng1 = doctorsHospital.longitude,
-  //   lat2 = intialPosition.latitude,
-  //   lng2 = intialPosition.longitude
-  // ) {
-  //   var radlat1 = (Math.PI * lat1) / 180;
-  //   var radlat2 = (Math.PI * lat2) / 180;
-  //   var radlon1 = (Math.PI * lng1) / 180;
-  //   var radlon2 = (Math.PI * lng2) / 180;
-  //   var theta = lng1 - lng2;
-  //   var radtheta = (Math.PI * theta) / 180;
-  //   var dist =
-  //     Math.sin(radlat1) * Math.sin(radlat2) +
-  //     Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-  //   dist = Math.acos(dist);
-  //   dist = (dist * 180) / Math.PI;
-  //   dist = dist * 60 * 1.1515;
-
-  //   //Get in in kilometers
-  //   dist = dist * 1.609344;
-  //   // console.log("dist", dist);
-
-  //   return dist;
-  // }
-  const showAppointment = () => {
-    alert("working");
-  };
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        // console.log("You can use the location");
+        // alert(" location is turned On");
+      } else {
+        console.log(
+          "location permission denied"
+          // PermissionsAndroid.RESULTS.GRANTED
+        );
+        // alert("Location permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  }
   useEffect(() => {
+    requestLocationPermission();
     navigator.geolocation.getCurrentPosition(
       (position) => {
         var lat = parseFloat(position.coords.latitude);
@@ -129,26 +111,24 @@ const MyApp = ({ navigation }) => {
       (error) => alert(JSON.stringify(error)),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
-  });
+  }, []);
 
   return (
     <SafeAreaView
       style={{
-        flex: 1,
-        width: 1000,
-        margin: "auto",
-        marginBottom: 50,
-        marginTop: 100,
+        flex: 7,
+
+        //marginTop: 100,
       }}
     >
       <View
         style={{
-          width: "50%",
+          width: "100%",
           padding: 10,
-          //   height: "100%",
-          backgroundColor: "green",
+          backgroundColor: "#206E79",
           margin: "auto",
           marginBottom: 10,
+          flex: 7,
         }}
       >
         <Titles />
@@ -163,6 +143,7 @@ const MyApp = ({ navigation }) => {
             var radlon1 = (Math.PI * lng1) / 180;
             var radlon2 = (Math.PI * lng2) / 180;
             var theta = lng1 - lng2;
+            var tempnumber = [];
             var radtheta = (Math.PI * theta) / 180;
             var dist =
               Math.sin(radlat1) * Math.sin(radlat2) +
@@ -172,32 +153,45 @@ const MyApp = ({ navigation }) => {
             dist = dist * 60 * 1.1515;
 
             //Get in in kilometers
-            // dist = dist * 1.609344;
+            dist = dist * 1.609344;
+
             // console.log("dist", dist);
+            var tempvar = tempnumber.push[dist];
+            for (var i = 0; i <= dist.length; i++) {
+              var tempvar = tempnumber.push[i];
+              console.log(tempvar);
+            }
 
             return (
-              <TopHeader
+              <View
+                style={{
+                  marginTop: 5,
+                  paddingBottom: 10,
+                  borderRadius: 5,
+                  backgroundColor: "white",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
                 key={index}
-                name={value.userName}
-                distance={dist}
-                showAppointment={showAppointment}
-                compState={setActive}
-              />
+              >
+                <Text style={styles.listextra}>{value.userName}</Text>
+                <Text style={styles.list}>{dist.toFixed(2)} KM</Text>
+                <View style={{ width: 80 }}>
+                  <Button
+                    title="select"
+                    onPress={() => {
+                      // showAppointment();
+                      navigation.navigate("QUEUE");
+                    }}
+                  ></Button>
+                </View>
+              </View>
             );
           })}
         </View>
-        {/* <Text style={{ color: "white", margin: "auto" }}>{distance()}</Text> */}
-        {/* <MapView
-          style={styles.map}
-          showsUserLocation={true}
-          initialRegion={intialPosition}
-        >
-         <MapViewDirections
-            origin={intialPosition}
-            destination={destination}
-            apikey={GOOGLE_MAPS_APIKEY}
-          /> 
-        </MapView> */}
       </View>
       <View>{active && <HideShoW />}</View>
     </SafeAreaView>
@@ -267,9 +261,7 @@ const Titles = () => {
         marginTop: 5,
       }}
     >
-      <Text style={styles.headings}>Nearest Hospitals</Text>
-      <Text style={styles.headings}>Distance</Text>
-      <Text style={styles.headings}>Selcet To visit</Text>
+      <Text style={styles.headings}>Hospitals Near You</Text>
     </View>
   );
 };
@@ -281,24 +273,38 @@ const styles = {
     height: "80%",
   },
   headings: {
-    height: 35,
-    fontSize: 18,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+    fontSize: 22,
     justifyContent: "center",
     textAlign: "center",
     fontWeight: "bold",
-    color: "green",
-    fontFamily: "Inter-Black",
+    color: "#de1256",
+
     backgroundColor: "white",
     marginBottom: 30,
 
-    width: "33%",
+    width: "100%",
+    borderRadius: 5,
   },
   list: {
     backgroundColor: "white",
     justifyContent: "center",
-    width: 150,
-    padding: 10,
+
+    padding: 5,
     fontWeight: "bold",
+    fontsize: 50,
+    color: "green",
+  },
+  listextra: {
+    backgroundColor: "white",
+    justifyContent: "center",
+
+    padding: 5,
+    fontWeight: "bold",
+    fontSize: 20,
+    color: "#6e6464",
   },
 };
 export default MyApp;

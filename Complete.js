@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import StyleSheetMethods from "./Styles/StyleSheet";
-// import "antd-mobile/dist/antd-mobile.less";
-//import { Button } from "antd-mobile";
 
 import {
   Image,

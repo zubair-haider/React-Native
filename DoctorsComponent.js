@@ -34,8 +34,6 @@ const DoctorsComp = ({ item, onConformed, onDeclined }) => {
           <Button title="No" onPress={() => onDeclined()} />
         </View>
       </View>
-
-      {/* </View> */}
     </SafeAreaView>
   );
 };
