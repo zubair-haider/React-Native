@@ -27,8 +27,15 @@ const Complete = ({ item, img, onDeclineLeave, onReset }) => {
           // marginTop: 10,
         }}
       >
-        <View style={{ width: 80, marginBottom: 10, marginTop: 20 }}>
+        {/* <View style={{ width: 80, marginBottom: 10, marginTop: 20 }}>
           <Button title="Reset" onPress={() => onReset()} />
+        </View> */}
+        <View style={StyleSheetMethods.btndoc}>
+          <TouchableOpacity onPress={onReset}>
+            <Text style={{ fontWeight: "bold", fontSize: 20, color: "white" }}>
+              Reset
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>

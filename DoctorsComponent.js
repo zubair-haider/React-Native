@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import StyleSheetMethods from "./Styles/StyleSheet";
+// import StyleSheetMethods from "./Styles/StyleSheet";
 // import "antd-mobile/dist/antd-mobile.css";
 //import { Button } from "antd-mobile";
+import StyleSheetMethods from "./Styles/StyleSheet";
 
 import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
 import {
@@ -24,14 +25,29 @@ const DoctorsComp = ({ item, onConformed, onDeclined }) => {
           display: "flex",
           flexDirection: "row",
           justifyContent: "center",
+          justifyContent: "center",
           marginTop: 10,
         }}
       >
-        <View style={{ width: 80, marginBottom: 10 }}>
+        {/* <View style={{ width: 80, marginBottom: 10 }}>
           <Button title="Yes" onPress={() => onConformed()}></Button>
-        </View>
-        <View style={{ width: 100, paddingLeft: 20 }}>
+        </View> */}
+        {/* <View style={{ width: 100, paddingLeft: 20 }}>
           <Button title="No" onPress={() => onDeclined()} />
+        </View> */}
+        <View style={StyleSheetMethods.btndoc}>
+          <TouchableOpacity onPress={onConformed}>
+            <Text style={{ fontWeight: "bold", fontSize: 20, color: "white" }}>
+              Yes
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={StyleSheetMethods.btndoc}>
+          <TouchableOpacity onPress={onDeclined}>
+            <Text style={{ fontWeight: "bold", fontSize: 20, color: "white" }}>
+              No
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>

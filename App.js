@@ -1,12 +1,12 @@
 import "react-native-gesture-handler";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
-import MyApp from "./GetLocation";
-import Counter from "./Counter";
-import Topheader from "./TopHeader";
 import Forms from "./forms/SelectForms";
+import MyApp from "./GetLocation";
+import Charts from "./Charts/React_native_chart";
 import ComponentsHolder from "./ComponentsHolder";
 import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
 import { Menu, ActivityIndicator, NavBar } from "antd-mobile";
@@ -20,7 +20,7 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Button,
+  //Button,
   SafeAreaView,
   Dimensions,
 } from "react-native";
@@ -34,10 +34,12 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="REGISTERATION FORM" component={Forms} />
+      <Stack.Navigator initialRouteName="FORM">
+        <Stack.Screen name="FORM" component={Forms} />
+
         <Stack.Screen name="HOSPITALS LIST" component={MyApp} />
         <Stack.Screen name="QUEUE" component={ComponentsHolder} />
+        <Stack.Screen name="Chart" component={Charts} />
       </Stack.Navigator>
     </NavigationContainer>
   );
