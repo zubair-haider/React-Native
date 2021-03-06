@@ -2,6 +2,7 @@
 import React, { Component, useState, useEffect, useRef } from "react";
 import { Form, Input, Button, Checkbox } from "antd-mobile";
 import ValidationComponent from "react-native-form-validator";
+import Chart from "../Charts/React_native_chart";
 import {
   Text,
   View,
@@ -65,10 +66,13 @@ const Forms = ({ navigation }) => {
       navigation.navigate("HOSPITALS LIST");
     }
   };
+  const onBtnClick = () => {
+    navigation.navigate("Chart");
+  };
   return (
     <KeyboardAwareScrollView
       shouldRasterizeIOS={{ x: 0, y: 0 }}
-      scrollEnabled={false}
+      scrollEnabled={true}
     >
       <View style={styles.heading}>
         <Text style={{ fontWeight: "bold", fontSize: 30, color: "#D64B59" }}>
@@ -187,6 +191,11 @@ const Forms = ({ navigation }) => {
         <View style={{ marginTop: 50, alignItems: "center" }}>
           <TouchableOpacity style={styles.submitButton} onPress={onSubmit}>
             <Text style={styles.submitButtonText}> Submit </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{ marginTop: 50, alignItems: "center" }}>
+          <TouchableOpacity style={styles.submitButton} onPress={onBtnClick}>
+            <Text style={styles.submitButtonText}> View Chart </Text>
           </TouchableOpacity>
         </View>
       </View>

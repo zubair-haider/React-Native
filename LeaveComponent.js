@@ -25,15 +25,17 @@ const CountDownTimer = ({ item, onDeclineLeave, onReset, setToIntial }) => {
     } else if (isActive) {
       interval = setInterval(() => {
         setTimer((timer) => timer - 1);
-      }, 1000);
+      }, 100000);
     }
     return () => clearInterval(interval);
   }, [isActive, timer]);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView
+      style={{ backgroundColor: "#206E7", height: "80%", paddingBottom: 10 }}
+    >
       <View style={StyleSheetMethods.text} key={timer}>
-        <Text style={[StyleSheetMethods.viewsText]}>
+        <Text style={StyleSheetMethods.viewsText}>
           {timer} {item}
         </Text>
       </View>
@@ -62,21 +64,35 @@ const CountDownTimer = ({ item, onDeclineLeave, onReset, setToIntial }) => {
           marginTop: 10,
         }}
       >
-        <View
+        {/* <View
           style={{
             width: 100,
             marginRight: 10,
           }}
         >
           <Button title="Proceed" onPress={() => onDeclineLeave()}></Button>
+        </View> */}
+        <View style={StyleSheetMethods.btndoc}>
+          <TouchableOpacity onPress={onDeclineLeave}>
+            <Text style={{ fontWeight: "bold", fontSize: 20, color: "white" }}>
+              Proceed
+            </Text>
+          </TouchableOpacity>
         </View>
-        <View
+        {/* <View
           style={{
             width: 80,
             marginBottom: 10,
           }}
         >
           <Button title="Reset" onPress={() => onReset()}></Button>
+        </View> */}
+        <View style={StyleSheetMethods.btndoc}>
+          <TouchableOpacity onPress={onReset}>
+            <Text style={{ fontWeight: "bold", fontSize: 20, color: "white" }}>
+              Reset
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>

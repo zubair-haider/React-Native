@@ -2,7 +2,7 @@ import { VideoExportPreset } from "expo-image-picker";
 import React, { Component, useState, useEffect } from "react";
 import { SafeAreaView, Text, View } from "react-native";
 import IntialComponent from "./Counter";
-
+import StyleSheetMethods from "./Styles/StyleSheet";
 import DoctorsComp from "./DoctorsComponent";
 import CountDownTimer from "./LeaveComponent";
 import Complete from "./Complete";
@@ -27,7 +27,7 @@ const ComponentsHolder = ({ navigation }) => {
     setIncrement("2");
   };
   const onDecline = () => {
-    navigation.navigate("Home");
+    navigation.navigate("REGISTERATION FORM");
     setTimeout(function () {
       alert("you are at intial state");
     }, 2000);
@@ -38,7 +38,7 @@ const ComponentsHolder = ({ navigation }) => {
     setIncrement("3");
   };
   const onReset = () => {
-    navigation.navigate("Home");
+    navigation.navigate("REGISTERATION FORM ");
   };
   const onLastStateConform = () => {
     setComplete([
@@ -53,30 +53,8 @@ const ComponentsHolder = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ fontFamily: "Inter-Black" }}>
-      <View
-        style={{
-          height: 50,
-          width: 150,
-          backgroundColor: "green",
-          flex: 1,
-          borderRadius: 5,
-          alignItems: "center",
-          justifyContent: "space-between",
-          margin: "auto",
-        }}
-      >
-        <Text
-          style={{
-            color: "white",
-            justifyContent: "center",
-            alignItems: "center",
-            fontFamily: "Inter_900Black",
-            fontSize: 20,
-            padding: 10,
-          }}
-        >
-          Stage: {increment}
-        </Text>
+      <View style={StyleSheetMethods.stagebg}>
+        <Text style={StyleSheetMethods.stage}>Stage: {increment}</Text>
       </View>
       <View>
         {text.length > 0
