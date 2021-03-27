@@ -16,6 +16,7 @@
     "@react-navigation/native": "^5.9.3",
     "@react-navigation/stack": "^5.14.3",
     "antd-mobile": "^2.3.4",
+    "axios": "^0.21.1",
     "chart.js": "^2.9.4",
     "expo": "~40.0.0",
     "expo-font": "~8.4.0",

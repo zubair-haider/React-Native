@@ -1,4 +1,5 @@
 "use strict";
+import axios from "axios";
 import React, { Component, useState, useEffect, useRef } from "react";
 import { Form, Input, Button, Checkbox } from "antd-mobile";
 import ValidationComponent from "react-native-form-validator";
@@ -18,22 +19,53 @@ import { text } from "@fortawesome/fontawesome-svg-core";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const Forms = ({ navigation }) => {
-  const inputRef = useRef(null);
+  // const inputRef = useRef(null);
   const [checkdisease, setdisease] = useState({
-    disease: "",
+    disease: "thiphoid",
     errordisease: "",
   });
-  const [checkAge, setAge] = useState({ age: "", errorage: "" });
-  const [checkGender, setGender] = useState({ gender: "", errorgender: "" });
+  const [checkAge, setAge] = useState({ age: "18", errorage: "" });
+  const [checkGender, setGender] = useState({
+    gender: "male",
+    errorgender: "",
+  });
   const [checkContact, setContact] = useState({
-    contact: "",
+    contact: "03030000548",
     errorcontact: "",
   });
   const [checkName, setcheckName] = useState({
-    name: "",
+    name: "haris",
     errorMsg: "",
   });
-  const onSubmit = () => {
+
+  const getApiCall = async (url, data) => {
+    console.log("data: ", data);
+    let headers = { "content-type": "application/json" };
+    let response = await axios({
+      method: "GET",
+      url,
+      data: JSON.stringify(data),
+      headers: { "content-type": "application/json" },
+      // data: data,
+    });
+    console.log("response get = ", response);
+    // alert("called");
+  };
+  const postApiCall = async (url, data) => {
+    console.log("post data: ", data);
+    let headers = { "content-type": "application/json" };
+    let response = await axios({
+      method: "POST",
+      url,
+      data: JSON.stringify(data),
+      headers: { "content-type": "application/json" },
+      // data: data,
+    });
+    console.log("response  post= ", response);
+    // alert("called");
+  };
+  const onSubmit = async () => {
+    let collection = {};
     let namecheck = /^[a-zA-Z]+$/;
     let numbercheck = /^[0-9()-]+$/;
     let diseaseCheck = /[^A-Za-z]+$/;
@@ -65,6 +97,17 @@ const Forms = ({ navigation }) => {
     } else {
       navigation.navigate("HOSPITALS LIST");
     }
+    collection.name = checkName.name;
+    collection.phone = checkContact.contact;
+    collection.disease = checkdisease.disease;
+    collection.age = checkAge.age;
+    collection.gender = checkGender.gender;
+
+    var postApiUrl = "http://localhost:3000/detail";
+    var getUrl = "http://localhost:3000/detail/2";
+    postApiCall(postApiUrl, collection);
+    // getApiCall(getUrl, collection);
+    // console.log("collection", collection);
   };
   const onBtnClick = () => {
     navigation.navigate("Chart");
@@ -93,6 +136,7 @@ const Forms = ({ navigation }) => {
                 setcheckName({ name: text });
               }}
               defaultValue={text}
+              value={checkName.name}
             />
             <Text style={{ color: "red", paddingLeft: 10 }}>
               {checkName.errorMsg}
@@ -111,6 +155,7 @@ const Forms = ({ navigation }) => {
                 setContact({ contact: text });
               }}
               defaultValue={text}
+              value={checkContact.contact}
               style={{
                 paddingLeft: 10,
                 color: "black",
@@ -134,6 +179,7 @@ const Forms = ({ navigation }) => {
                 setdisease({ disease: text });
               }}
               defaultValue={text}
+              value={checkdisease.disease}
               style={{ paddingLeft: 10, color: "black", outline: "none" }}
               placeholder="Enter Patient Disease"
             />
@@ -153,6 +199,7 @@ const Forms = ({ navigation }) => {
                 setAge({ age: text });
               }}
               defaultValue={text}
+              value={checkAge.age}
               style={{ paddingLeft: 10, color: "black", outline: "none" }}
               placeholder="Enter Age"
             />
@@ -171,6 +218,7 @@ const Forms = ({ navigation }) => {
               }}
               placeholderTextColor="#6e6464"
               defaultValue={text}
+              value={checkGender.gender}
               style={{
                 paddingLeft: 10,
                 color: "black",

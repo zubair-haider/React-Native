@@ -5,10 +5,12 @@ import IntialComponent from "./Counter";
 import StyleSheetMethods from "./Styles/StyleSheet";
 import DoctorsComp from "./DoctorsComponent";
 import CountDownTimer from "./LeaveComponent";
+import UsersTable from "./tables";
 import Complete from "./Complete";
 import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
 
-const ComponentsHolder = ({ navigation }) => {
+const ComponentsHolder = ({ navigation, currentH }) => {
+  let temp = currentH;
   const [text, setText] = useState([
     { text2: "Would you like to Join the Virtual Queue" },
   ]);
@@ -55,6 +57,10 @@ const ComponentsHolder = ({ navigation }) => {
     <SafeAreaView style={{ fontFamily: "Inter-Black" }}>
       <View style={StyleSheetMethods.stagebg}>
         <Text style={StyleSheetMethods.stage}>Stage: {increment}</Text>
+      </View>
+      <View>
+        <Text>this is text</Text>
+        <UsersTable />
       </View>
       <View>
         {text.length > 0

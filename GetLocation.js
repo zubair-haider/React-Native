@@ -25,7 +25,10 @@ import {
   Dimensions,
 } from "react-native";
 import logo from "./assets/boy.png";
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  getFocusedRouteNameFromRoute,
+  NavigationContainer,
+} from "@react-navigation/native";
 const { width, height } = Dimensions.get("window");
 const SCREEN_HEIGHT = height;
 const SCREEN_WIDTH = width;
@@ -92,6 +95,9 @@ const MyApp = ({ navigation }) => {
     } catch (err) {
       console.warn(err);
     }
+  }
+  function getHospitalName(hospitalName) {
+    return hospitalName.userName;
   }
   useEffect(() => {
     requestLocationPermission();
@@ -183,7 +189,7 @@ const MyApp = ({ navigation }) => {
                   <Button
                     title="select"
                     onPress={() => {
-                      // showAppointment();
+                      getHospitalName(value);
                       navigation.navigate("QUEUE");
                     }}
                   ></Button>
@@ -193,11 +199,11 @@ const MyApp = ({ navigation }) => {
           })}
         </View>
       </View>
-      <View>{active && <HideShoW />}</View>
+      <View>{active && <HideShoW hospital={getHospitalName} />}</View>
     </SafeAreaView>
   );
 };
-const HideShoW = () => {
+const HideShoW = (props) => {
   return (
     <View>
       <View
@@ -226,7 +232,7 @@ const HideShoW = () => {
           borderRadius: 5,
         }}
       >
-        <ComponentsHolder />
+        <ComponentsHolder currentH={this.props.getHospitalName} />
       </View>
     </View>
   );
