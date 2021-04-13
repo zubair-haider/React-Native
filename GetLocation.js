@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import TopHeader from "./TopHeader";
+import axios from "axios";
 import Counter from "./Counter";
 import ComponentsHolder from "./ComponentsHolder";
 import { useFonts, Inter_900Black } from "expo-font";
@@ -14,6 +15,7 @@ import { PermissionsAndroid, ACCESS_FINE_LOCATION } from "react-native";
 //import MapViewDirections from "react-native-maps-directions";
 //import MapView, { AnimatedRegion, Marker } from "react-native-maps";
 // import DrawerExample from "./drawer";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {
   Image,
   StyleSheet,
@@ -29,6 +31,7 @@ import {
   getFocusedRouteNameFromRoute,
   NavigationContainer,
 } from "@react-navigation/native";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 const { width, height } = Dimensions.get("window");
 const SCREEN_HEIGHT = height;
 const SCREEN_WIDTH = width;
@@ -38,7 +41,8 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 //const Stack = createStackNavigator();
 
-const MyApp = ({ navigation }) => {
+const MyApp = ({ navigation, route }) => {
+  const { userName } = route.params;
   let [fontsLoaded] = useFonts({
     "Oswald-Bold": require("./assets/Fonts/Oswald-Bold.ttf"),
   });
@@ -49,7 +53,11 @@ const MyApp = ({ navigation }) => {
     latitudeDelta: 0,
     longitudeDelta: 0,
   });
-  var [hospitals, setHospital] = useState({
+  const [getPatient, setPatitent] = useState([]);
+  const [getGeneralH, setGeneralH] = useState("");
+  const [getSheikhH, setSheikhH] = useState("");
+  const [getDoctorH, setDoctorH] = useState("");
+  const [hospitals, setHospital] = useState({
     item: [
       {
         id: 1,
@@ -63,6 +71,18 @@ const MyApp = ({ navigation }) => {
         latitude: 31.4846,
         longitude: 74.2974,
         userName: "Jinnah Hospital",
+      },
+      {
+        id: 4,
+        latitude: 31.4545,
+        longitude: 74.351,
+        userName: "General Hospital Lahore",
+      },
+      {
+        id: 4,
+        latitude: 31.4545,
+        longitude: 74.351,
+        userName: "General Hospital Lahore",
       },
       {
         id: 4,
@@ -96,11 +116,16 @@ const MyApp = ({ navigation }) => {
       console.warn(err);
     }
   }
-  function getHospitalName(hospitalName) {
-    return hospitalName.userName;
+  async function fetchData() {
+    const result = await axios("http://localhost:3000/queues");
+
+    setPatitent(result.data);
   }
+
   useEffect(() => {
+    fetchData();
     requestLocationPermission();
+    // showHospitals();
     navigator.geolocation.getCurrentPosition(
       (position) => {
         var lat = parseFloat(position.coords.latitude);
@@ -118,89 +143,161 @@ const MyApp = ({ navigation }) => {
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
   }, []);
+  // const patientsDoctorHospital = getPatient.filter(
+  //   (filterHospital) => filterHospital.hospital == "Doctors Hospital"
+  // );
+  // console.log("current", patientsDoctorHospital);
+  // // patientsDoctorHospital.map((item) => {
+  //   console.log(item.hospital.length);
+  // });
+
+  // const showHospitals = () => {
+
+  //   console.log("in showHospital:", getPatient);
+  //   // const currentItems = await getPatient.filter(
+  //   //   (filterItems) => filterItems.hospital === "Doctors Hospital"
+  //   // );
+  //   // setDoctorH(currentItems);
+  //   // console.log("dotorHospital:", currentItems);
+  //   // const currentShowItems = this.state.showState.filter(
+  //   //   (filterItems) => filterItems.id !== id
+  //   // );
+  //   // this.setState({ showState: currentShowItems });
+  // };
+  console.log("patient:", getDoctorH);
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 7,
-
-        //marginTop: 100,
-      }}
+    <KeyboardAwareScrollView
+      shouldRasterizeIOS={{ x: 0, y: 0 }}
+      scrollEnabled={true}
     >
-      <View
+      <SafeAreaView
         style={{
-          width: "100%",
-          padding: 10,
-          backgroundColor: "#206E79",
-          margin: "auto",
-          marginBottom: 10,
           flex: 7,
+
+          //marginTop: 100,
         }}
       >
-        <Titles />
-        <View>
-          {hospitals.item.map((value, index) => {
-            var lat1 = value.latitude;
-            var lng1 = value.longitude;
-            var lat2 = intialPosition.latitude;
-            var lng2 = intialPosition.longitude;
-            var radlat1 = (Math.PI * lat1) / 180;
-            var radlat2 = (Math.PI * lat2) / 180;
-            var radlon1 = (Math.PI * lng1) / 180;
-            var radlon2 = (Math.PI * lng2) / 180;
-            var theta = lng1 - lng2;
-            var tempnumber = [];
-            var radtheta = (Math.PI * theta) / 180;
-            var dist =
-              Math.sin(radlat1) * Math.sin(radlat2) +
-              Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-            dist = Math.acos(dist);
-            dist = (dist * 180) / Math.PI;
-            dist = dist * 60 * 1.1515;
+        <View
+          style={{
+            width: "100%",
+            padding: 10,
+            backgroundColor: "#206E79",
+            margin: "auto",
+            marginBottom: 10,
+            flex: 7,
+          }}
+        >
+          <Titles />
+          {/* <View>{showHospitals()}</View> */}
+          <View>
+            {hospitals.item.map((value, index, patientsDoctorHospita) => {
+              var lat1 = value.latitude;
+              var lng1 = value.longitude;
+              var lat2 = intialPosition.latitude;
+              var lng2 = intialPosition.longitude;
+              var radlat1 = (Math.PI * lat1) / 180;
+              var radlat2 = (Math.PI * lat2) / 180;
+              var radlon1 = (Math.PI * lng1) / 180;
+              var radlon2 = (Math.PI * lng2) / 180;
+              var theta = lng1 - lng2;
+              var tempnumber = [];
+              var radtheta = (Math.PI * theta) / 180;
+              var dist =
+                Math.sin(radlat1) * Math.sin(radlat2) +
+                Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+              dist = Math.acos(dist);
+              dist = (dist * 180) / Math.PI;
+              dist = dist * 60 * 1.1515;
+              console.log("distance:", dist);
 
-            //Get in in kilometers
-            dist = dist * 1.609344;
+              //Get in in kilometers
+              dist = dist * 1.609344;
 
-            // console.log("dist", dist);
-            var tempvar = tempnumber.push[dist];
-            for (var i = 0; i <= dist.length; i++) {
-              var tempvar = tempnumber.push[i];
-              console.log(tempvar);
-            }
+              // console.log("dist", dist);
+              var tempvar = tempnumber.push[dist];
+              for (var i = 0; i <= dist.length; i++) {
+                var tempvar = tempnumber.push[i];
+                console.log(tempvar);
+              }
 
-            return (
-              <View
-                style={{
-                  marginTop: 5,
-                  paddingBottom: 10,
-                  borderRadius: 5,
-                  backgroundColor: "white",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                key={index}
-              >
-                <Text style={styles.listextra}>{value.userName}</Text>
-                <Text style={styles.list}>{dist.toFixed(2)} KM</Text>
-                <View style={{ width: 80 }}>
-                  <Button
-                    title="select"
-                    onPress={() => {
-                      getHospitalName(value);
-                      navigation.navigate("QUEUE");
-                    }}
-                  ></Button>
+              return (
+                <View>
+                  <View>
+                    {dist <= 5 ? (
+                      <View
+                        style={{
+                          marginTop: 5,
+                          paddingBottom: 10,
+                          borderRadius: 5,
+                          backgroundColor: "#98FB98",
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "space-between",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                        key={index}
+                      >
+                        <Text style={styles.listextra2}>{value.userName}</Text>
+                        <Text style={styles.listextra2}>
+                          {/* Current Patients:{patientsDoctorHospital} */}
+                        </Text>
+                        <Text style={styles.list2}>{dist.toFixed(2)} KM</Text>
+                        <View style={{ width: 80 }}>
+                          <Button
+                            title="select"
+                            onPress={() => {
+                              navigation.navigate("QUEUE", {
+                                hospital: value.userName,
+                                user: userName,
+                              });
+                            }}
+                          ></Button>
+                        </View>
+                      </View>
+                    ) : null}
+                  </View>
+                  <View>
+                    {dist >= 5.1 ? (
+                      <View
+                        style={{
+                          marginTop: 5,
+                          paddingBottom: 10,
+                          borderRadius: 5,
+                          backgroundColor: "white",
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "space-between",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                        key={index}
+                      >
+                        <Text style={styles.listextra}>{value.userName}</Text>
+                        <Text style={styles.list}>{dist.toFixed(2)} KM</Text>
+                        <View style={{ width: 80 }}>
+                          <Button
+                            title="select"
+                            onPress={() => {
+                              navigation.navigate("QUEUE", {
+                                hospital: value.userName,
+                                user: userName,
+                              });
+                            }}
+                          ></Button>
+                        </View>
+                      </View>
+                    ) : null}
+                  </View>
                 </View>
-              </View>
-            );
-          })}
+              );
+            })}
+          </View>
         </View>
-      </View>
-      <View>{active && <HideShoW hospital={getHospitalName} />}</View>
-    </SafeAreaView>
+        <View>{active && <HideShoW />}</View>
+      </SafeAreaView>
+    </KeyboardAwareScrollView>
   );
 };
 const HideShoW = (props) => {
@@ -294,6 +391,15 @@ const styles = {
     width: "100%",
     borderRadius: 5,
   },
+  list2: {
+    backgroundColor: "#98FB98",
+    justifyContent: "center",
+
+    padding: 5,
+    fontWeight: "bold",
+    fontsize: 50,
+    color: "white",
+  },
   list: {
     backgroundColor: "white",
     justifyContent: "center",
@@ -302,6 +408,15 @@ const styles = {
     fontWeight: "bold",
     fontsize: 50,
     color: "green",
+  },
+  listextra2: {
+    backgroundColor: "#98FB98",
+    justifyContent: "center",
+
+    padding: 5,
+    fontWeight: "bold",
+    fontSize: 20,
+    color: "white",
   },
   listextra: {
     backgroundColor: "white",

@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import logo from "./assets/boy.png";
 import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
-const Complete = ({ item, img, onDeclineLeave, onReset }) => {
+const Complete = ({ item, img, onDeclineLeave, onReset, onAddQueues }) => {
   return (
     <SafeAreaView style={{ marginTop: 20 }}>
       <View style={StyleSheetMethods.text} key={item}>
@@ -31,7 +31,12 @@ const Complete = ({ item, img, onDeclineLeave, onReset }) => {
           <Button title="Reset" onPress={() => onReset()} />
         </View> */}
         <View style={StyleSheetMethods.btndoc}>
-          <TouchableOpacity onPress={onReset}>
+          <TouchableOpacity
+            onPress={() => {
+              onReset();
+              onAddQueues();
+            }}
+          >
             <Text style={{ fontWeight: "bold", fontSize: 20, color: "white" }}>
               Reset
             </Text>

@@ -38,19 +38,19 @@ const Forms = ({ navigation }) => {
     errorMsg: "",
   });
 
-  const getApiCall = async (url, data) => {
-    console.log("data: ", data);
-    let headers = { "content-type": "application/json" };
-    let response = await axios({
-      method: "GET",
-      url,
-      data: JSON.stringify(data),
-      headers: { "content-type": "application/json" },
-      // data: data,
-    });
-    console.log("response get = ", response);
-    // alert("called");
-  };
+  // const getApiCall = async (url, data) => {
+  //   console.log("data: ", data);
+  //   let headers = { "content-type": "application/json" };
+  //   let response = await axios({
+  //     method: "GET",
+  //     url,
+  //     data: JSON.stringify(data),
+  //     headers: { "content-type": "application/json" },
+  //     // data: data,
+  //   });
+  //   console.log("response get = ", response);
+  //   // alert("called");
+  // };
   const postApiCall = async (url, data) => {
     console.log("post data: ", data);
     let headers = { "content-type": "application/json" };
@@ -95,7 +95,7 @@ const Forms = ({ navigation }) => {
       setGender({ errorgender: "please fill your Gender" });
       return false;
     } else {
-      navigation.navigate("HOSPITALS LIST");
+      navigation.navigate("HOSPITALS LIST", { userName: checkName.name });
     }
     collection.name = checkName.name;
     collection.phone = checkContact.contact;
@@ -104,7 +104,6 @@ const Forms = ({ navigation }) => {
     collection.gender = checkGender.gender;
 
     var postApiUrl = "http://localhost:3000/detail";
-    var getUrl = "http://localhost:3000/detail/2";
     postApiCall(postApiUrl, collection);
     // getApiCall(getUrl, collection);
     // console.log("collection", collection);
@@ -236,15 +235,25 @@ const Forms = ({ navigation }) => {
             </Text>
           </View>
         </View>
-        <View style={{ marginTop: 50, alignItems: "center" }}>
-          <TouchableOpacity style={styles.submitButton} onPress={onSubmit}>
-            <Text style={styles.submitButtonText}> Submit </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{ marginTop: 50, alignItems: "center" }}>
-          <TouchableOpacity style={styles.submitButton} onPress={onBtnClick}>
-            <Text style={styles.submitButtonText}> View Chart </Text>
-          </TouchableOpacity>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
+        >
+          <View
+            style={{ marginTop: 50, alignItems: "center", paddingRight: 10 }}
+          >
+            <TouchableOpacity style={styles.submitButton} onPress={onSubmit}>
+              <Text style={styles.submitButtonText}> Submit </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ marginTop: 50, alignItems: "center" }}>
+            <TouchableOpacity style={styles.submitButton} onPress={onBtnClick}>
+              <Text style={styles.submitButtonText}> View Chart </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </KeyboardAwareScrollView>

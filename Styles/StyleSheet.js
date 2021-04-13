@@ -45,7 +45,7 @@ const StyleSheetMethods = StyleSheet.create({
   questions: {
     backgroundColor: "#EAF1F2",
     padding: 10,
-    marginTop: 5,
+    marginTop: 0,
     borderLeftWidth: 5,
     borderTopWidth: 5,
     width: "90%",

@@ -14,7 +14,7 @@ import {
   Button,
   SafeAreaView,
 } from "react-native";
-const DoctorsComp = ({ item, onConformed, onDeclined }) => {
+const DoctorsComp = ({ item, onConformed, onDeclined, onAddQueues }) => {
   return (
     <SafeAreaView style={{ backgroundColor: "", paddingTop: 10 }}>
       <View style={StyleSheetMethods.text} key={item}>
@@ -36,7 +36,12 @@ const DoctorsComp = ({ item, onConformed, onDeclined }) => {
           <Button title="No" onPress={() => onDeclined()} />
         </View> */}
         <View style={StyleSheetMethods.btndoc}>
-          <TouchableOpacity onPress={onConformed}>
+          <TouchableOpacity
+            onPress={() => {
+              onConformed();
+              onAddQueues();
+            }}
+          >
             <Text style={{ fontWeight: "bold", fontSize: 20, color: "white" }}>
               Yes
             </Text>

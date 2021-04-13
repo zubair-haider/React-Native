@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import StyleSheetMethods from "./Styles/StyleSheet";
 import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
+import axios from "axios";
 import {
   Image,
   StyleSheet,
@@ -10,8 +11,16 @@ import {
   Button,
   SafeAreaView,
 } from "react-native";
+import { cloneElement } from "react";
 
-const IntialComponent = ({ item, onConform, onDecline }) => {
+const IntialComponent = ({
+  item,
+  onConform,
+  onDecline,
+  onAddQueue,
+  user,
+  queueState,
+}) => {
   return (
     <SafeAreaView
       style={{
@@ -55,7 +64,12 @@ const IntialComponent = ({ item, onConform, onDecline }) => {
             borderRadius: 5,
           }}
         >
-          <TouchableOpacity onPress={onConform}>
+          <TouchableOpacity
+            onPress={() => {
+              onConform();
+              onAddQueue();
+            }}
+          >
             <Text style={{ fontWeight: "bold", fontSize: 20, color: "white" }}>
               Yes
             </Text>
@@ -83,8 +97,7 @@ const IntialComponent = ({ item, onConform, onDecline }) => {
         >
           <TouchableOpacity onPress={onDecline}>
             <Text style={{ fontWeight: "bold", fontSize: 20, color: "white" }}>
-              {" "}
-              No{" "}
+              No
             </Text>
           </TouchableOpacity>
           {/* <Button

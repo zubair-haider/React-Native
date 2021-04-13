@@ -39,7 +39,7 @@ const CountDownTimer = ({ item, onDeclineLeave, onReset, setToIntial }) => {
           {timer} {item}
         </Text>
       </View>
-      <View
+      {/* <View
         style={{
           flex: 1,
           alignItems: "center",
@@ -55,7 +55,7 @@ const CountDownTimer = ({ item, onDeclineLeave, onReset, setToIntial }) => {
             justifyContent: "center",
           }}
         />
-      </View>
+      </View> */}
       <View
         style={{
           display: "flex",
