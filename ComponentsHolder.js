@@ -58,6 +58,7 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
     setLastState("");
     setIncrement("4");
   };
+
   const postQueueApiCall = async (url, data) => {
     console.log("postqueue data: ", data);
     let headers = { "content-type": "application/json" };

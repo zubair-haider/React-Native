@@ -116,11 +116,18 @@ const MyApp = ({ navigation, route }) => {
       console.warn(err);
     }
   }
-  async function fetchData() {
-    const result = await axios("http://localhost:3000/queues");
-
-    setPatitent(result.data);
-  }
+  const fetchData = async () => {
+    try {
+      const result = await axios("http://localhost:3000/detail");
+      // fetch("http://localhost:3000/queues")
+      //   .then((response) => response.json())
+      //   .then((users) => console.warn(users));
+      // const response = await axios("http://localhost:3000/queues");
+      console.log("=data=", result.data);
+    } catch (error) {
+      console.log("-=-=-=-=erroro-=-=-==", error);
+    }
+  };
 
   useEffect(() => {
     fetchData();
@@ -143,14 +150,30 @@ const MyApp = ({ navigation, route }) => {
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
   }, []);
-  // const patientsDoctorHospital = getPatient.filter(
-  //   (filterHospital) => filterHospital.hospital == "Doctors Hospital"
-  // );
-  // console.log("current", patientsDoctorHospital);
-  // // patientsDoctorHospital.map((item) => {
-  //   console.log(item.hospital.length);
-  // });
+  console.log("-=-=-=getPatient-=-=-=-=", getPatient);
 
+  const patientsDoctorHospital = getPatient.map((filterHospital) => {
+    var counter = 0;
+    filterHospital.hospital === "Doctors Hospital";
+    {
+      counter++;
+    }
+    return counter;
+  });
+
+  const geval = patientsDoctorHospital.map((item) => {
+    const counter = 0;
+    if (item.hospital === "Doctors Hospital") {
+      // return counter++;
+    }
+    return counter;
+  });
+  // for (var i = 0; i <= patientsDoctorHospital.length; i++) {
+  //   if (patientsDoctorHospital[i].hospital === "Doctors Hospital") {
+  //     counter++;
+  //   }
+  // }
+  // alert("data", patientsDoctorHospital);
   // const showHospitals = () => {
 
   //   console.log("in showHospital:", getPatient);
@@ -164,7 +187,7 @@ const MyApp = ({ navigation, route }) => {
   //   // );
   //   // this.setState({ showState: currentShowItems });
   // };
-  console.log("patient:", getDoctorH);
+  // console.log("patient:", getDoctorH);
 
   return (
     <KeyboardAwareScrollView
@@ -191,7 +214,7 @@ const MyApp = ({ navigation, route }) => {
           <Titles />
           {/* <View>{showHospitals()}</View> */}
           <View>
-            {hospitals.item.map((value, index, patientsDoctorHospita) => {
+            {hospitals.item.map((value, index) => {
               var lat1 = value.latitude;
               var lng1 = value.longitude;
               var lat2 = intialPosition.latitude;
@@ -241,7 +264,7 @@ const MyApp = ({ navigation, route }) => {
                       >
                         <Text style={styles.listextra2}>{value.userName}</Text>
                         <Text style={styles.listextra2}>
-                          {/* Current Patients:{patientsDoctorHospital} */}
+                          Current Patients:{patientsDoctorHospital}
                         </Text>
                         <Text style={styles.list2}>{dist.toFixed(2)} KM</Text>
                         <View style={{ width: 80 }}>
