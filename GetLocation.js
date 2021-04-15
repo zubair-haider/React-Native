@@ -119,10 +119,7 @@ const MyApp = ({ navigation, route }) => {
   const fetchData = async () => {
     try {
       const result = await axios("http://localhost:3000/detail");
-      // fetch("http://localhost:3000/queues")
-      //   .then((response) => response.json())
-      //   .then((users) => console.warn(users));
-      // const response = await axios("http://localhost:3000/queues");
+
       console.log("=data=", result.data);
     } catch (error) {
       console.log("-=-=-=-=erroro-=-=-==", error);
@@ -288,7 +285,7 @@ const MyApp = ({ navigation, route }) => {
                           marginTop: 5,
                           paddingBottom: 10,
                           borderRadius: 5,
-                          backgroundColor: "white",
+                          backgroundColor: "gray",
                           display: "flex",
                           flexDirection: "column",
                           justifyContent: "space-between",
@@ -433,7 +430,7 @@ const styles = {
     color: "green",
   },
   listextra2: {
-    backgroundColor: "#98FB98",
+    // backgroundColor: "#98FB98",
     justifyContent: "center",
 
     padding: 5,
