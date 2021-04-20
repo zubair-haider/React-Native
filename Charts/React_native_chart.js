@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState, useEffect } from "react";
 // import TouchableGraph from "react-native-touchable-graph";
 import { Bar } from "react-chartjs-2";
 
@@ -13,9 +13,15 @@ import {
 } from "react-native-chart-kit";
 
 const Charts = () => {
+  // const [getData, setData] = useState("");
+  // useEffect(async () => {
+  //   const response = await fetch(`http://localhost:3000/queues`);
+  //   const json = await response.json();
+  //   setData(json);
+  // }, []);
+
   return (
     <View>
-      {/* <Text>Bezir Line Chart</Text>  */}
       <LineChart
         data={{
           labels: ["January", "Feburary", "March", "April", "May", "June"],
@@ -48,7 +54,7 @@ export default Charts;
 // const BarGraph = () => {
 //   return (
 //     <View>
-//       <Bar
+//       <BarChart
 //         data={{
 //           labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
 //           datasets: [

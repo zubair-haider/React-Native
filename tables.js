@@ -26,7 +26,7 @@ const table = ({ item, img, onDeclineLeave, onReset }) => {
 
   const [isLoading, setLoading] = useState(true);
   useEffect(async () => {
-    const result = await axios("http://localhost:3000/detail");
+    const result = await axios("http://localhost:3000/queues");
     return setData(result.data);
   }, []);
 

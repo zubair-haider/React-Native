@@ -1,4 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
+// import Alert from "./alert";
 
 import StyleSheetMethods from "./Styles/StyleSheet";
 import {
@@ -6,29 +7,74 @@ import {
   StyleSheet,
   Text,
   View,
+  Alert,
   TouchableOpacity,
   Button,
   SafeAreaView,
 } from "react-native";
-import logo from "./assets/boy.png";
-import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
 
-const CountDownTimer = ({ item, onDeclineLeave, onReset, setToIntial }) => {
+const CountDownTimer = ({
+  item,
+  onDeclineLeave,
+  onReset,
+  onProceed,
+  removeQueue,
+
+  people,
+  destinationalert,
+  hospitalname,
+}) => {
+  let time = 15;
+  // const { hospital, user, people } = route.params;
   const [timer, setTimer] = useState(10);
+  const [timers, setTimers] = useState(15);
+
   const [isActive, setisActive] = useState(true);
+  const timerHolder = timers * people;
+  const hours = timerHolder / 60;
+  console.log("hourse", hours);
+
+  var rhourse = Math.floor(hours);
+
+  var minutes = (hours - rhourse) * 60;
+  var rminutes = Math.round(minutes);
+
+  const alertcreated = () => {
+    Alert.alert(
+      "Conformation",
+      "You are not In Hospital premesis would you like to leave queue?",
+      [
+        {
+          text: "YES",
+          onPress: () => {
+            removeQueue();
+          },
+          style: "cancel",
+        },
+        { text: "NO", onPress: () => console.log("OK Pressed") },
+      ]
+    );
+  };
 
   useEffect(() => {
-    let interval = null;
-    if (timer === 0) {
-      clearInterval(interval);
-      setToIntial();
-    } else if (isActive) {
-      interval = setInterval(() => {
-        setTimer((timer) => timer - 1);
-      }, 100000);
+    if (destinationalert > 2) {
+      alertcreated();
+      // removeQueue();
     }
-    return () => clearInterval(interval);
-  }, [isActive, timer]);
+
+    // removeQueue();
+
+    if (rhourse === 0 && rminutes === 0) {
+      // clearInterval(interval);
+      onProceed();
+    }
+    // else if (isActive) {
+    //   interval = setInterval(() => {
+    //     setTimer((timer) => timer - 1);
+    //   }, 100000);
+    // }
+    // return () => clearInterval(interval);
+  }, []);
 
   return (
     <SafeAreaView
@@ -36,7 +82,7 @@ const CountDownTimer = ({ item, onDeclineLeave, onReset, setToIntial }) => {
     >
       <View style={StyleSheetMethods.text} key={timer}>
         <Text style={StyleSheetMethods.viewsText}>
-          {timer} {item}
+          {people} {item} ({rhourse}:{rminutes}:00 sec)
         </Text>
       </View>
       {/* <View
@@ -47,14 +93,7 @@ const CountDownTimer = ({ item, onDeclineLeave, onReset, setToIntial }) => {
         }}
         key={item}
       >
-        <Image
-          source={logo}
-          style={{
-            width: 200,
-            height: 200,
-            justifyContent: "center",
-          }}
-        />
+       
       </View> */}
       <View
         style={{
@@ -64,33 +103,36 @@ const CountDownTimer = ({ item, onDeclineLeave, onReset, setToIntial }) => {
           marginTop: 10,
         }}
       >
-        {/* <View
-          style={{
-            width: 100,
-            marginRight: 10,
-          }}
-        >
-          <Button title="Proceed" onPress={() => onDeclineLeave()}></Button>
-        </View> */}
         <View style={StyleSheetMethods.btndoc}>
-          <TouchableOpacity onPress={onDeclineLeave}>
-            <Text style={{ fontWeight: "bold", fontSize: 20, color: "white" }}>
+          <TouchableOpacity
+            disabled={true}
+            onPress={() => {
+              onDeclineLeave();
+              // removeQueue();
+            }}
+          >
+            <Text
+              style={{
+                opacity: 0.5,
+                fontWeight: "bold",
+                fontSize: 20,
+                color: "white",
+              }}
+            >
               Proceed
             </Text>
           </TouchableOpacity>
         </View>
-        {/* <View
-          style={{
-            width: 80,
-            marginBottom: 10,
-          }}
-        >
-          <Button title="Reset" onPress={() => onReset()}></Button>
-        </View> */}
+
         <View style={StyleSheetMethods.btndoc}>
-          <TouchableOpacity onPress={onReset}>
+          <TouchableOpacity
+            onPress={() => {
+              onReset();
+              removeQueue();
+            }}
+          >
             <Text style={{ fontWeight: "bold", fontSize: 20, color: "white" }}>
-              Reset
+              Cancel
             </Text>
           </TouchableOpacity>
         </View>

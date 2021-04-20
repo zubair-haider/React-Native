@@ -11,12 +11,13 @@ import Complete from "./Complete";
 import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
 
 const ComponentsHolder = ({ route, navigation, currentH }) => {
-  const { hospital, user } = route.params;
+  const { hospital, user, people, destination, patientDisease } = route.params;
   const collection = {};
   const [text, setText] = useState([
     { text2: "Would you like to Join the Virtual Queue" },
   ]);
   const [getId, setId] = useState("");
+  const [getDeleteId, setDeleteId] = useState("");
   const [queueState, setQueueState] = useState("Waiting");
   const [nextState, setNextState] = useState("");
   const [lastState, setLastState] = useState("");
@@ -26,7 +27,7 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
     setNextState([
       ...nextState,
       {
-        text: "people are ahead of you,your estimated time is 4-0 hours",
+        text: "people are ahead of you,your estimated time is",
       },
     ]);
     setText("");
@@ -68,8 +69,9 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
       data: JSON.stringify(data),
       headers: { "content-type": "application/json" },
     });
-    console.log("queue response post= ", response.data.message);
+    console.log("----queue response post= ", response.data);
     setId(response.data.message);
+    //  setDeleteId(response.data.message);
   };
   const putQueueApiCall = async (url, data) => {
     console.log("postqueue data: ", data);
@@ -80,44 +82,61 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
       data: JSON.stringify(data),
       headers: { "content-type": "application/json" },
     });
-    console.log("queue response put= ", response);
+    console.log("queue response put+++= ", response);
   };
   const onAddQueue = async () => {
     // const queueState = "intial state";
     // const id = getId;
     const notes = "yes i am in ";
-    const priority = "Emergency";
+    // const priority = "Emergency";
     // collection.id = id;
     collection.hospital = hospital;
     collection.queueState = queueState;
     collection.notes = notes;
-    collection.priority = priority;
+    collection.priority = patientDisease;
     collection.user = user;
     const firstid = collection.id;
-    var postQueueApiUrl = "http://localhost:3000/queue";
+    var postQueueApiUrl = "http://192.168.1.108:3000/queue";
     postQueueApiCall(postQueueApiUrl, collection);
   };
   const onUpdateQueue = async () => {
     console.log("state id", getId);
     // const notes = "yes i am in ";
-    const priority = "Emergency";
+    // const priority = "Emergency";
     // collection.id = id;
     collection.hospital = hospital;
     collection.queueState = queueState;
     // collection.notes = notes;
-    collection.priority = priority;
+    collection.priority = patientDisease;
     collection.user = user;
 
-    var putApiUrl = `http://localhost:3000/queue/${getId}`;
+    var putApiUrl = `http://192.168.1.108:3000/queue/${getId}`;
     putQueueApiCall(putApiUrl, collection);
+  };
+  const removeQueue = async () => {
+    console.log("delelte id", getId);
+    var deleteApiUrl = `http://192.168.1.108:3000/queue/${getId}`;
+
+    fetch(deleteApiUrl, { method: "DELETE" });
+    // DeleteQueueApiCall(deleteApiUrl);
+  };
+  const DeleteQueueApiCall = async (url) => {
+    // console.log("postqueue data: ", data);
+    // let headers = { "content-type": "application/json" };
+    let response = await axios({
+      method: "DELETE",
+      // url,
+      // data: JSON.stringify(data),
+      // headers: { "content-type": "application/json" },
+    });
+    console.log("queue response delete+++= ", response);
   };
   return (
     <SafeAreaView style={{ fontFamily: "Inter-Black" }}>
       <View style={StyleSheetMethods.stagebg}>
         <Text style={StyleSheetMethods.stage}>Stage: {increment}</Text>
       </View>
-      <View>
-        {console.log("checking QueuState", queueState)}
+      <View key={increment}>
         {text.length > 0
           ? text.map((item) => (
               <IntialComponent
@@ -146,11 +165,15 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
         {nextState.length > 0
           ? nextState.map((item) => (
               <CountDownTimer
-                setToIntial={onProceed}
+                onProceed={onProceed}
                 item={item.text}
                 img={item.img}
                 onDeclineLeave={onProceed}
                 onReset={onReset}
+                removeQueue={removeQueue}
+                people={people}
+                hospitalname={hospital}
+                destinationalert={destination}
               />
             ))
           : null}

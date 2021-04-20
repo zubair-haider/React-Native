@@ -95,7 +95,10 @@ const Forms = ({ navigation }) => {
       setGender({ errorgender: "please fill your Gender" });
       return false;
     } else {
-      navigation.navigate("HOSPITALS LIST", { userName: checkName.name });
+      navigation.navigate("HOSPITALS LIST", {
+        userName: checkName.name,
+        patientDisease: checkdisease.disease,
+      });
     }
     collection.name = checkName.name;
     collection.phone = checkContact.contact;
@@ -103,7 +106,7 @@ const Forms = ({ navigation }) => {
     collection.age = checkAge.age;
     collection.gender = checkGender.gender;
 
-    var postApiUrl = "http://localhost:3000/detail";
+    var postApiUrl = "http://192.168.1.108:3000/detail"; //192.168.1.107
     postApiCall(postApiUrl, collection);
     // getApiCall(getUrl, collection);
     // console.log("collection", collection);
@@ -117,8 +120,18 @@ const Forms = ({ navigation }) => {
       scrollEnabled={true}
     >
       <View style={styles.heading}>
-        <Text style={{ fontWeight: "bold", fontSize: 30, color: "#D64B59" }}>
+        <Text
+          style={{
+            fontWeight: "bold",
+            fontSize: 30,
+            color: "#D64B59",
+            paddingTop: 30,
+          }}
+        >
           Welcome!
+        </Text>
+        <Text style={{ fontWeight: "bold", fontSize: 15, color: "#206E79" }}>
+          Please Fill this Form to Register!
         </Text>
       </View>
       <View style={styles.formsFileds}>
@@ -305,7 +318,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
-    paddingBottom: 50,
+    paddingBottom: 25,
     // paddingTop: 20,
     alignItems: "center",
   },
