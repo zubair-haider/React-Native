@@ -1,5 +1,7 @@
 //import "react-native-gesture-handler";
 //import { NavigationContainer } from "@react-navigation/native";
+//import { createStackNavigator } from "@react-navigation/stack";
+import { StatusBar } from "expo-status-bar";
 // import { createStackNavigator } from "@react-navigation/stack";
 // import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
@@ -19,6 +21,15 @@ import {
   SafeAreaView,
   Dimensions,
 } from "react-native";
+// import logo from "./assets/boy.png";
+// import {
+//   getFocusedRouteNameFromRoute,
+//   NavigationContainer,
+// } from "@react-navigation/native";
+//import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+
+// import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+
 const { width, height } = Dimensions.get("window");
 const SCREEN_HEIGHT = height;
 const SCREEN_WIDTH = width;
