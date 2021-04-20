@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from "react";
 // import Alert from "./alert";
-
+//import LinearGradient from "react-native-linear-gradient";
 import StyleSheetMethods from "./Styles/StyleSheet";
 import {
   Image,
@@ -78,23 +78,23 @@ const CountDownTimer = ({
 
   return (
     <SafeAreaView
-      style={{ backgroundColor: "#206E7", height: "80%", paddingBottom: 10 }}
+      style={{
+        // backgroundColor: "#206E7",
+        height: "80%",
+        paddingBottom: 10,
+        // backgroundColor: "green",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignContent: "center",
+      }}
     >
-      <View style={StyleSheetMethods.text} key={timer}>
+      <View style={StyleSheetMethods.text} key={people}>
         <Text style={StyleSheetMethods.viewsText}>
           {people} {item} ({rhourse}:{rminutes}:00 sec)
         </Text>
       </View>
-      {/* <View
-        style={{
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-        key={item}
-      >
-       
-      </View> */}
+
       <View
         style={{
           display: "flex",

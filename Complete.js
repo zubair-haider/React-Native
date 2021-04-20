@@ -14,7 +14,18 @@ import logo from "./assets/boy.png";
 import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
 const Complete = ({ item, img, onDeclineLeave, onReset, onAddQueues }) => {
   return (
-    <SafeAreaView style={{ marginTop: 20 }}>
+    <SafeAreaView
+      style={{
+        height: "80%",
+        paddingBottom: 10,
+        // backgroundColor: "green",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignContent: "center",
+        marginTop: 20,
+      }}
+    >
       <View style={StyleSheetMethods.text} key={item}>
         <Text style={StyleSheetMethods.viewsText}>{item}</Text>
       </View>
