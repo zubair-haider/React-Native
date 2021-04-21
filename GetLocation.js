@@ -35,11 +35,9 @@ import {
 //   getFocusedRouteNameFromRoute,
 //   NavigationContainer,
 // } from "@react-navigation/native";
-<<<<<<< HEAD
 //import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
-=======
+
 // import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
->>>>>>> 8531463d4efe80a53973da5d8e25d492f357fed6
 const { width, height } = Dimensions.get("window");
 const SCREEN_HEIGHT = height;
 const SCREEN_WIDTH = width;
