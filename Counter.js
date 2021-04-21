@@ -30,7 +30,7 @@ const IntialComponent = ({
         justifyContent: "center",
       }}
     >
-      <View style={StyleSheetMethods.questions} key={item}>
+      <View style={StyleSheetMethods.questions}>
         <Text style={StyleSheetMethods.viewsText}>{item}?</Text>
       </View>
       <View
@@ -40,20 +40,8 @@ const IntialComponent = ({
           justifyContent: "center",
           marginTop: 50,
         }}
+        key={item}
       >
-        {/* <View style={{ marginBottom: 10, width: 100 }}>
-          <Button
-            title="Yes"
-            onPress={() => onConform()}
-            style={{
-              //   width: 100,
-              padding: 20,
-              borderRadius: 5,
-              color: "white",
-              backgroundColor: "green",
-            }}
-          ></Button>
-        </View> */}
         <View
           style={{
             padding: 10,

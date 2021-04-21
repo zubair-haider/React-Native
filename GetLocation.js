@@ -2,10 +2,14 @@
 //import { NavigationContainer } from "@react-navigation/native";
 //import { createStackNavigator } from "@react-navigation/stack";
 import { StatusBar } from "expo-status-bar";
+// import { createStackNavigator } from "@react-navigation/stack";
+// import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
-import TopHeader from "./TopHeader";
+import StyleSheetMethods from "./Styles/StyleSheet";
+// import TopHeader from "./TopHeader";
 import axios from "axios";
-import Counter from "./Counter";
+// import Counter from "./Counter";
+import logo from "./assets/boy.png";
 import ComponentsHolder from "./ComponentsHolder";
 import { useFonts, Inter_900Black } from "expo-font";
 // import { Menu, ActivityIndicator, NavBar } from "antd-mobile";
@@ -31,7 +35,11 @@ import {
 //   getFocusedRouteNameFromRoute,
 //   NavigationContainer,
 // } from "@react-navigation/native";
+<<<<<<< HEAD
 //import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+=======
+// import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+>>>>>>> 8531463d4efe80a53973da5d8e25d492f357fed6
 const { width, height } = Dimensions.get("window");
 const SCREEN_HEIGHT = height;
 const SCREEN_WIDTH = width;
@@ -42,7 +50,8 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 //const Stack = createStackNavigator();
 
 const MyApp = ({ navigation, route }) => {
-  const { userName } = route.params;
+  const { userName, patientDisease } = route.params;
+  console.log("patientDisease", patientDisease);
   let [fontsLoaded] = useFonts({
     "Oswald-Bold": require("./assets/Fonts/Oswald-Bold.ttf"),
   });
@@ -64,31 +73,28 @@ const MyApp = ({ navigation, route }) => {
         latitude: 31.4797,
         longitude: 74.2804,
         userName: "Doctors Hospital",
+        img: require("./assets/7.jpg"),
       },
-      { id: 2, latitude: 31.5082, longitude: 74.3086, userName: "Sheikh Zaid" },
+      {
+        id: 2,
+        latitude: 31.5082,
+        longitude: 74.3086,
+        userName: "Sheikh Zaid",
+        img: require("./assets/download.jpeg"),
+      },
       {
         id: 3,
         latitude: 31.4846,
         longitude: 74.2974,
         userName: "Jinnah Hospital",
+        img: require("./assets/jinnah.jpg"),
       },
       {
         id: 4,
         latitude: 31.4545,
         longitude: 74.351,
         userName: "General Hospital Lahore",
-      },
-      {
-        id: 4,
-        latitude: 31.4545,
-        longitude: 74.351,
-        userName: "General Hospital Lahore",
-      },
-      {
-        id: 4,
-        latitude: 31.4545,
-        longitude: 74.351,
-        userName: "General Hospital Lahore",
+        img: require("./assets/general.jpg"),
       },
     ],
   });
@@ -116,11 +122,16 @@ const MyApp = ({ navigation, route }) => {
       console.warn(err);
     }
   }
-  async function fetchData() {
-    const result = await axios("http://localhost:3000/queues");
+  const fetchData = async () => {
+    try {
+      const result = await axios("http://192.168.1.108:3000/queues");
+      setPatitent(result.data);
+    } catch (error) {
+      console.log("errrrrr0:", error);
+    }
 
-    setPatitent(result.data);
-  }
+    // showHospitals();
+  };
 
   useEffect(() => {
     fetchData();
@@ -143,41 +154,37 @@ const MyApp = ({ navigation, route }) => {
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
   }, []);
-  // const patientsDoctorHospital = getPatient.filter(
-  //   (filterHospital) => filterHospital.hospital == "Doctors Hospital"
-  // );
-  // console.log("current", patientsDoctorHospital);
-  // // patientsDoctorHospital.map((item) => {
-  //   console.log(item.hospital.length);
-  // });
-
-  // const showHospitals = () => {
-
-  //   console.log("in showHospital:", getPatient);
-  //   // const currentItems = await getPatient.filter(
-  //   //   (filterItems) => filterItems.hospital === "Doctors Hospital"
-  //   // );
-  //   // setDoctorH(currentItems);
-  //   // console.log("dotorHospital:", currentItems);
-  //   // const currentShowItems = this.state.showState.filter(
-  //   //   (filterItems) => filterItems.id !== id
-  //   // );
-  //   // this.setState({ showState: currentShowItems });
-  // };
-  console.log("patient:", getDoctorH);
+  const currentItems = getPatient.filter(
+    (filterItems) =>
+      filterItems.hospital === "Doctors Hospital" &&
+      filterItems.queueState !== "Completed"
+  );
+  const currentItemsJinnah = getPatient.filter(
+    (filterItems) =>
+      filterItems.hospital === "Jinnah Hospital" &&
+      filterItems.queueState !== "Completed"
+  );
+  const currentItemsShiekh = getPatient.filter(
+    (filterItems) =>
+      filterItems.hospital === "Sheikh Zaid" &&
+      filterItems.queueState !== "Completed"
+  );
+  const currentItemsGeneral = getPatient.filter(
+    (filterItems) =>
+      filterItems.hospital === "General Hospital Lahore" &&
+      filterItems.queueState !== "Completed"
+  );
+  const DoctorHospital = currentItems.length;
+  const jinnahHPatient = currentItemsJinnah.length;
+  const sheikhHPatient = currentItemsShiekh.length;
+  const generalHPatient = currentItemsGeneral.length;
 
   return (
     <KeyboardAwareScrollView
       shouldRasterizeIOS={{ x: 0, y: 0 }}
       scrollEnabled={true}
     >
-      <SafeAreaView
-        style={{
-          flex: 7,
-
-          //marginTop: 100,
-        }}
-      >
+      <SafeAreaView>
         <View
           style={{
             width: "100%",
@@ -191,7 +198,7 @@ const MyApp = ({ navigation, route }) => {
           <Titles />
           {/* <View>{showHospitals()}</View> */}
           <View>
-            {hospitals.item.map((value, index, patientsDoctorHospita) => {
+            {hospitals.item.map((value, index) => {
               var lat1 = value.latitude;
               var lng1 = value.longitude;
               var lat2 = intialPosition.latitude;
@@ -209,86 +216,384 @@ const MyApp = ({ navigation, route }) => {
               dist = Math.acos(dist);
               dist = (dist * 180) / Math.PI;
               dist = dist * 60 * 1.1515;
-              console.log("distance:", dist);
+              // console.log("distance:", dist);
 
               //Get in in kilometers
               dist = dist * 1.609344;
+              const container = dist.toFixed(2);
+              console.log("container", container);
+              // console.log("length", hospitals.item.length);
 
               // console.log("dist", dist);
-              var tempvar = tempnumber.push[dist];
-              for (var i = 0; i <= dist.length; i++) {
-                var tempvar = tempnumber.push[i];
-                console.log(tempvar);
-              }
+              // var tempvar = tempnumber.push[dist];
+              // var tempnumber = {};
+              // for (var i = 0; i <= hospitals.item.length; i++) {
+              //   tempnumber.push[dist];
+              //   console.log(tempvar);
+              //   return tempnumber;
+              // }
+              // console.log("++temppppp", tempnumber);
 
               return (
-                <View>
+                <View key={index}>
                   <View>
-                    {dist <= 5 ? (
-                      <View
-                        style={{
-                          marginTop: 5,
-                          paddingBottom: 10,
-                          borderRadius: 5,
-                          backgroundColor: "#98FB98",
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "space-between",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                        key={index}
-                      >
-                        <Text style={styles.listextra2}>{value.userName}</Text>
-                        <Text style={styles.listextra2}>
-                          {/* Current Patients:{patientsDoctorHospital} */}
-                        </Text>
-                        <Text style={styles.list2}>{dist.toFixed(2)} KM</Text>
-                        <View style={{ width: 80 }}>
-                          <Button
-                            title="select"
-                            onPress={() => {
-                              navigation.navigate("QUEUE", {
-                                hospital: value.userName,
-                                user: userName,
-                              });
-                            }}
-                          ></Button>
-                        </View>
+                    {dist < 42 ? (
+                      <View>
+                        {value.userName === "Doctors Hospital" ? (
+                          <View style={StyleSheetMethods.hospitalViewsGr}>
+                            <View
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "flex-start",
+                                alignItems: "center",
+                              }}
+                            >
+                              <View style={styles.img}>
+                                <Image
+                                  source={value.img}
+                                  style={{
+                                    width: 120,
+                                    height: 100,
+                                    justifyContent: "center",
+                                  }}
+                                />
+                              </View>
+                              <View style={styles.names}>
+                                <Text style={styles.listextra3}>
+                                  {value.userName}
+                                </Text>
+                                <Text style={styles.listextra2}>
+                                  Current Patients:{DoctorHospital}
+                                </Text>
+                                <Text style={styles.list2}>
+                                  {dist.toFixed(2)} KM
+                                </Text>
+                              </View>
+                              <View style={{ width: 90 }}>
+                                <Button
+                                  title="Select"
+                                  onPress={() => {
+                                    navigation.navigate("QUEUE", {
+                                      hospital: value.userName,
+                                      user: userName,
+                                      people: DoctorHospital,
+                                      destination: dist,
+                                      patientDisease: patientDisease,
+                                    });
+                                  }}
+                                ></Button>
+                              </View>
+                            </View>
+                          </View>
+                        ) : null}
+                        {value.userName === "General Hospital Lahore" ? (
+                          <View style={StyleSheetMethods.hospitalViewsGr}>
+                            <View
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "flex-start",
+                                alignItems: "center",
+                              }}
+                            >
+                              <View style={styles.img}>
+                                <Image
+                                  source={value.img}
+                                  style={{
+                                    width: 120,
+                                    height: 100,
+                                    justifyContent: "center",
+                                  }}
+                                />
+                              </View>
+                              <View style={styles.names}>
+                                <Text style={styles.listextra3}>
+                                  {value.userName}
+                                </Text>
+                                <Text style={styles.listextra2}>
+                                  Current Patients:{generalHPatient}
+                                </Text>
+
+                                <Text style={styles.list2}>
+                                  {dist.toFixed(2)} KM
+                                </Text>
+                              </View>
+                              <View style={{ width: 90 }}>
+                                <Button
+                                  title="Select"
+                                  onPress={() => {
+                                    navigation.navigate("QUEUE", {
+                                      hospital: value.userName,
+                                      user: userName,
+                                      people: generalHPatient,
+                                      destination: dist,
+                                      patientDisease: patientDisease,
+                                    });
+                                  }}
+                                ></Button>
+                              </View>
+                            </View>
+                          </View>
+                        ) : null}
+                        {value.userName === "Jinnah Hospital" ? (
+                          <View style={StyleSheetMethods.hospitalViewsGr}>
+                            <View
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "flex-start",
+                                alignItems: "center",
+                              }}
+                            >
+                              <View style={styles.img}>
+                                <Image
+                                  source={value.img}
+                                  style={{
+                                    width: 120,
+                                    height: 100,
+                                    justifyContent: "center",
+                                  }}
+                                />
+                              </View>
+                              <View style={styles.names}>
+                                <Text style={styles.listextra3}>
+                                  {value.userName}
+                                </Text>
+                                <Text style={styles.listextra2}>
+                                  Current Patients:{jinnahHPatient}
+                                </Text>
+                                <Text style={styles.list2}>
+                                  {dist.toFixed(2)} KM
+                                </Text>
+                              </View>
+                              <View style={{ width: 90 }}>
+                                <Button
+                                  title="Select"
+                                  onPress={() => {
+                                    navigation.navigate("QUEUE", {
+                                      hospital: value.userName,
+                                      user: userName,
+                                      people: jinnahHPatient,
+                                      destination: dist,
+                                      patientDisease: patientDisease,
+                                    });
+                                  }}
+                                ></Button>
+                              </View>
+                            </View>
+                          </View>
+                        ) : null}
                       </View>
-                    ) : null}
+                    ) : // }:null
+
+                    null}
                   </View>
                   <View>
-                    {dist >= 5.1 ? (
-                      <View
-                        style={{
-                          marginTop: 5,
-                          paddingBottom: 10,
-                          borderRadius: 5,
-                          backgroundColor: "white",
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "space-between",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                        key={index}
-                      >
-                        <Text style={styles.listextra}>{value.userName}</Text>
-                        <Text style={styles.list}>{dist.toFixed(2)} KM</Text>
-                        <View style={{ width: 80 }}>
-                          <Button
-                            title="select"
-                            onPress={() => {
-                              navigation.navigate("QUEUE", {
-                                hospital: value.userName,
-                                user: userName,
-                              });
-                            }}
-                          ></Button>
-                        </View>
+                    {dist >= 42.1 ? (
+                      // {value.userName==="Doctors Hospital"?
+                      <View>
+                        {value.userName === "Doctors Hospital" ? (
+                          <View style={StyleSheetMethods.hospitalViews}>
+                            <View
+                              style={{
+                                display: "flex",
+                                // flex: 1,
+                                flexDirection: "row",
+                                justifyContent: "flex-start",
+                                alignItems: "center",
+                              }}
+                            >
+                              <View style={styles.img}>
+                                <Image
+                                  source={value.img}
+                                  style={{
+                                    width: 120,
+                                    height: 100,
+                                    justifyContent: "center",
+                                  }}
+                                />
+                              </View>
+                              <View style={styles.names}>
+                                <Text style={styles.listextra}>
+                                  {value.userName}
+                                </Text>
+                                <Text style={styles.listextra2}>
+                                  Current Patients:{DoctorHospital}
+                                </Text>
+                                <Text style={styles.list}>
+                                  {dist.toFixed(2)} KM
+                                </Text>
+                              </View>
+                              <View style={{ width: 90 }}>
+                                <Button
+                                  title="Select"
+                                  disabled={true}
+                                  onPress={() => {
+                                    navigation.navigate("QUEUE", {
+                                      hospital: value.userName,
+                                      user: userName,
+                                      people: DoctorHospital,
+                                      destination: dist,
+                                      patientDisease: patientDisease,
+                                    });
+                                  }}
+                                ></Button>
+                              </View>
+                            </View>
+                          </View>
+                        ) : null}
+                        {value.userName === "General Hospital Lahore" ? (
+                          <View style={StyleSheetMethods.hospitalViews}>
+                            <View
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "flex-start",
+                                alignItems: "center",
+                              }}
+                            >
+                              <View style={styles.img}>
+                                <Image
+                                  source={value.img}
+                                  style={{
+                                    width: 120,
+                                    height: 100,
+                                    justifyContent: "center",
+                                  }}
+                                />
+                              </View>
+                              <View style={styles.names}>
+                                <Text style={styles.listextra}>
+                                  {value.userName}
+                                </Text>
+                                <Text style={styles.listextra2}>
+                                  Current Patients:{generalHPatient}
+                                </Text>
+                                <Text style={styles.list}>
+                                  {dist.toFixed(2)} KM
+                                </Text>
+                              </View>
+                              <View style={{ width: 90 }}>
+                                <Button
+                                  title="Select"
+                                  disabled={true}
+                                  onPress={() => {
+                                    navigation.navigate("QUEUE", {
+                                      hospital: value.userName,
+                                      user: userName,
+                                      people: generalHPatient,
+                                      destination: dist,
+                                      patientDisease: patientDisease,
+                                    });
+                                  }}
+                                ></Button>
+                              </View>
+                            </View>
+                          </View>
+                        ) : null}
+                        {value.userName === "Sheikh Zaid" ? (
+                          <View style={StyleSheetMethods.hospitalViews}>
+                            <View
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "flex-start",
+                                alignItems: "center",
+                              }}
+                            >
+                              <View style={styles.img}>
+                                <Image
+                                  source={value.img}
+                                  style={{
+                                    width: 120,
+                                    height: 100,
+                                    justifyContent: "center",
+                                  }}
+                                />
+                              </View>
+                              <View style={styles.names}>
+                                <Text style={styles.listextra}>
+                                  {value.userName}
+                                </Text>
+                                <Text style={styles.listextra2}>
+                                  Current Patients:{sheikhHPatient}
+                                </Text>
+                                <Text style={styles.list}>
+                                  {dist.toFixed(2)} KM
+                                </Text>
+                              </View>
+                              <View style={{ width: 90 }}>
+                                <Button
+                                  title="Select"
+                                  disabled={true}
+                                  onPress={() => {
+                                    navigation.navigate("QUEUE", {
+                                      hospital: value.userName,
+                                      user: userName,
+                                      people: sheikhHPatient,
+                                      destination: dist,
+                                      patientDisease: patientDisease,
+                                    });
+                                  }}
+                                ></Button>
+                              </View>
+                            </View>
+                          </View>
+                        ) : null}
+                        {value.userName === "Jinnah Hospital" ? (
+                          <View style={StyleSheetMethods.hospitalViews}>
+                            <View
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "flex-start",
+                                alignItems: "center",
+                              }}
+                            >
+                              <View style={styles.img}>
+                                <Image
+                                  source={value.img}
+                                  style={{
+                                    width: 120,
+                                    height: 100,
+                                    justifyContent: "center",
+                                  }}
+                                />
+                              </View>
+                              <View style={styles.names}>
+                                <Text style={styles.listextra}>
+                                  {value.userName}
+                                </Text>
+                                <Text style={styles.listextra2}>
+                                  Current Patients:{jinnahHPatient}
+                                </Text>
+                                <Text style={styles.list}>
+                                  {dist.toFixed(2)} KM
+                                </Text>
+                              </View>
+                              <View style={{ width: 90 }}>
+                                <Button
+                                  title="Select"
+                                  disabled={true}
+                                  onPress={() => {
+                                    navigation.navigate("QUEUE", {
+                                      hospital: value.userName,
+                                      user: userName,
+                                      people: jinnahHPatient,
+                                      destination: dist,
+                                      patientDisease: patientDisease,
+                                    });
+                                  }}
+                                ></Button>
+                              </View>
+                            </View>
+                          </View>
+                        ) : null}
                       </View>
-                    ) : null}
+                    ) : // }:null
+
+                    null}
                   </View>
                 </View>
               );
@@ -397,7 +702,7 @@ const styles = {
 
     padding: 5,
     fontWeight: "bold",
-    fontsize: 50,
+    fontSize: 10,
     color: "white",
   },
   list: {
@@ -406,26 +711,50 @@ const styles = {
 
     padding: 5,
     fontWeight: "bold",
-    fontsize: 50,
+    fontSize: 11,
     color: "green",
   },
-  listextra2: {
+  list2: {
     backgroundColor: "#98FB98",
     justifyContent: "center",
 
     padding: 5,
     fontWeight: "bold",
-    fontSize: 20,
-    color: "white",
+    fontSize: 11,
+    color: "black",
   },
-  listextra: {
-    backgroundColor: "white",
+  listextra2: {
+    // backgroundColor: "#98FB98",
     justifyContent: "center",
 
     padding: 5,
     fontWeight: "bold",
-    fontSize: 20,
-    color: "#6e6464",
+    fontSize: 10,
+    color: "black",
+  },
+  img: {
+    width: "40%",
+  },
+  names: {
+    width: "30%",
+  },
+  listextra3: {
+    backgroundColor: "#98FB98",
+    justifyContent: "center",
+    padding: 5,
+    fontWeight: "bold",
+    // width: "min-content",
+    fontSize: 15,
+    color: "rgb(32, 110, 121)",
+  },
+  listextra: {
+    backgroundColor: "white",
+    justifyContent: "center",
+    padding: 5,
+    fontWeight: "bold",
+    // width: "min-content",
+    fontSize: 15,
+    color: "rgb(32, 110, 121)",
   },
 };
 export default MyApp;
