@@ -16,7 +16,20 @@ import {
 } from "react-native";
 const DoctorsComp = ({ item, onConformed, onDeclined, onAddQueues }) => {
   return (
-    <SafeAreaView style={{ backgroundColor: "", paddingTop: 10 }}>
+    <SafeAreaView
+      style={{
+        height: "80%",
+        paddingBottom: 10,
+        // backgroundColor: "green",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignContent: "center",
+
+        backgroundColor: "",
+        paddingTop: 10,
+      }}
+    >
       <View style={StyleSheetMethods.text} key={item}>
         <Text style={StyleSheetMethods.viewsText}> {item}?</Text>
       </View>

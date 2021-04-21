@@ -24,80 +24,68 @@ const IntialComponent = ({
   return (
     <SafeAreaView
       style={{
-        backgroundColor: "#206E79",
+        // backgroundColor: "#206E79",
         height: "80%",
         alignItems: "center",
         justifyContent: "center",
+        borderTopRightRadius: 50,
+        borderTopLeftRadius: 50,
       }}
     >
-      <View style={StyleSheetMethods.questions}>
-        <Text style={StyleSheetMethods.viewsText}>{item}?</Text>
-      </View>
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-          marginTop: 50,
-        }}
-        key={item}
-      >
-        <View
-          style={{
-            padding: 10,
-            width: 100,
-            backgroundColor: "#34baeb",
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: 5,
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => {
-              onConform();
-              onAddQueue();
-            }}
-          >
-            <Text style={{ fontWeight: "bold", fontSize: 20, color: "white" }}>
-              Yes
-            </Text>
-          </TouchableOpacity>
-          {/* <Button
-            title="No"
-            onPress={() => onDecline()}
-            style={{
-              width: 100,
-
-              color: "white",
-              backgroundColor: "green",
-            }}
-          ></Button> */}
+      <View style={{ height: "50%" }}>
+        <View style={StyleSheetMethods.questions}>
+          <Text style={StyleSheetMethods.viewsText}>{item}?</Text>
         </View>
         <View
           style={{
-            marginLeft: 10,
-            width: 100,
-            backgroundColor: "#34baeb",
+            display: "flex",
+            flexDirection: "row",
             justifyContent: "center",
-            alignItems: "center",
-            borderRadius: 5,
+            marginTop: 50,
           }}
+          key={item}
         >
-          <TouchableOpacity onPress={onDecline}>
-            <Text style={{ fontWeight: "bold", fontSize: 20, color: "white" }}>
-              No
-            </Text>
-          </TouchableOpacity>
-          {/* <Button
-            title="No"
-            onPress={() => onDecline()}
+          <View
             style={{
+              padding: 10,
               width: 100,
-
-              color: "white",
-              backgroundColor: "green",
+              backgroundColor: "rgb(199,9,9)",
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 5,
             }}
-          ></Button> */}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                onConform();
+                onAddQueue();
+              }}
+            >
+              <Text
+                style={{ fontWeight: "bold", fontSize: 20, color: "white" }}
+              >
+                Yes
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              marginLeft: 10,
+              width: 100,
+              backgroundColor: "rgb(199,9,9)b",
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 5,
+            }}
+          >
+            <TouchableOpacity onPress={onDecline}>
+              <Text
+                style={{ fontWeight: "bold", fontSize: 20, color: "white" }}
+              >
+                No
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </SafeAreaView>

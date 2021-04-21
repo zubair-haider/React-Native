@@ -21,20 +21,20 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 const Forms = ({ navigation }) => {
   // const inputRef = useRef(null);
   const [checkdisease, setdisease] = useState({
-    disease: "thiphoid",
+    disease: "",
     errordisease: "",
   });
-  const [checkAge, setAge] = useState({ age: "18", errorage: "" });
+  const [checkAge, setAge] = useState({ age: "", errorage: "" });
   const [checkGender, setGender] = useState({
-    gender: "male",
+    gender: "",
     errorgender: "",
   });
   const [checkContact, setContact] = useState({
-    contact: "03030000548",
+    contact: "",
     errorcontact: "",
   });
   const [checkName, setcheckName] = useState({
-    name: "haris",
+    name: "",
     errorMsg: "",
   });
 
@@ -77,22 +77,22 @@ const Forms = ({ navigation }) => {
     let genderValid = gender.test(checkGender.gender);
 
     if (!isValid || checkName.name == "") {
-      setcheckName({ errorMsg: "Please Enter Valide Name" });
+      setcheckName({ errorMsg: "* Name required" });
       return false;
     }
     if (!numberValid || checkContact.contact == "") {
-      setContact({ errorcontact: "Enter Valid Contact Number" });
+      setContact({ errorcontact: "* Phone# required" });
       return false;
     }
     if (!diseaseValid || checkdisease.disease == "") {
-      setdisease({ errordisease: "please Fill this Filed" });
+      setdisease({ errordisease: "* required" });
     }
     if (checkAge.age < 0 || checkAge.age > 120 || checkAge.age == "") {
-      setAge({ errorage: "please Fill correct age" });
+      setAge({ errorage: "*Age required" });
       return false;
     }
     if (!genderValid || checkGender.gender == "") {
-      setGender({ errorgender: "please fill your Gender" });
+      setGender({ errorgender: "* Gender required" });
       return false;
     } else {
       navigation.navigate("HOSPITALS LIST", {
