@@ -35,7 +35,7 @@ const Complete = ({ item, img, onDeclineLeave, onReset, onAddQueues }) => {
           display: "flex",
           flexDirection: "row",
           justifyContent: "center",
-          // marginTop: 10,
+          marginTop: 50,
         }}
       >
         {/* <View style={{ width: 80, marginBottom: 10, marginTop: 20 }}>

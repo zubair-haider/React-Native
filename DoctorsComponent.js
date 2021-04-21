@@ -39,7 +39,7 @@ const DoctorsComp = ({ item, onConformed, onDeclined, onAddQueues }) => {
           flexDirection: "row",
           justifyContent: "center",
           justifyContent: "center",
-          marginTop: 10,
+          marginTop: 50,
         }}
       >
         {/* <View style={{ width: 80, marginBottom: 10 }}>

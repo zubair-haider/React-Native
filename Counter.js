@@ -53,6 +53,15 @@ const IntialComponent = ({
               justifyContent: "center",
               alignItems: "center",
               borderRadius: 5,
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 12,
+              },
+              shadowOpacity: 0.58,
+              shadowRadius: 16.0,
+
+              elevation: 24,
             }}
           >
             <TouchableOpacity
@@ -76,6 +85,15 @@ const IntialComponent = ({
               justifyContent: "center",
               alignItems: "center",
               borderRadius: 5,
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 12,
+              },
+              shadowOpacity: 0.58,
+              shadowRadius: 16.0,
+
+              elevation: 24,
             }}
           >
             <TouchableOpacity onPress={onDecline}>

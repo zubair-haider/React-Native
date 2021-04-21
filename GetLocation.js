@@ -181,11 +181,13 @@ const MyApp = ({ navigation, route }) => {
         <View
           style={{
             width: "100%",
-            padding: 10,
-            backgroundColor: "#206E79",
+            // height: "100%",
+            paddingBottom: 10,
+            // backgroundColor: "rgb(199,9,9)",
             margin: "auto",
-            marginBottom: 10,
-            flex: 7,
+            padding: 5,
+            // marginBottom: 50,
+            // flex: 7,
           }}
         >
           <Titles />

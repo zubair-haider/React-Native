@@ -100,7 +100,7 @@ const CountDownTimer = ({
           display: "flex",
           flexDirection: "row",
           justifyContent: "center",
-          marginTop: 10,
+          marginTop: 50,
         }}
       >
         <View style={StyleSheetMethods.btndoc}>

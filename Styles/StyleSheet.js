@@ -9,8 +9,18 @@ const StyleSheetMethods = StyleSheet.create({
   text: {
     backgroundColor: "#EAF1F2",
     padding: 10,
+
     borderLeftWidth: 5,
     // borderRightWidth: 5,
+    shadowColor: "green",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16,
+
+    elevation: 24,
     marginTop: 10,
     marginBottom: 10,
     borderLeftColor: "rgb(58,150,243)",
@@ -33,12 +43,30 @@ const StyleSheetMethods = StyleSheet.create({
     alignItems: "center",
     borderRadius: 5,
     padding: 10,
+    shadowColor: "black",
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
+
+    elevation: 24,
   },
   hospitalViews: {
-    marginTop: 5,
+    marginTop: 10,
     overflow: "hidden",
     borderRadius: 5,
     backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
+
+    elevation: 24,
     // display: "flex",
     // flexDirection: "column",
     // justifyContent: "space-between",
@@ -46,11 +74,20 @@ const StyleSheetMethods = StyleSheet.create({
     // alignItems: "center",
   },
   hospitalViewsGr: {
-    marginTop: 5,
+    marginTop: 10,
     // paddingBottom: 10,
     overflow: "hidden",
     borderRadius: 5,
     backgroundColor: "#98FB98",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
+
+    elevation: 24,
     // display: "flex",
     // flexDirection: "column",
     // justifyContent: "space-between",
@@ -67,6 +104,15 @@ const StyleSheetMethods = StyleSheet.create({
     fontSize: 20,
     paddingHorizontal: 20,
     paddingVertical: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
+
+    elevation: 24,
   },
   questions: {
     backgroundColor: "#EAF1F2",
@@ -79,6 +125,15 @@ const StyleSheetMethods = StyleSheet.create({
 
     borderLeftColor: "rgb(58,150,243)",
     borderTopColor: "rgb(58,150,243)",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
+
+    elevation: 24,
   },
   viewsText: {
     fontSize: 20,
