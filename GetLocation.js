@@ -1,6 +1,6 @@
 //import "react-native-gesture-handler";
 //import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+//import { createStackNavigator } from "@react-navigation/stack";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import TopHeader from "./TopHeader";
@@ -8,9 +8,9 @@ import axios from "axios";
 import Counter from "./Counter";
 import ComponentsHolder from "./ComponentsHolder";
 import { useFonts, Inter_900Black } from "expo-font";
-import { Menu, ActivityIndicator, NavBar } from "antd-mobile";
-import { Location, Permissions } from "expo";
-import { getPreciseDistance } from "geolib";
+// import { Menu, ActivityIndicator, NavBar } from "antd-mobile";
+// import { Location, Permissions } from "expo";
+// import { getPreciseDistance } from "geolib";
 import { PermissionsAndroid, ACCESS_FINE_LOCATION } from "react-native";
 //import MapViewDirections from "react-native-maps-directions";
 //import MapView, { AnimatedRegion, Marker } from "react-native-maps";
@@ -26,12 +26,12 @@ import {
   SafeAreaView,
   Dimensions,
 } from "react-native";
-import logo from "./assets/boy.png";
-import {
-  getFocusedRouteNameFromRoute,
-  NavigationContainer,
-} from "@react-navigation/native";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+// import logo from "./assets/boy.png";
+// import {
+//   getFocusedRouteNameFromRoute,
+//   NavigationContainer,
+// } from "@react-navigation/native";
+//import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 const { width, height } = Dimensions.get("window");
 const SCREEN_HEIGHT = height;
 const SCREEN_WIDTH = width;
