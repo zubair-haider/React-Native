@@ -4,19 +4,10 @@
 // import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import StyleSheetMethods from "./Styles/StyleSheet";
-// import TopHeader from "./TopHeader";
 import axios from "axios";
-// import Counter from "./Counter";
-import logo from "./assets/boy.png";
 import ComponentsHolder from "./ComponentsHolder";
 import { useFonts, Inter_900Black } from "expo-font";
-// import { Menu, ActivityIndicator, NavBar } from "antd-mobile";
-// import { Location, Permissions } from "expo";
-// import { getPreciseDistance } from "geolib";
 import { PermissionsAndroid, ACCESS_FINE_LOCATION } from "react-native";
-//import MapViewDirections from "react-native-maps-directions";
-//import MapView, { AnimatedRegion, Marker } from "react-native-maps";
-// import DrawerExample from "./drawer";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {
   Image,
@@ -28,12 +19,6 @@ import {
   SafeAreaView,
   Dimensions,
 } from "react-native";
-// import logo from "./assets/boy.png";
-// import {
-//   getFocusedRouteNameFromRoute,
-//   NavigationContainer,
-// } from "@react-navigation/native";
-// import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 const { width, height } = Dimensions.get("window");
 const SCREEN_HEIGHT = height;
 const SCREEN_WIDTH = width;
@@ -45,7 +30,9 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const MyApp = ({ navigation, route }) => {
   const { userName, patientDisease } = route.params;
-  console.log("patientDisease", patientDisease);
+  const array = [];
+  const object = {};
+
   let [fontsLoaded] = useFonts({
     "Oswald-Bold": require("./assets/Fonts/Oswald-Bold.ttf"),
   });
@@ -168,6 +155,7 @@ const MyApp = ({ navigation, route }) => {
       filterItems.hospital === "General Hospital Lahore" &&
       filterItems.queueState !== "Completed"
   );
+
   const DoctorHospital = currentItems.length;
   const jinnahHPatient = currentItemsJinnah.length;
   const sheikhHPatient = currentItemsShiekh.length;
@@ -202,7 +190,7 @@ const MyApp = ({ navigation, route }) => {
               var radlon1 = (Math.PI * lng1) / 180;
               var radlon2 = (Math.PI * lng2) / 180;
               var theta = lng1 - lng2;
-              var tempnumber = [];
+
               var radtheta = (Math.PI * theta) / 180;
               var dist =
                 Math.sin(radlat1) * Math.sin(radlat2) +
@@ -215,18 +203,13 @@ const MyApp = ({ navigation, route }) => {
               //Get in in kilometers
               dist = dist * 1.609344;
               const container = dist.toFixed(2);
-              console.log("container", container);
-              // console.log("length", hospitals.item.length);
+              object.userName = value.userName;
+              object.dist = dist;
+              console.log("object", object);
 
-              // console.log("dist", dist);
-              // var tempvar = tempnumber.push[dist];
-              // var tempnumber = {};
-              // for (var i = 0; i <= hospitals.item.length; i++) {
-              //   tempnumber.push[dist];
-              //   console.log(tempvar);
-              //   return tempnumber;
-              // }
-              // console.log("++temppppp", tempnumber);
+              array.push(object);
+              array.sort();
+              console.log("array", array);
 
               return (
                 <View key={index}>

@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from "react";
 // import Alert from "./alert";
-
+//import LinearGradient from "react-native-linear-gradient";
 import StyleSheetMethods from "./Styles/StyleSheet";
 import {
   Image,
