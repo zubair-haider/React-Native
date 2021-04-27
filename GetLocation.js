@@ -116,8 +116,9 @@ const MyApp = ({ navigation, route }) => {
   }
   const fetchData = async () => {
     try {
-      const result = await axios("http://192.168.1.108:3000/queues");
+      const result = await axios("http://192.168.1.110:3000/queues");
       setPatitent(result.data);
+      console.log("data", result.data);
     } catch (error) {
       console.log("errrrrr0:", error);
     }
@@ -151,6 +152,11 @@ const MyApp = ({ navigation, route }) => {
       filterItems.hospital === "Doctors Hospital" &&
       filterItems.queueState !== "Completed"
   );
+  const currentId = getPatient.filter(
+    (filterItems) => filterItems.queueState === "Waiting"
+    // filterItems.hospital === "Doctors Hospital" &&
+  );
+  console.log("process-Id", currentId);
   const currentItemsJinnah = getPatient.filter(
     (filterItems) =>
       filterItems.hospital === "Jinnah Hospital" &&
@@ -181,7 +187,7 @@ const MyApp = ({ navigation, route }) => {
         <View
           style={{
             width: "100%",
-            // height: "100%",
+
             paddingBottom: 10,
             // backgroundColor: "rgb(199,9,9)",
             margin: "auto",
@@ -218,11 +224,9 @@ const MyApp = ({ navigation, route }) => {
               const container = dist.toFixed(2);
               object.userName = value.userName;
               object.dist = dist;
-              console.log("object", object);
 
               array.push(object);
               array.sort();
-              console.log("array", array);
 
               return (
                 <View key={index}>
@@ -270,6 +274,7 @@ const MyApp = ({ navigation, route }) => {
                                       people: DoctorHospital,
                                       destination: dist,
                                       patientDisease: patientDisease,
+                                      currentId: currentId,
                                     });
                                   }}
                                 ></Button>
@@ -319,6 +324,7 @@ const MyApp = ({ navigation, route }) => {
                                       people: generalHPatient,
                                       destination: dist,
                                       patientDisease: patientDisease,
+                                      currentId: currentId,
                                     });
                                   }}
                                 ></Button>
@@ -367,6 +373,7 @@ const MyApp = ({ navigation, route }) => {
                                       people: jinnahHPatient,
                                       destination: dist,
                                       patientDisease: patientDisease,
+                                      currentId: currentId,
                                     });
                                   }}
                                 ></Button>
@@ -426,6 +433,7 @@ const MyApp = ({ navigation, route }) => {
                                       people: DoctorHospital,
                                       destination: dist,
                                       patientDisease: patientDisease,
+                                      currentId: currentId,
                                     });
                                   }}
                                 ></Button>
@@ -475,6 +483,7 @@ const MyApp = ({ navigation, route }) => {
                                       people: generalHPatient,
                                       destination: dist,
                                       patientDisease: patientDisease,
+                                      currentId: currentId,
                                     });
                                   }}
                                 ></Button>
@@ -524,6 +533,7 @@ const MyApp = ({ navigation, route }) => {
                                       people: sheikhHPatient,
                                       destination: dist,
                                       patientDisease: patientDisease,
+                                      currentId: currentId,
                                     });
                                   }}
                                 ></Button>
@@ -573,6 +583,7 @@ const MyApp = ({ navigation, route }) => {
                                       people: jinnahHPatient,
                                       destination: dist,
                                       patientDisease: patientDisease,
+                                      currentId: currentId,
                                     });
                                   }}
                                 ></Button>

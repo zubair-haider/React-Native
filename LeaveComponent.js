@@ -1,5 +1,6 @@
 import React, { Component, useState, useEffect } from "react";
-// import Alert from "./alert";
+//import Modal from "react-native-modal";
+import ModalAlert from "./alert";
 //import LinearGradient from "react-native-linear-gradient";
 import StyleSheetMethods from "./Styles/StyleSheet";
 import {
@@ -8,10 +9,12 @@ import {
   Text,
   View,
   Alert,
+  Modal,
   TouchableOpacity,
   Button,
   SafeAreaView,
 } from "react-native";
+import ComponentsHolder from "./ComponentsHolder";
 
 const CountDownTimer = ({
   item,
@@ -19,23 +22,26 @@ const CountDownTimer = ({
   onReset,
   onProceed,
   removeQueue,
-
+  userId,
   people,
+  currentdata,
   destinationalert,
   hospitalname,
 }) => {
-  let time = 15;
-  // const { hospital, user, people } = route.params;
-  const [timer, setTimer] = useState(10);
-  const [timers, setTimers] = useState(15);
-
+  const [timers, setTimers] = useState(10);
+  const [mins, setMins] = useState(58);
+  const [secs, setSecs] = useState(0);
+  const [hrs, setHrs] = useState(2);
+  const [getval, setVal] = useState();
   const [isActive, setisActive] = useState(true);
+  console.log("userid", userId);
   const timerHolder = timers * people;
   const hours = timerHolder / 60;
-  console.log("hourse", hours);
-
+  const currentId = currentdata.filter((item) => {
+    item.id === userId;
+  });
+  console.log("foundyourid", currentId);
   var rhourse = Math.floor(hours);
-
   var minutes = (hours - rhourse) * 60;
   var rminutes = Math.round(minutes);
 
@@ -47,34 +53,71 @@ const CountDownTimer = ({
         {
           text: "YES",
           onPress: () => {
-            removeQueue();
+            // removeQueue();
           },
           style: "cancel",
         },
-        { text: "NO", onPress: () => console.log("OK Pressed") },
+        { text: "NO", onPress: () => console.log("yes") },
       ]
     );
   };
 
+  const fetchData = async () => {
+    const response = await fetch(`http://192.168.1.110:3000/queues`);
+    const json = await response.json();
+
+    const currentId = json.filter(
+      (filterItems) => filterItems.queueState === "in-Process"
+      // filterItems.hospital === "Doctors Hospital" &&
+    );
+    console.log("thisisdata", currentId);
+    currentId.map((item) => {
+      // if (item.id === userId) {
+      console.log("mydata", item.id);
+      setVal(item.id);
+      // }
+    });
+  };
+
   useEffect(() => {
-    if (destinationalert > 2) {
+    // setHrs(rhourse);
+    // setMins(rminutes);
+
+    if (destinationalert > 50) {
       alertcreated();
+      // ModalAlert();
       // removeQueue();
     }
 
     // removeQueue();
 
-    if (rhourse === 0 && rminutes === 0) {
+    if (hrs === 0 && mins === 0 && secs === 0) {
       // clearInterval(interval);
       onProceed();
     }
-    // else if (isActive) {
-    //   interval = setInterval(() => {
-    //     setTimer((timer) => timer - 1);
-    //   }, 100000);
-    // }
-    // return () => clearInterval(interval);
-  }, []);
+
+    const timerId = setInterval(() => {
+      console.log("timer", mins % 3);
+      if (mins % 3 === 0 && secs <= 0) {
+        console.log("runnded");
+        fetchData();
+      }
+
+      if (secs <= 0) {
+        if (mins <= 0 && hrs <= 0) console.log("called");
+        else {
+          setMins((m) => m - 1);
+          setSecs(59);
+          if (mins <= 0) {
+            setHrs((h) => h - 1);
+            setMins(59);
+            setSecs(59);
+          }
+        }
+      } else setSecs((s) => s - 1);
+    }, 1000);
+    return () => clearInterval(timerId);
+  }, [secs, mins, hrs]);
 
   return (
     <SafeAreaView
@@ -91,8 +134,15 @@ const CountDownTimer = ({
     >
       <View style={StyleSheetMethods.text} key={people}>
         <Text style={StyleSheetMethods.viewsText}>
-          {people} {item} ({rhourse}:{rminutes}:00 sec)
+          {people} {item} ({hrs}:{mins}:{secs} sec)
         </Text>
+      </View>
+      <View>
+        {getval === userId ? (
+          <View>
+            <ModalAlert onProceed={onProceed} />
+          </View>
+        ) : null}
       </View>
 
       <View

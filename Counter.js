@@ -18,6 +18,7 @@ const IntialComponent = ({
   onConform,
   onDecline,
   onAddQueue,
+  userId,
   user,
   queueState,
 }) => {
@@ -31,8 +32,9 @@ const IntialComponent = ({
         borderTopRightRadius: 50,
         borderTopLeftRadius: 50,
       }}
+      key={item}
     >
-      <View style={{ height: "50%" }}>
+      <View style={{ height: "50%" }} key={{ item }}>
         <View style={StyleSheetMethods.questions}>
           <Text style={StyleSheetMethods.viewsText}>{item}?</Text>
         </View>
@@ -43,7 +45,6 @@ const IntialComponent = ({
             justifyContent: "center",
             marginTop: 50,
           }}
-          key={item}
         >
           <View
             style={{

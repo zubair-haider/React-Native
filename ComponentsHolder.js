@@ -11,8 +11,16 @@ import Complete from "./Complete";
 import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
 
 const ComponentsHolder = ({ route, navigation, currentH }) => {
-  const { hospital, user, people, destination, patientDisease } = route.params;
+  const {
+    hospital,
+    user,
+    people,
+    destination,
+    patientDisease,
+    currentId,
+  } = route.params;
   const collection = {};
+  console.log("currentid", currentId);
   const [text, setText] = useState([
     { text2: "Would you like to Join the Virtual Queue" },
   ]);
@@ -44,6 +52,7 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
     setQueueState("in-Process");
     setNextState("");
     setIncrement("3");
+    // alert("called");
   };
   const onReset = () => {
     navigation.navigate("FORM");
@@ -84,22 +93,27 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
     });
     console.log("queue response put+++= ", response);
   };
+  // useEffect(async () => {
+  //   onAddQueue();
+  // }, []);
   const onAddQueue = async () => {
     // const queueState = "intial state";
     // const id = getId;
     const notes = "yes i am in ";
     // const priority = "Emergency";
     // collection.id = id;
+    console.log("added t0 que");
     collection.hospital = hospital;
     collection.queueState = queueState;
     collection.notes = notes;
     collection.priority = patientDisease;
     collection.user = user;
     const firstid = collection.id;
-    var postQueueApiUrl = "http://192.168.1.108:3000/queue";
+    var postQueueApiUrl = "http://192.168.1.110:3000/queue";
     postQueueApiCall(postQueueApiUrl, collection);
   };
   const onUpdateQueue = async () => {
+    console.log("updating que ");
     console.log("state id", getId);
     // const notes = "yes i am in ";
     // const priority = "Emergency";
@@ -110,33 +124,23 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
     collection.priority = patientDisease;
     collection.user = user;
 
-    var putApiUrl = `http://192.168.1.108:3000/queue/${getId}`;
+    var putApiUrl = `http://192.168.1.110:3000/queue/${getId}`;
     putQueueApiCall(putApiUrl, collection);
   };
   const removeQueue = async () => {
     console.log("delelte id", getId);
-    var deleteApiUrl = `http://192.168.1.108:3000/queue/${getId}`;
+    var deleteApiUrl = `http://192.168.1.110:3000/queue/${getId}`;
 
     fetch(deleteApiUrl, { method: "DELETE" });
     // DeleteQueueApiCall(deleteApiUrl);
   };
-  const DeleteQueueApiCall = async (url) => {
-    // console.log("postqueue data: ", data);
-    // let headers = { "content-type": "application/json" };
-    let response = await axios({
-      method: "DELETE",
-      // url,
-      // data: JSON.stringify(data),
-      // headers: { "content-type": "application/json" },
-    });
-    console.log("queue response delete+++= ", response);
-  };
+
   return (
-    <SafeAreaView style={{ fontFamily: "Inter-Black" }}>
-      <View style={StyleSheetMethods.stagebg}>
+    <SafeAreaView style={{ fontFamily: "Inter-Black" }} key={increment}>
+      <View style={StyleSheetMethods.stagebg} key="0">
         <Text style={StyleSheetMethods.stage}>Stage: {increment}</Text>
       </View>
-      <View key={increment}>
+      <View key="1">
         {text.length > 0
           ? text.map((item) => (
               <IntialComponent
@@ -144,6 +148,7 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
                 onConform={onConformed}
                 onDecline={onDecline}
                 onAddQueue={onAddQueue}
+                userId={getId}
                 // user={currentUser}
                 // queueState={queueState}
               />
@@ -151,7 +156,7 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
           : null}
       </View>
 
-      <View>
+      <View key="2">
         {lastState.length > 0
           ? lastState.map((item) => (
               <DoctorsComp
@@ -174,11 +179,13 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
                 people={people}
                 hospitalname={hospital}
                 destinationalert={destination}
+                userId={getId}
+                currentdata={currentId}
               />
             ))
           : null}
       </View>
-      <View>
+      <View key="3">
         {complete.length > 0
           ? complete.map((item) => (
               <Complete

@@ -1,7 +1,7 @@
 "use strict";
 import axios from "axios";
 import React, { Component, useState, useEffect, useRef } from "react";
-import { Form, Input, Button, Checkbox } from "antd-mobile";
+//import { Form, Input, Button, Checkbox } from "antd-mobile";
 import ValidationComponent from "react-native-form-validator";
 import Chart from "../Charts/React_native_chart";
 import {
@@ -29,6 +29,7 @@ const Forms = ({ navigation }) => {
     gender: "",
     errorgender: "",
   });
+  const [checkme, setCheck] = useState("called");
   const [checkContact, setContact] = useState({
     contact: "",
     errorcontact: "",
@@ -38,19 +39,6 @@ const Forms = ({ navigation }) => {
     errorMsg: "",
   });
 
-  // const getApiCall = async (url, data) => {
-  //   console.log("data: ", data);
-  //   let headers = { "content-type": "application/json" };
-  //   let response = await axios({
-  //     method: "GET",
-  //     url,
-  //     data: JSON.stringify(data),
-  //     headers: { "content-type": "application/json" },
-  //     // data: data,
-  //   });
-  //   console.log("response get = ", response);
-  //   // alert("called");
-  // };
   const postApiCall = async (url, data) => {
     console.log("post data: ", data);
     let headers = { "content-type": "application/json" };
@@ -64,6 +52,9 @@ const Forms = ({ navigation }) => {
     console.log("response  post= ", response);
     // alert("called");
   };
+  useEffect(() => {
+    console.log("calledcccc", checkme);
+  }, [checkme]);
   const onSubmit = async () => {
     let collection = {};
     let namecheck = /^[a-zA-Z]+$/;
@@ -106,7 +97,7 @@ const Forms = ({ navigation }) => {
     collection.age = checkAge.age;
     collection.gender = checkGender.gender;
 
-    var postApiUrl = "http://192.168.1.108:3000/detail"; //192.168.1.107
+    var postApiUrl = "http://192.168.1.110:3000/detail"; //192.168.1.107
     postApiCall(postApiUrl, collection);
     // getApiCall(getUrl, collection);
     // console.log("collection", collection);
@@ -141,14 +132,18 @@ const Forms = ({ navigation }) => {
             <FontAwesome name="user-o" color="#05375a" size={20} />
             <TextInput
               autoFocus={true}
-              style={{ paddingLeft: 10, color: "black", outline: "none" }}
-              placeholder="Enter Patient Name"
               placeholderTextColor="#6e6464"
               onChangeText={(text) => {
                 setcheckName({ name: text });
               }}
-              defaultValue={text}
+              // defaultValue={text}
               value={checkName.name}
+              style={{
+                paddingHorizontal: 10,
+                color: "black",
+                // outline: "none"
+              }}
+              placeholder="Enter Patient Name"
             />
             <Text style={{ color: "red", paddingLeft: 10 }}>
               {checkName.errorMsg}
@@ -166,13 +161,13 @@ const Forms = ({ navigation }) => {
               onChangeText={(text) => {
                 setContact({ contact: text });
               }}
-              defaultValue={text}
+              // defaultValue={text}
               value={checkContact.contact}
               style={{
                 paddingLeft: 10,
                 color: "black",
-                outline: "none",
-                placeholder: "white",
+                // outline: "none",
+                // placeholder: "white",
               }}
               placeholder="Enter Contact number"
             />
@@ -190,9 +185,13 @@ const Forms = ({ navigation }) => {
               onChangeText={(text) => {
                 setdisease({ disease: text });
               }}
-              defaultValue={text}
+              // defaultValue={text}
               value={checkdisease.disease}
-              style={{ paddingLeft: 10, color: "black", outline: "none" }}
+              style={{
+                paddingLeft: 10,
+                color: "black",
+                //  outline: "none"
+              }}
               placeholder="Enter Patient Disease"
             />
             <Text style={{ color: "red", paddingLeft: 10 }}>
@@ -210,9 +209,13 @@ const Forms = ({ navigation }) => {
               onChangeText={(text) => {
                 setAge({ age: text });
               }}
-              defaultValue={text}
+              // defaultValue={text}
               value={checkAge.age}
-              style={{ paddingLeft: 10, color: "black", outline: "none" }}
+              style={{
+                paddingLeft: 10,
+                color: "black",
+                //  outline: "none"
+              }}
               placeholder="Enter Age"
             />
             <Text style={{ color: "red", paddingLeft: 10 }}>
@@ -229,12 +232,12 @@ const Forms = ({ navigation }) => {
                 setGender({ gender: text });
               }}
               placeholderTextColor="#6e6464"
-              defaultValue={text}
+              // defaultValue={text}
               value={checkGender.gender}
               style={{
                 paddingLeft: 10,
                 color: "black",
-                outline: "none",
+                // outline: "none",
               }}
               placeholder="Enter Gender"
             />
