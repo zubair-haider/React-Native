@@ -15,9 +15,11 @@ import {
   SafeAreaView,
 } from "react-native";
 import ComponentsHolder from "./ComponentsHolder";
+import { min } from "react-native-reanimated";
 
 const CountDownTimer = ({
   item,
+  id,
   onDeclineLeave,
   onReset,
   onProceed,
@@ -26,6 +28,9 @@ const CountDownTimer = ({
   people,
   currentdata,
   destinationalert,
+  estimatedHour,
+  estimatedmins,
+  defaultTime,
   hospitalname,
 }) => {
   const [timers, setTimers] = useState(10);
@@ -63,7 +68,7 @@ const CountDownTimer = ({
   };
 
   const fetchData = async () => {
-    const response = await fetch(`http://192.168.1.110:3000/queues`);
+    const response = await fetch(`http://127.0.0.1:3000/queues`);
     const json = await response.json();
 
     const currentId = json.filter(
@@ -72,10 +77,10 @@ const CountDownTimer = ({
     );
     console.log("thisisdata", currentId);
     currentId.map((item) => {
-      // if (item.id === userId) {
-      console.log("mydata", item.id);
-      setVal(item.id);
-      // }
+      if (item.id === userId) {
+        console.log("cut", item.id);
+        setVal(item.id);
+      }
     });
   };
 
@@ -97,8 +102,8 @@ const CountDownTimer = ({
     }
 
     const timerId = setInterval(() => {
-      console.log("timer", mins % 3);
-      if (mins % 3 === 0 && secs <= 0) {
+      console.log("timer", secs % 3);
+      if (mins % 3 === 0) {
         console.log("runnded");
         fetchData();
       }
@@ -121,6 +126,7 @@ const CountDownTimer = ({
 
   return (
     <SafeAreaView
+      key={id}
       style={{
         // backgroundColor: "#206E7",
         height: "80%",
@@ -134,7 +140,16 @@ const CountDownTimer = ({
     >
       <View style={StyleSheetMethods.text} key={people}>
         <Text style={StyleSheetMethods.viewsText}>
-          {people} {item} ({hrs}:{mins}:{secs} sec)
+          {people} {item}
+          {people > 0 && estimatedmins !== "" ? (
+            <Text>
+              ( {estimatedHour}:{estimatedmins} min )
+            </Text>
+          ) : (
+            <Text style={StyleSheetMethods.timers}>
+              ({estimatedHour}:{defaultTime} min)
+            </Text>
+          )}
         </Text>
       </View>
       <View>

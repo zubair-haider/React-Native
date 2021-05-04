@@ -35,6 +35,17 @@ const StyleSheetMethods = StyleSheet.create({
     justifyContent: "center",
     margin: "auto",
   },
+  timers: {
+    margin: 10,
+    flex: 1,
+    backgroundColor: "transparent",
+    borderColor: "white",
+    borderWidth: 30,
+    overflow: "hidden",
+    shadowColor: "black",
+    shadowRadius: 10,
+    shadowOpacity: 1,
+  },
   btndoc: {
     marginLeft: 10,
     width: 100,

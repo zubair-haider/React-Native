@@ -14,9 +14,10 @@ import {
   Button,
   SafeAreaView,
 } from "react-native";
-const DoctorsComp = ({ item, onConformed, onDeclined, onAddQueues }) => {
+const DoctorsComp = ({ item, id, onConformed, onDeclined, onAddQueues }) => {
   return (
     <SafeAreaView
+      key={id}
       style={{
         height: "80%",
         paddingBottom: 10,

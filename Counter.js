@@ -15,6 +15,7 @@ import { cloneElement } from "react";
 
 const IntialComponent = ({
   item,
+  id,
   onConform,
   onDecline,
   onAddQueue,
@@ -32,7 +33,7 @@ const IntialComponent = ({
         borderTopRightRadius: 50,
         borderTopLeftRadius: 50,
       }}
-      key={item}
+      key={id}
     >
       <View style={{ height: "50%" }} key={{ item }}>
         <View style={StyleSheetMethods.questions}>

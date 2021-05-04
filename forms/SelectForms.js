@@ -20,6 +20,22 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 const Forms = ({ navigation }) => {
   // const inputRef = useRef(null);
+  var currentdate = new Date();
+  var getCurrentTime =
+    "Last Sync: " +
+    currentdate.getDate() +
+    "/" +
+    (currentdate.getMonth() + 1) +
+    "/" +
+    currentdate.getFullYear();
+  //+
+  // " @ " +
+  // currentdate.getHours() +
+  // ":" +
+  // currentdate.getMinutes() +
+  // ":" +
+  // currentdate.getSeconds();
+  console.log("date:", getCurrentTime);
   const [checkdisease, setdisease] = useState({
     disease: "",
     errordisease: "",
@@ -52,8 +68,21 @@ const Forms = ({ navigation }) => {
     console.log("response  post= ", response);
     // alert("called");
   };
+  function formatDate(date) {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  }
   useEffect(() => {
-    console.log("calledcccc", checkme);
+    const newDate = new Date();
+    const me = formatDate(newDate);
+    console.log("calledcccc", me);
   }, [checkme]);
   const onSubmit = async () => {
     let collection = {};
@@ -97,7 +126,7 @@ const Forms = ({ navigation }) => {
     collection.age = checkAge.age;
     collection.gender = checkGender.gender;
 
-    var postApiUrl = "http://192.168.1.110:3000/detail"; //192.168.1.107
+    var postApiUrl = "http://127.0.0.1:3000/detail"; //192.168.1.107
     postApiCall(postApiUrl, collection);
     // getApiCall(getUrl, collection);
     // console.log("collection", collection);
@@ -121,7 +150,7 @@ const Forms = ({ navigation }) => {
         >
           Welcome!
         </Text>
-        <Text style={{ fontWeight: "bold", fontSize: 15, color: "#206E79" }}>
+        <Text style={{ fontWeight: "bold", fontSize: 15, color: "#3fb5bf" }}>
           Please Fill this Form to Register!
         </Text>
       </View>
@@ -295,7 +324,7 @@ const styles = StyleSheet.create({
   formsFileds: {
     display: "flex",
     flexDirection: "column",
-    backgroundColor: "#206E79",
+    backgroundColor: "#3fb5bf",
 
     borderRadius: 20,
     paddingHorizontal: 20,

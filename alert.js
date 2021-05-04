@@ -4,7 +4,7 @@ import { useEffect } from "react/cjs/react.development";
 
 const ModalAlert = ({ onProceed }) => {
   const [modalVisible, setModalVisible] = useState(true);
-  const [mins, setMins] = useState(2);
+  const [mins, setMins] = useState(1);
   const [secs, setSecs] = useState(5);
 
   useEffect(() => {
