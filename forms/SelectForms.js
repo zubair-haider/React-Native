@@ -4,6 +4,7 @@ import React, { Component, useState, useEffect, useRef } from "react";
 //import { Form, Input, Button, Checkbox } from "antd-mobile";
 import ValidationComponent from "react-native-form-validator";
 import Chart from "../Charts/React_native_chart";
+import SearchLocation from "../Charts/location";
 import {
   Text,
   View,

@@ -31,6 +31,7 @@ const CountDownTimer = ({
   estimatedHour,
   estimatedmins,
   defaultTime,
+  defaulthours,
   hospitalname,
 }) => {
   const [timers, setTimers] = useState(10);
@@ -142,12 +143,12 @@ const CountDownTimer = ({
         <Text style={StyleSheetMethods.viewsText}>
           {people} {item}
           {people > 0 && estimatedmins !== "" ? (
-            <Text>
-              ( {estimatedHour}:{estimatedmins} min )
+            <Text style={StyleSheetMethods.timers}>
+              {estimatedHour}:{estimatedmins} min
             </Text>
           ) : (
             <Text style={StyleSheetMethods.timers}>
-              ({estimatedHour}:{defaultTime} min)
+              {defaulthours}:{defaultTime} min
             </Text>
           )}
         </Text>
