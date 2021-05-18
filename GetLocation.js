@@ -22,6 +22,7 @@ import {
   Dimensions,
 } from "react-native";
 import { set } from "react-native-reanimated";
+import { counter } from "@fortawesome/fontawesome-svg-core";
 const { width, height } = Dimensions.get("window");
 const SCREEN_HEIGHT = height;
 const SCREEN_WIDTH = width;
@@ -33,8 +34,8 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const MyApp = ({ navigation, route }) => {
   const { userName, patientDisease } = route.params;
-  const array = [];
-  const object = {};
+  var hoursHolder = "";
+  var minHolder = "";
 
   let [fontsLoaded] = useFonts({
     "Oswald-Bold": require("./assets/Fonts/Oswald-Bold.ttf"),
@@ -46,6 +47,8 @@ const MyApp = ({ navigation, route }) => {
     latitudeDelta: 0,
     longitudeDelta: 0,
   });
+  const [hospitalsname, sethospitalsName] = useState();
+  const [getstateh, setStateh] = useState(true);
   const [currentdate, setCurrentDate] = useState();
   const [defaultTime, setDefault] = useState(15);
   const [minsG, setMinsG] = useState("");
@@ -54,45 +57,43 @@ const MyApp = ({ navigation, route }) => {
   const [minsS, setMinsS] = useState("");
   const [loading, setLoading] = useState(true);
   const [getPatient, setPatitent] = useState([]);
-  const [estTimeGeneralH, setEstTimeGeneralH] = useState("00");
-  const [estTimeSheikhH, setEstTimeSheikhH] = useState("00");
+  // const [estTimeGeneralH, setEstTimeGeneralH] = useState("00");
+  // const [estTimeSheikhH, setEstTimeSheikhH] = useState("00");
   const [estTimeDoctorH, setEstTimeDoctorH] = useState("00");
-  const [estTimejinnah, setEstTimeJinnah] = useState("00");
-  const [getGeneralH, setGeneralH] = useState("");
-  const [getSheikhH, setSheikhH] = useState("");
-  const [getDoctorH, setDoctorH] = useState("");
-  const [hospitals, setHospital] = useState({
-    item: [
-      {
-        id: 1,
-        latitude: 31.4797,
-        longitude: 74.2804,
-        userName: "Doctors Hospital",
-        img: require("./assets/7.jpg"),
-      },
-      {
-        id: 2,
-        latitude: 31.5082,
-        longitude: 74.3086,
-        userName: "Sheikh Zaid",
-        img: require("./assets/download.jpeg"),
-      },
-      {
-        id: 3,
-        latitude: 31.4846,
-        longitude: 74.2974,
-        userName: "Jinnah Hospital",
-        img: require("./assets/jinnah.jpg"),
-      },
-      {
-        id: 4,
-        latitude: 31.4545,
-        longitude: 74.351,
-        userName: "General Hospital Lahore",
-        img: require("./assets/general.jpg"),
-      },
-    ],
-  });
+  // const [estTimejinnah, setEstTimeJinnah] = useState("00");
+  // const [getGeneralH, setGeneralH] = useState("");
+  // const [getSheikhH, setSheikhH] = useState("");
+  // const [getDoctorH, setDoctorH] = useState("");
+  const [hospitals, setHospital] = useState([
+    // {
+    //   id: 1,
+    //   latitude: 31.4797,
+    //   longitude: 74.2804,
+    //   userName: "Doctors Hospital",
+    //   img: require("./assets/7.jpg"),
+    // },
+    // {
+    //   id: 2,
+    //   latitude: 31.5082,
+    //   longitude: 74.3086,
+    //   userName: "Sheikh Zaid",
+    //   img: require("./assets/download.jpeg"),
+    // },
+    // {
+    //   id: 3,
+    //   latitude: 31.4846,
+    //   longitude: 74.2974,
+    //   userName: "Jinnah Hospital",
+    //   img: require("./assets/jinnah.jpg"),
+    // },
+    // {
+    //   id: 4,
+    //   latitude: 31.4545,
+    //   longitude: 74.351,
+    //   userName: "General Hospital Lahore",
+    //   img: require("./assets/general.jpg"),
+    // },
+  ]);
   async function requestLocationPermission() {
     try {
       const granted = await PermissionsAndroid.request(
@@ -122,7 +123,11 @@ const MyApp = ({ navigation, route }) => {
     try {
       const result = await axios("http://127.0.0.1:3000/queues");
       setPatitent(result.data);
-      console.log("data", result.data);
+      const response = await fetch("http://192.168.1.110:3000/allhospital");
+      const json = await response.json();
+      setHospital(json);
+
+      console.log("data+++++", json);
     } catch (error) {
       console.log("errrrrr0:", error);
     }
@@ -142,46 +147,61 @@ const MyApp = ({ navigation, route }) => {
           longitudeDelta: LONGITUDE_DELTA,
         };
         setIntialPosition(initialRegion);
+        console.log("location of user++", initialRegion);
       },
 
       (error) => alert(JSON.stringify(error)),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
-    console.log(location);
   }, [location]);
+  // if (hospitalsname !== undefined && getstateh === true) {
+  //   hospitalsname.filter((filterhospital) => {
+  //     console.log("hospitals", filterhospital.hospital);
+  //     setHospital([
+  //       ...hospitals,
+  //       {
+  //         id: filterhospital.id,
+  //         latitude: filterhospital.latitude,
+  //         longitude: filterhospital.longitude,
+  //         userName: filterhospital.hospital,
+  //       },
+  //     ]);
+  //   });
+  //   setStateh(false);
+  // }
 
-  const currentItems = getPatient.filter(
-    (filterItems) =>
-      filterItems.hospital === "Doctors Hospital" &&
-      filterItems.queueState !== "Completed" &&
-      currentdate === formatdbDate(filterItems.date)
-  );
+  // const currentItems = getPatient.filter(
+  //   (filterItems) =>
+  //     filterItems.hospital === "Doctors Hospital" &&
+  //     filterItems.queueState !== "Completed" &&
+  //     currentdate === formatdbDate(filterItems.date)
+  // );
   const currentId = getPatient.filter(
     (filterItems) => filterItems.queueState === "Waiting"
     // filterItems.hospital === "Doctors Hospital" &&
   );
-  const currentItemsJinnah = getPatient.filter(
-    (filterItems) =>
-      filterItems.hospital === "Jinnah Hospital" &&
-      filterItems.queueState !== "Completed" &&
-      currentdate === formatdbDate(filterItems.date)
-  );
-  const currentItemsShiekh = getPatient.filter(
-    (filterItems) =>
-      filterItems.hospital === "Sheikh Zaid" &&
-      filterItems.queueState !== "Completed" &&
-      currentdate === formatdbDate(filterItems.date)
-  );
-  const currentItemsGeneral = getPatient.filter(
-    (filterItems) =>
-      filterItems.hospital === "General Hospital Lahore" &&
-      filterItems.queueState !== "Completed" &&
-      currentdate === formatdbDate(filterItems.date)
-  );
-  if (getPatient.length > 0 && loading === true) {
-    getTimeCalc(getPatient);
-    setLoading(false);
-  }
+  // const currentItemsJinnah = getPatient.filter(
+  //   (filterItems) =>
+  //     filterItems.hospital === "Jinnah Hospital" &&
+  //     filterItems.queueState !== "Completed" &&
+  //     currentdate === formatdbDate(filterItems.date)
+  // );
+  // const currentItemsShiekh = getPatient.filter(
+  //   (filterItems) =>
+  //     filterItems.hospital === "Sheikh Zaid" &&
+  //     filterItems.queueState !== "Completed" &&
+  //     currentdate === formatdbDate(filterItems.date)
+  // );
+  // const currentItemsGeneral = getPatient.filter(
+  //   (filterItems) =>
+  //     filterItems.hospital === "General Hospital Lahore" &&
+  //     filterItems.queueState !== "Completed" &&
+  //     currentdate === formatdbDate(filterItems.date)
+  // );
+  // if (getPatient.length > 0 && loading === true) {
+  //   getTimeCalc(getPatient);
+  //   setLoading(false);
+  // }
   function formatDate(tDate) {
     var d = new Date(tDate),
       month = "" + (d.getMonth() + 1),
@@ -205,25 +225,30 @@ const MyApp = ({ navigation, route }) => {
     return [year, month, day].join("-");
   }
 
-  function getTimeCalc() {
+  function getTimeCalc(hospitalname) {
     const array1 = [];
-    const arrayjinnah = [];
-    const arrayGeneral = [];
-    const arraySheikh = [];
+    var hoursHolder = "";
+    var minHolder = "";
+    var counter = 0;
+    // const arrayjinnah = [];
+    // const arrayGeneral = [];
+    // const arraySheikh = [];
 
     function getSum(total, num) {
       return total + Math.round(num);
     }
     getPatient.map((value, index) => {
-      console.log(value.date);
       var dbDate = value.date;
       var TodayDate = new Date();
       const currentDate = formatDate(TodayDate);
       const preDate = formatdbDate(dbDate);
-      setCurrentDate(currentDate);
+      // setCurrentDate(currentDate);
+      if (value.hospital === hospitalname && preDate === currentDate) {
+        counter++;
+      }
       if (
         value.queueState === "in-Process" &&
-        value.hospital === "Doctors Hospital" &&
+        value.hospital === hospitalname &&
         preDate === currentDate
       ) {
         if (value.processTime !== "" && value.startingTime !== "") {
@@ -235,101 +260,104 @@ const MyApp = ({ navigation, route }) => {
           const numbers = array1.reduce(getSum, 0);
           const division = numbers / array1.length;
           const result = division.toFixed(0);
+          // console.log("result++++", result);
           if (result > 59) {
             const hours = result / 60;
             var rhourse = Math.floor(hours);
             var minutes = (hours - rhourse) * 60;
             var rminutes = Math.round(minutes);
-            setEstTimeDoctorH(rhourse);
-            setMinsD(rminutes);
+            hoursHolder = rhourse;
+            minHolder = rminutes;
+            // setEstTimeDoctorH(rhourse);
+            // setMinsD(rminutes);
           } else {
-            setEstTimeDoctorH("00");
-            setMinsD(result);
+            // setEstTimeDoctorH("00");
+            // setMinsD(result);
+            minHolder = result;
           }
         }
       }
       // console.log("estTime", estTime);
-      if (
-        value.queueState === "in-Process" &&
-        value.hospital === "Jinnah Hospital" &&
-        preDate === currentDate
-      ) {
-        if (value.processTime !== "" && value.startingTime !== "") {
-          var estTime = estimatedTime(value.processTime, value.startingTime);
-          arrayjinnah.push(estTime);
-          const numbers = arrayjinnah.reduce(getSum, 0);
-          const division = numbers / arrayjinnah.length;
-          const result = division.toFixed(0);
-          if (result > 59) {
-            const hours = result / 60;
-            var rhourse = Math.floor(hours);
-            var minutes = (hours - rhourse) * 60;
-            var rminutes = Math.round(minutes);
-            setEstTimeJinnah(rhourse);
-            setMinsJ(rminutes);
-          } else {
-            setEstTimeJinnah("00");
-            setMinsJ(result);
-          }
-          // array1.push(estTime);
-          // console.log("array1", array1);
-          // return setEstTimeJinnah(estTime);
-        }
-      }
-      if (
-        value.queueState === "in-Process" &&
-        value.hospital === "Sheikh Zaid" &&
-        preDate === currentDate
-      ) {
-        if (value.processTime !== "" && value.startingTime !== "") {
-          var estTime = estimatedTime(value.processTime, value.startingTime);
-          arraySheikh.push(estTime);
-          const numbers = arraySheikh.reduce(getSum, 0);
-          const division = numbers / arraySheikh.length;
-          const result = division.toFixed(0);
-          if (result > 59) {
-            const hours = result / 60;
-            var rhourse = Math.floor(hours);
-            var minutes = (hours - rhourse) * 60;
-            var rminutes = Math.round(minutes);
-            setEstTimeSheikhH(rhourse);
-            setMinsS(rminutes);
-          } else {
-            setEstTimeSheikhH("00");
-            setMinsS(result);
-          }
-          // return setEstTimeSheikhH(estTime);
-        }
-      }
-      if (
-        value.queueState === "in-Process" &&
-        value.hospital === "General Hospital Lahore" &&
-        preDate === currentDate
-      ) {
-        if (value.processTime !== "" && value.startingTime !== "") {
-          var estTime = estimatedTime(value.processTime, value.startingTime);
-          console.log("generalhospital,", estTime);
-          arrayGeneral.push(estTime);
-          const numbers = arrayGeneral.reduce(getSum, 0);
-          const division = numbers / arrayGeneral.length;
-          const result = division.toFixed(0);
-          console.log("generalhospital result==", result);
-          console.log("generalhospital result==");
-          if (result > 59) {
-            const hours = result / 60;
-            var rhourse = Math.floor(hours);
-            var minutes = (hours - rhourse) * 60;
-            var rminutes = Math.round(minutes);
-            setEstTimeGeneralH(rhourse);
-            setMinsG(rminutes);
-          } else {
-            setEstTimeGeneralH("00");
-            setMinsG(result);
-          }
-          // return setEstTimeGeneralH(estTime);
-        }
-      }
+      // if (
+      //   value.queueState === "in-Process" &&
+      //   value.hospital === "Jinnah Hospital" &&
+      //   preDate === currentDate
+      // ) {
+      //   if (value.processTime !== "" && value.startingTime !== "") {
+      //     var estTime = estimatedTime(value.processTime, value.startingTime);
+      //     arrayjinnah.push(estTime);
+      //     const numbers = arrayjinnah.reduce(getSum, 0);
+      //     const division = numbers / arrayjinnah.length;
+      //     const result = division.toFixed(0);
+      //     if (result > 59) {
+      //       const hours = result / 60;
+      //       var rhourse = Math.floor(hours);
+      //       var minutes = (hours - rhourse) * 60;
+      //       var rminutes = Math.round(minutes);
+      //       setEstTimeJinnah(rhourse);
+      //       setMinsJ(rminutes);
+      //     } else {
+      //       setEstTimeJinnah("00");
+      //       setMinsJ(result);
+      //     }
+      //   }
+      // }
+      // if (
+      //   value.queueState === "in-Process" &&
+      //   value.hospital === "Sheikh Zaid" &&
+      //   preDate === currentDate
+      // ) {
+      //   if (value.processTime !== "" && value.startingTime !== "") {
+      //     var estTime = estimatedTime(value.processTime, value.startingTime);
+      //     arraySheikh.push(estTime);
+      //     const numbers = arraySheikh.reduce(getSum, 0);
+      //     const division = numbers / arraySheikh.length;
+      //     const result = division.toFixed(0);
+      //     if (result > 59) {
+      //       const hours = result / 60;
+      //       var rhourse = Math.floor(hours);
+      //       var minutes = (hours - rhourse) * 60;
+      //       var rminutes = Math.round(minutes);
+      //       setEstTimeSheikhH(rhourse);
+      //       setMinsS(rminutes);
+      //     } else {
+      //       setEstTimeSheikhH("00");
+      //       setMinsS(result);
+      //     }
+      //     // return setEstTimeSheikhH(estTime);
+      //   }
+      // }
+      // if (
+      //   value.queueState === "in-Process" &&
+      //   value.hospital === "General Hospital Lahore" &&
+      //   preDate === currentDate
+      // ) {
+      //   if (value.processTime !== "" && value.startingTime !== "") {
+      //     var estTime = estimatedTime(value.processTime, value.startingTime);
+      //     console.log("generalhospital,", estTime);
+      //     arrayGeneral.push(estTime);
+      //     const numbers = arrayGeneral.reduce(getSum, 0);
+      //     const division = numbers / arrayGeneral.length;
+      //     const result = division.toFixed(0);
+      //     console.log("generalhospital result==", result);
+      //     console.log("generalhospital result==");
+      //     if (result > 59) {
+      //       const hours = result / 60;
+      //       var rhourse = Math.floor(hours);
+      //       var minutes = (hours - rhourse) * 60;
+      //       var rminutes = Math.round(minutes);
+      //       setEstTimeGeneralH(rhourse);
+      //       setMinsG(rminutes);
+      //     } else {
+      //       setEstTimeGeneralH("00");
+      //       setMinsG(result);
+      //     }
+      //     // return setEstTimeGeneralH(estTime);
+      //   }
+      // }
     });
+
+    return [hoursHolder, minHolder, counter];
   }
   function estimatedTime(first, second) {
     var hms = first;
@@ -342,14 +370,16 @@ const MyApp = ({ navigation, route }) => {
     var minutes1 = seconds1 / 60;
     var difference = minutes - minutes1;
 
-    console.log("difference", difference);
+    console.log("difference", hospitals.item);
     return difference;
   }
 
-  const DoctorHospital = currentItems.length;
-  const jinnahHPatient = currentItemsJinnah.length;
-  const sheikhHPatient = currentItemsShiekh.length;
-  const generalHPatient = currentItemsGeneral.length;
+  // const DoctorHospital = currentItems.length;
+  // const jinnahHPatient = currentItemsJinnah.length;
+  // const sheikhHPatient = currentItemsShiekh.length;
+  // const generalHPatient = currentItemsGeneral.length;
+
+  // console.log("min***", minHolder);
 
   return (
     <KeyboardAwareScrollView
@@ -372,7 +402,7 @@ const MyApp = ({ navigation, route }) => {
           <Titles />
           {/* <View>{showHospitals()}</View> */}
           <View>
-            {hospitals.item.map((value, index) => {
+            {hospitals.map((value, index) => {
               var lat1 = value.latitude;
               var lng1 = value.longitude;
               var lat2 = intialPosition.latitude;
@@ -390,7 +420,10 @@ const MyApp = ({ navigation, route }) => {
               dist = Math.acos(dist);
               dist = (dist * 180) / Math.PI;
               dist = dist * 60 * 1.1515;
-              // console.log("distance:", dist);
+              let time = getTimeCalc(value.hospital);
+              const hours1 = time[0];
+              const mins1 = time[1];
+              const counter = time[2];
 
               //Get in in kilometers
               dist = dist * 1.609344;
@@ -400,11 +433,145 @@ const MyApp = ({ navigation, route }) => {
 
               // array.push(object);
               // array.sort();
-              console.log("array", array);
 
               return (
                 <View key={index}>
                   <View>
+                    {dist < 42 ? (
+                      <View style={StyleSheetMethods.hospitalViewsGr}>
+                        <View
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "flex-start",
+                            alignItems: "center",
+                          }}
+                        >
+                          <View style={styles.img}>
+                            <Image
+                              source={value.img}
+                              style={{
+                                width: 120,
+                                height: 100,
+                                justifyContent: "center",
+                              }}
+                            />
+                          </View>
+                          <View style={styles.names}>
+                            <Text style={styles.listextra3}>
+                              {value.hospital}
+                            </Text>
+                            <Text style={styles.listextra2}>
+                              Current Patients:{counter}
+                            </Text>
+                            {hours1 !== "" || mins1 !== "" ? (
+                              <Text style={styles.listextra2}>
+                                Estimated Waiting Time:{hours1}:{mins1} min
+                              </Text>
+                            ) : (
+                              <Text style={styles.listextra2}>
+                                Estimated Waiting Time:{estTimeDoctorH}:
+                                {defaultTime} min
+                              </Text>
+                            )}
+
+                            <Text style={styles.list2}>
+                              {dist.toFixed(2)} KM
+                            </Text>
+                          </View>
+                          <View style={{ width: 90 }}>
+                            <Button
+                              title="Select"
+                              onPress={() => {
+                                navigation.navigate("QUEUE", {
+                                  hospital: value.hospital,
+                                  user: userName,
+                                  people: counter,
+                                  destination: dist,
+                                  patientDisease: patientDisease,
+                                  currentId: currentId,
+                                  estimatedHour: hours1,
+                                  estimatedmins: mins1,
+                                  defaultTime: defaultTime,
+                                  defaulthours: estTimeDoctorH,
+                                });
+                              }}
+                            ></Button>
+                          </View>
+                        </View>
+                      </View>
+                    ) : null}
+                  </View>
+                  <View>
+                    {dist >= 42.1 ? (
+                      <View>
+                        <View style={StyleSheetMethods.hospitalViews}>
+                          <View
+                            style={{
+                              display: "flex",
+                              // flex: 1,
+                              flexDirection: "row",
+                              justifyContent: "flex-start",
+                              alignItems: "center",
+                            }}
+                          >
+                            <View style={styles.img}>
+                              <Image
+                                source={value.img}
+                                style={{
+                                  width: 120,
+                                  height: 100,
+                                  justifyContent: "center",
+                                }}
+                              />
+                            </View>
+                            <View style={styles.names}>
+                              <Text style={styles.listextra}>
+                                {value.hospital}
+                              </Text>
+                              <Text style={styles.listextra2}>
+                                Current Patients:{counter}
+                              </Text>
+                              {hours1 > 0 && mins1 !== "" ? (
+                                <Text style={styles.listextra2}>
+                                  Estimated Waiting Time:{hours1}:{mins1} min
+                                </Text>
+                              ) : (
+                                <Text style={styles.listextra2}>
+                                  Estimated Waiting Time:{estTimeDoctorH}:
+                                  {defaultTime} min
+                                </Text>
+                              )}
+
+                              <Text style={styles.list}>
+                                {dist.toFixed(2)} KM
+                              </Text>
+                            </View>
+                            <View style={{ width: 90 }}>
+                              <Button
+                                title="Select"
+                                disabled={true}
+                                onPress={() => {
+                                  navigation.navigate("QUEUE", {
+                                    hospital: value.hospital,
+                                    user: userName,
+                                    people: counter,
+                                    destination: dist,
+                                    patientDisease: patientDisease,
+                                    currentId: currentId,
+                                    estimatedHour: hours1,
+                                    estimatedmins: mins1,
+                                    defaultTime: defaultTime,
+                                  });
+                                }}
+                              ></Button>
+                            </View>
+                          </View>
+                        </View>
+                      </View>
+                    ) : null}
+                  </View>
+                  {/* <View>
                     {dist < 42 ? (
                       <View>
                         {value.userName === "Doctors Hospital" ? (
@@ -605,8 +772,8 @@ const MyApp = ({ navigation, route }) => {
                     ) : // }:null
 
                     null}
-                  </View>
-                  <View>
+                  </View> */}
+                  {/* <View>
                     {dist >= 42.1 ? (
                       // {value.userName==="Doctors Hospital"?
                       <View>
@@ -875,7 +1042,7 @@ const MyApp = ({ navigation, route }) => {
                     ) : // }:null
 
                     null}
-                  </View>
+                  </View> */}
                 </View>
               );
             })}

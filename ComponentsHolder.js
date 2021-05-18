@@ -15,6 +15,7 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
     hospital,
     user,
     people,
+    defaulthours,
     destination,
     patientDisease,
     currentId,
@@ -219,6 +220,7 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
                   estimatedHour={estimatedHour}
                   estimatedmins={estimatedmins}
                   defaultTime={defaultTime}
+                  defaulthours={defaulthours}
                 />
               </View>
             ))
