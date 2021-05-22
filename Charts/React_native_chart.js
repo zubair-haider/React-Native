@@ -13,13 +13,6 @@ import {
 } from "react-native-chart-kit";
 
 const Charts = () => {
-  // const [getData, setData] = useState("");
-  // useEffect(async () => {
-  //   const response = await fetch(`http://localhost:3000/queues`);
-  //   const json = await response.json();
-  //   setData(json);
-  // }, []);
-
   return (
     <View>
       <LineChart

@@ -1,9 +1,5 @@
-//import "react-native-gesture-handler";
-//import { NavigationContainer } from "@react-navigation/native";
-//import { createStackNavigator } from "@react-navigation/stack";
 import { StatusBar } from "expo-status-bar";
-// import { createStackNavigator } from "@react-navigation/stack";
-// import { StatusBar } from "expo-status-bar";
+
 import React, { useEffect, useState } from "react";
 import StyleSheetMethods from "./Styles/StyleSheet";
 import axios from "axios";
@@ -21,8 +17,7 @@ import {
   SafeAreaView,
   Dimensions,
 } from "react-native";
-import { set } from "react-native-reanimated";
-import { counter } from "@fortawesome/fontawesome-svg-core";
+
 const { width, height } = Dimensions.get("window");
 const SCREEN_HEIGHT = height;
 const SCREEN_WIDTH = width;
@@ -47,60 +42,22 @@ const MyApp = ({ navigation, route }) => {
     latitudeDelta: 0,
     longitudeDelta: 0,
   });
-  const [hospitalsname, sethospitalsName] = useState();
-  const [getstateh, setStateh] = useState(true);
-  const [currentdate, setCurrentDate] = useState();
+  const [isLoading, setIsLoading] = useState(true);
   const [defaultTime, setDefault] = useState(15);
-  const [minsG, setMinsG] = useState("");
-  const [minsJ, setMinsJ] = useState("");
-  const [minsD, setMinsD] = useState("");
-  const [minsS, setMinsS] = useState("");
-  const [loading, setLoading] = useState(true);
+
   const [getPatient, setPatitent] = useState([]);
-  // const [estTimeGeneralH, setEstTimeGeneralH] = useState("00");
-  // const [estTimeSheikhH, setEstTimeSheikhH] = useState("00");
+
   const [estTimeDoctorH, setEstTimeDoctorH] = useState("00");
-  // const [estTimejinnah, setEstTimeJinnah] = useState("00");
-  // const [getGeneralH, setGeneralH] = useState("");
-  // const [getSheikhH, setSheikhH] = useState("");
-  // const [getDoctorH, setDoctorH] = useState("");
-  const [hospitals, setHospital] = useState([
-    // {
-    //   id: 1,
-    //   latitude: 31.4797,
-    //   longitude: 74.2804,
-    //   userName: "Doctors Hospital",
-    //   img: require("./assets/7.jpg"),
-    // },
-    // {
-    //   id: 2,
-    //   latitude: 31.5082,
-    //   longitude: 74.3086,
-    //   userName: "Sheikh Zaid",
-    //   img: require("./assets/download.jpeg"),
-    // },
-    // {
-    //   id: 3,
-    //   latitude: 31.4846,
-    //   longitude: 74.2974,
-    //   userName: "Jinnah Hospital",
-    //   img: require("./assets/jinnah.jpg"),
-    // },
-    // {
-    //   id: 4,
-    //   latitude: 31.4545,
-    //   longitude: 74.351,
-    //   userName: "General Hospital Lahore",
-    //   img: require("./assets/general.jpg"),
-    // },
-  ]);
+  const [sort, setSort] = useState();
+
+  const [hospitals, setHospital] = useState([]);
   async function requestLocationPermission() {
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          // title: "Finder",
-          // message: "Finder App access to your location ",
+          title: "Hospital Management",
+          message: "App access to your location ",
         }
       );
       console.log("hrfgfg", granted);
@@ -112,7 +69,7 @@ const MyApp = ({ navigation, route }) => {
           "location permission denied"
           // PermissionsAndroid.RESULTS.GRANTED
         );
-        // alert("Location permission denied");
+        alert("Location permission denied please Turn on Location");
       }
     } catch (err) {
       console.warn(err);
@@ -153,55 +110,13 @@ const MyApp = ({ navigation, route }) => {
       (error) => alert(JSON.stringify(error)),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
-  }, [location]);
-  // if (hospitalsname !== undefined && getstateh === true) {
-  //   hospitalsname.filter((filterhospital) => {
-  //     console.log("hospitals", filterhospital.hospital);
-  //     setHospital([
-  //       ...hospitals,
-  //       {
-  //         id: filterhospital.id,
-  //         latitude: filterhospital.latitude,
-  //         longitude: filterhospital.longitude,
-  //         userName: filterhospital.hospital,
-  //       },
-  //     ]);
-  //   });
-  //   setStateh(false);
-  // }
+  }, []);
 
-  // const currentItems = getPatient.filter(
-  //   (filterItems) =>
-  //     filterItems.hospital === "Doctors Hospital" &&
-  //     filterItems.queueState !== "Completed" &&
-  //     currentdate === formatdbDate(filterItems.date)
-  // );
   const currentId = getPatient.filter(
     (filterItems) => filterItems.queueState === "Waiting"
     // filterItems.hospital === "Doctors Hospital" &&
   );
-  // const currentItemsJinnah = getPatient.filter(
-  //   (filterItems) =>
-  //     filterItems.hospital === "Jinnah Hospital" &&
-  //     filterItems.queueState !== "Completed" &&
-  //     currentdate === formatdbDate(filterItems.date)
-  // );
-  // const currentItemsShiekh = getPatient.filter(
-  //   (filterItems) =>
-  //     filterItems.hospital === "Sheikh Zaid" &&
-  //     filterItems.queueState !== "Completed" &&
-  //     currentdate === formatdbDate(filterItems.date)
-  // );
-  // const currentItemsGeneral = getPatient.filter(
-  //   (filterItems) =>
-  //     filterItems.hospital === "General Hospital Lahore" &&
-  //     filterItems.queueState !== "Completed" &&
-  //     currentdate === formatdbDate(filterItems.date)
-  // );
-  // if (getPatient.length > 0 && loading === true) {
-  //   getTimeCalc(getPatient);
-  //   setLoading(false);
-  // }
+
   function formatDate(tDate) {
     var d = new Date(tDate),
       month = "" + (d.getMonth() + 1),
@@ -230,9 +145,6 @@ const MyApp = ({ navigation, route }) => {
     var hoursHolder = "";
     var minHolder = "";
     var counter = 0;
-    // const arrayjinnah = [];
-    // const arrayGeneral = [];
-    // const arraySheikh = [];
 
     function getSum(total, num) {
       return total + Math.round(num);
@@ -243,7 +155,11 @@ const MyApp = ({ navigation, route }) => {
       const currentDate = formatDate(TodayDate);
       const preDate = formatdbDate(dbDate);
       // setCurrentDate(currentDate);
-      if (value.hospital === hospitalname && preDate === currentDate) {
+      if (
+        value.hospital === hospitalname &&
+        preDate === currentDate &&
+        value.queueState === "Waiting"
+      ) {
         counter++;
       }
       if (
@@ -268,97 +184,68 @@ const MyApp = ({ navigation, route }) => {
             var rminutes = Math.round(minutes);
             hoursHolder = rhourse;
             minHolder = rminutes;
-            // setEstTimeDoctorH(rhourse);
-            // setMinsD(rminutes);
           } else {
-            // setEstTimeDoctorH("00");
-            // setMinsD(result);
             minHolder = result;
           }
         }
       }
-      // console.log("estTime", estTime);
-      // if (
-      //   value.queueState === "in-Process" &&
-      //   value.hospital === "Jinnah Hospital" &&
-      //   preDate === currentDate
-      // ) {
-      //   if (value.processTime !== "" && value.startingTime !== "") {
-      //     var estTime = estimatedTime(value.processTime, value.startingTime);
-      //     arrayjinnah.push(estTime);
-      //     const numbers = arrayjinnah.reduce(getSum, 0);
-      //     const division = numbers / arrayjinnah.length;
-      //     const result = division.toFixed(0);
-      //     if (result > 59) {
-      //       const hours = result / 60;
-      //       var rhourse = Math.floor(hours);
-      //       var minutes = (hours - rhourse) * 60;
-      //       var rminutes = Math.round(minutes);
-      //       setEstTimeJinnah(rhourse);
-      //       setMinsJ(rminutes);
-      //     } else {
-      //       setEstTimeJinnah("00");
-      //       setMinsJ(result);
-      //     }
-      //   }
-      // }
-      // if (
-      //   value.queueState === "in-Process" &&
-      //   value.hospital === "Sheikh Zaid" &&
-      //   preDate === currentDate
-      // ) {
-      //   if (value.processTime !== "" && value.startingTime !== "") {
-      //     var estTime = estimatedTime(value.processTime, value.startingTime);
-      //     arraySheikh.push(estTime);
-      //     const numbers = arraySheikh.reduce(getSum, 0);
-      //     const division = numbers / arraySheikh.length;
-      //     const result = division.toFixed(0);
-      //     if (result > 59) {
-      //       const hours = result / 60;
-      //       var rhourse = Math.floor(hours);
-      //       var minutes = (hours - rhourse) * 60;
-      //       var rminutes = Math.round(minutes);
-      //       setEstTimeSheikhH(rhourse);
-      //       setMinsS(rminutes);
-      //     } else {
-      //       setEstTimeSheikhH("00");
-      //       setMinsS(result);
-      //     }
-      //     // return setEstTimeSheikhH(estTime);
-      //   }
-      // }
-      // if (
-      //   value.queueState === "in-Process" &&
-      //   value.hospital === "General Hospital Lahore" &&
-      //   preDate === currentDate
-      // ) {
-      //   if (value.processTime !== "" && value.startingTime !== "") {
-      //     var estTime = estimatedTime(value.processTime, value.startingTime);
-      //     console.log("generalhospital,", estTime);
-      //     arrayGeneral.push(estTime);
-      //     const numbers = arrayGeneral.reduce(getSum, 0);
-      //     const division = numbers / arrayGeneral.length;
-      //     const result = division.toFixed(0);
-      //     console.log("generalhospital result==", result);
-      //     console.log("generalhospital result==");
-      //     if (result > 59) {
-      //       const hours = result / 60;
-      //       var rhourse = Math.floor(hours);
-      //       var minutes = (hours - rhourse) * 60;
-      //       var rminutes = Math.round(minutes);
-      //       setEstTimeGeneralH(rhourse);
-      //       setMinsG(rminutes);
-      //     } else {
-      //       setEstTimeGeneralH("00");
-      //       setMinsG(result);
-      //     }
-      //     // return setEstTimeGeneralH(estTime);
-      //   }
-      // }
     });
 
     return [hoursHolder, minHolder, counter];
   }
+  function sorting() {
+    let array = [];
+    hospitals.map((value, index) => {
+      let collection = {};
+      var lat1 = value.latitude;
+      var lng1 = value.longitude;
+      var lat2 = intialPosition.latitude;
+      var lng2 = intialPosition.longitude;
+      var radlat1 = (Math.PI * lat1) / 180;
+      var radlat2 = (Math.PI * lat2) / 180;
+      var radlon1 = (Math.PI * lng1) / 180;
+      var radlon2 = (Math.PI * lng2) / 180;
+      var theta = lng1 - lng2;
+
+      var radtheta = (Math.PI * theta) / 180;
+      var dist =
+        Math.sin(radlat1) * Math.sin(radlat2) +
+        Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+      dist = Math.acos(dist);
+      dist = (dist * 180) / Math.PI;
+      dist = dist * 60 * 1.1515;
+      let time = getTimeCalc(value.hospital);
+      const hours1 = time[0];
+      const mins1 = time[1];
+      const counter = time[2];
+      var hoursvalue = "";
+      var minsValue = "";
+      if (hours1 === "" && mins1 === "") {
+        hoursvalue = 0;
+        minsValue = 15;
+      } else {
+        hoursvalue = hours1;
+        minsValue = mins1;
+      }
+
+      //Get in in kilometers
+      dist = dist * 1.609344;
+      let dist1 = dist.toFixed(2);
+      collection.dist1 = dist1;
+      collection.hoursvalue = hoursvalue;
+      collection.minsValue = minsValue;
+      collection.counter = counter;
+      collection.hospital = value.hospital;
+      collection.hours1 = hours1;
+      collection.mins1 = mins1;
+      array.push(collection);
+    });
+    array.sort((a, b) => (a.dist1 > b.dist1 ? 1 : -1));
+    return array;
+  }
+  let temp = sorting();
+  console.log("temo", temp);
+
   function estimatedTime(first, second) {
     var hms = first;
     var hms2 = second;
@@ -370,17 +257,9 @@ const MyApp = ({ navigation, route }) => {
     var minutes1 = seconds1 / 60;
     var difference = minutes - minutes1;
 
-    console.log("difference", hospitals.item);
     return difference;
   }
-
-  // const DoctorHospital = currentItems.length;
-  // const jinnahHPatient = currentItemsJinnah.length;
-  // const sheikhHPatient = currentItemsShiekh.length;
-  // const generalHPatient = currentItemsGeneral.length;
-
-  // console.log("min***", minHolder);
-
+  console.log("hospitql", hospitals);
   return (
     <KeyboardAwareScrollView
       shouldRasterizeIOS={{ x: 0, y: 0 }}
@@ -392,52 +271,57 @@ const MyApp = ({ navigation, route }) => {
             width: "100%",
 
             paddingBottom: 10,
-            // backgroundColor: "rgb(199,9,9)",
+
             margin: "auto",
             padding: 5,
-            // marginBottom: 50,
-            // flex: 7,
           }}
         >
           <Titles />
-          {/* <View>{showHospitals()}</View> */}
+
           <View>
-            {hospitals.map((value, index) => {
-              var lat1 = value.latitude;
-              var lng1 = value.longitude;
-              var lat2 = intialPosition.latitude;
-              var lng2 = intialPosition.longitude;
-              var radlat1 = (Math.PI * lat1) / 180;
-              var radlat2 = (Math.PI * lat2) / 180;
-              var radlon1 = (Math.PI * lng1) / 180;
-              var radlon2 = (Math.PI * lng2) / 180;
-              var theta = lng1 - lng2;
+            {temp.map((value, index) => {
+              // var lat1 = value.latitude;
+              // var lng1 = value.longitude;
+              // var lat2 = intialPosition.latitude;
+              // var lng2 = intialPosition.longitude;
+              // var radlat1 = (Math.PI * lat1) / 180;
+              // var radlat2 = (Math.PI * lat2) / 180;
+              // var radlon1 = (Math.PI * lng1) / 180;
+              // var radlon2 = (Math.PI * lng2) / 180;
+              // var theta = lng1 - lng2;
 
-              var radtheta = (Math.PI * theta) / 180;
-              var dist =
-                Math.sin(radlat1) * Math.sin(radlat2) +
-                Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-              dist = Math.acos(dist);
-              dist = (dist * 180) / Math.PI;
-              dist = dist * 60 * 1.1515;
-              let time = getTimeCalc(value.hospital);
-              const hours1 = time[0];
-              const mins1 = time[1];
-              const counter = time[2];
+              // var radtheta = (Math.PI * theta) / 180;
+              // var dist =
+              //   Math.sin(radlat1) * Math.sin(radlat2) +
+              //   Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+              // dist = Math.acos(dist);
+              // dist = (dist * 180) / Math.PI;
+              // dist = dist * 60 * 1.1515;
+              // let time = getTimeCalc(value.hospital);
+              // const hours1 = time[0];
+              // const mins1 = time[1];
+              // const counter = time[2];
+              // var hoursvalue = "";
+              // var minsValue = "";
+              // if (hours1 === "" && mins1 === "") {
+              //   hoursvalue = 0;
+              //   minsValue = 15;
+              // } else {
+              //   hoursvalue = hours1;
+              //   minsValue = mins1;
+              // }
 
-              //Get in in kilometers
-              dist = dist * 1.609344;
-              const container = dist.toFixed(2);
-              // object.userName = value.userName;
-              // object.dist = dist;
-
-              // array.push(object);
-              // array.sort();
+              // //Get in in kilometers
+              // dist = dist * 1.609344;
+              // let dist1 = dist.toFixed(2);
+              // array.push(dist1);
+              // let temparray = array.sort();
+              console.log("counter", value);
 
               return (
                 <View key={index}>
                   <View>
-                    {dist < 42 ? (
+                    {value.dist1 < 0.36 ? (
                       <View style={StyleSheetMethods.hospitalViewsGr}>
                         <View
                           style={{
@@ -449,7 +333,7 @@ const MyApp = ({ navigation, route }) => {
                         >
                           <View style={styles.img}>
                             <Image
-                              source={value.img}
+                              source={require("./assets/hospital.png")}
                               style={{
                                 width: 120,
                                 height: 100,
@@ -459,14 +343,18 @@ const MyApp = ({ navigation, route }) => {
                           </View>
                           <View style={styles.names}>
                             <Text style={styles.listextra3}>
-                              {value.hospital}
+                              {value.hospital.toUpperCase()}
                             </Text>
                             <Text style={styles.listextra2}>
-                              Current Patients:{counter}
+                              Current Patients:{value.counter}
                             </Text>
-                            {hours1 !== "" || mins1 !== "" ? (
+                            {value.hours1 !== "" || value.mins1 !== "" ? (
                               <Text style={styles.listextra2}>
-                                Estimated Waiting Time:{hours1}:{mins1} min
+                                Estimated Waiting Time
+                                <Text style={{ paddingLeft: 5 }}>
+                                  {value.hours1}:{value.mins1}
+                                </Text>
+                                min
                               </Text>
                             ) : (
                               <Text style={styles.listextra2}>
@@ -475,9 +363,7 @@ const MyApp = ({ navigation, route }) => {
                               </Text>
                             )}
 
-                            <Text style={styles.list2}>
-                              {dist.toFixed(2)} KM
-                            </Text>
+                            <Text style={styles.list2}>{value.dist1} KM</Text>
                           </View>
                           <View style={{ width: 90 }}>
                             <Button
@@ -486,12 +372,12 @@ const MyApp = ({ navigation, route }) => {
                                 navigation.navigate("QUEUE", {
                                   hospital: value.hospital,
                                   user: userName,
-                                  people: counter,
-                                  destination: dist,
+                                  people: value.counter,
+                                  destination: value.dist1,
                                   patientDisease: patientDisease,
                                   currentId: currentId,
-                                  estimatedHour: hours1,
-                                  estimatedmins: mins1,
+                                  estimatedHour: value.hours1,
+                                  estimatedmins: value.mins1,
                                   defaultTime: defaultTime,
                                   defaulthours: estTimeDoctorH,
                                 });
@@ -503,7 +389,7 @@ const MyApp = ({ navigation, route }) => {
                     ) : null}
                   </View>
                   <View>
-                    {dist >= 42.1 ? (
+                    {value.dist1 >= 0.37 ? (
                       <View>
                         <View style={StyleSheetMethods.hospitalViews}>
                           <View
@@ -517,7 +403,7 @@ const MyApp = ({ navigation, route }) => {
                           >
                             <View style={styles.img}>
                               <Image
-                                source={value.img}
+                                source={require("./assets/hospital.png")}
                                 style={{
                                   width: 120,
                                   height: 100,
@@ -527,14 +413,15 @@ const MyApp = ({ navigation, route }) => {
                             </View>
                             <View style={styles.names}>
                               <Text style={styles.listextra}>
-                                {value.hospital}
+                                {value.hospital.toUpperCase()}
                               </Text>
                               <Text style={styles.listextra2}>
-                                Current Patients:{counter}
+                                Current Patients:{value.counter}
                               </Text>
-                              {hours1 > 0 && mins1 !== "" ? (
+                              {value.hours1 > 0 && value.mins1 !== "" ? (
                                 <Text style={styles.listextra2}>
-                                  Estimated Waiting Time:{hours1}:{mins1} min
+                                  Estimated Waiting Time:{value.hours1}:
+                                  {value.mins1} min
                                 </Text>
                               ) : (
                                 <Text style={styles.listextra2}>
@@ -543,9 +430,7 @@ const MyApp = ({ navigation, route }) => {
                                 </Text>
                               )}
 
-                              <Text style={styles.list}>
-                                {dist.toFixed(2)} KM
-                              </Text>
+                              <Text style={styles.list}>{value.dist1} KM</Text>
                             </View>
                             <View style={{ width: 90 }}>
                               <Button
@@ -555,13 +440,14 @@ const MyApp = ({ navigation, route }) => {
                                   navigation.navigate("QUEUE", {
                                     hospital: value.hospital,
                                     user: userName,
-                                    people: counter,
-                                    destination: dist,
+                                    people: value.counter,
+                                    destination: value.dist1,
                                     patientDisease: patientDisease,
                                     currentId: currentId,
-                                    estimatedHour: hours1,
-                                    estimatedmins: mins1,
+                                    estimatedHour: value.hours1,
+                                    estimatedmins: value.mins1,
                                     defaultTime: defaultTime,
+                                    defaulthours: estTimeDoctorH,
                                   });
                                 }}
                               ></Button>
@@ -571,478 +457,6 @@ const MyApp = ({ navigation, route }) => {
                       </View>
                     ) : null}
                   </View>
-                  {/* <View>
-                    {dist < 42 ? (
-                      <View>
-                        {value.userName === "Doctors Hospital" ? (
-                          <View style={StyleSheetMethods.hospitalViewsGr}>
-                            <View
-                              style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "flex-start",
-                                alignItems: "center",
-                              }}
-                            >
-                              <View style={styles.img}>
-                                <Image
-                                  source={value.img}
-                                  style={{
-                                    width: 120,
-                                    height: 100,
-                                    justifyContent: "center",
-                                  }}
-                                />
-                              </View>
-                              <View style={styles.names}>
-                                <Text style={styles.listextra3}>
-                                  {value.userName}
-                                </Text>
-                                <Text style={styles.listextra2}>
-                                  Current Patients:{DoctorHospital}
-                                </Text>
-                                {DoctorHospital > 0 && minsD !== "" ? (
-                                  <Text style={styles.listextra2}>
-                                    Estimated Waiting Time:{estTimeDoctorH}:
-                                    {minsD} min
-                                  </Text>
-                                ) : (
-                                  <Text style={styles.listextra2}>
-                                    Estimated Waiting Time:{estTimeDoctorH}:
-                                    {defaultTime} min
-                                  </Text>
-                                )}
-
-                                <Text style={styles.list2}>
-                                  {dist.toFixed(2)} KM
-                                </Text>
-                              </View>
-                              <View style={{ width: 90 }}>
-                                <Button
-                                  title="Select"
-                                  onPress={() => {
-                                    navigation.navigate("QUEUE", {
-                                      hospital: value.userName,
-                                      user: userName,
-                                      people: DoctorHospital,
-                                      destination: dist,
-                                      patientDisease: patientDisease,
-                                      currentId: currentId,
-                                      estimatedHour: estTimeDoctorH,
-                                      estimatedmins: minsD,
-                                      defaultTime: defaultTime,
-                                    });
-                                  }}
-                                ></Button>
-                              </View>
-                            </View>
-                          </View>
-                        ) : null}
-                        {value.userName === "General Hospital Lahore" ? (
-                          <View style={StyleSheetMethods.hospitalViewsGr}>
-                            <View
-                              style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "flex-start",
-                                alignItems: "center",
-                              }}
-                            >
-                              <View style={styles.img}>
-                                <Image
-                                  source={value.img}
-                                  style={{
-                                    width: 120,
-                                    height: 100,
-                                    justifyContent: "center",
-                                  }}
-                                />
-                              </View>
-                              <View style={styles.names}>
-                                <Text style={styles.listextra3}>
-                                  {value.userName}
-                                </Text>
-                                <Text style={styles.listextra2}>
-                                  Current Patients:{generalHPatient}
-                                </Text>
-                                {generalHPatient > 0 && minsG !== "" ? (
-                                  <Text style={styles.listextra2}>
-                                    Estimated Waiting Time:{estTimeGeneralH}:
-                                    {minsG} min
-                                  </Text>
-                                ) : (
-                                  <Text style={styles.listextra2}>
-                                    Estimated Waiting Time:{estTimeGeneralH}:
-                                    {defaultTime} min
-                                  </Text>
-                                )}
-
-                                <Text style={styles.list2}>
-                                  {dist.toFixed(2)} KM
-                                </Text>
-                              </View>
-                              <View style={{ width: 90 }}>
-                                <Button
-                                  title="Select"
-                                  onPress={() => {
-                                    navigation.navigate("QUEUE", {
-                                      hospital: value.userName,
-                                      user: userName,
-                                      people: generalHPatient,
-                                      destination: dist,
-                                      patientDisease: patientDisease,
-                                      currentId: currentId,
-                                      estimatedHour: estTimeGeneralH,
-                                      estimatedmins: minsG,
-                                      defaultTime: defaultTime,
-                                    });
-                                  }}
-                                ></Button>
-                              </View>
-                            </View>
-                          </View>
-                        ) : null}
-                        {value.userName === "Jinnah Hospital" ? (
-                          <View style={StyleSheetMethods.hospitalViewsGr}>
-                            <View
-                              style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "flex-start",
-                                alignItems: "center",
-                              }}
-                            >
-                              <View style={styles.img}>
-                                <Image
-                                  source={value.img}
-                                  style={{
-                                    width: 120,
-                                    height: 100,
-                                    justifyContent: "center",
-                                  }}
-                                />
-                              </View>
-                              <View style={styles.names}>
-                                <Text style={styles.listextra3}>
-                                  {value.userName}
-                                </Text>
-                                <Text style={styles.listextra2}>
-                                  Current Patients:{jinnahHPatient}
-                                </Text>
-                                {jinnahHPatient > 0 && minsJ !== "" ? (
-                                  <Text style={styles.listextra2}>
-                                    Estimated Waiting Time:{estTimejinnah}:
-                                    {defaultTime}
-                                    min
-                                  </Text>
-                                ) : (
-                                  <Text style={styles.listextra2}>
-                                    Estimated Waiting Time:{estTimejinnah}:
-                                    {minsJ}
-                                    min
-                                  </Text>
-                                )}
-
-                                <Text style={styles.list2}>
-                                  {dist.toFixed(2)} KM
-                                </Text>
-                              </View>
-                              <View style={{ width: 90 }}>
-                                <Button
-                                  title="Select"
-                                  onPress={() => {
-                                    navigation.navigate("QUEUE", {
-                                      hospital: value.userName,
-                                      user: userName,
-                                      people: jinnahHPatient,
-                                      destination: dist,
-                                      patientDisease: patientDisease,
-                                      currentId: currentId,
-                                      estimatedHour: estTimejinnah,
-                                      estimatedmins: minsJ,
-                                      defaultTime: defaultTime,
-                                    });
-                                  }}
-                                ></Button>
-                              </View>
-                            </View>
-                          </View>
-                        ) : null}
-                      </View>
-                    ) : // }:null
-
-                    null}
-                  </View> */}
-                  {/* <View>
-                    {dist >= 42.1 ? (
-                      // {value.userName==="Doctors Hospital"?
-                      <View>
-                        {value.userName === "Doctors Hospital" ? (
-                          <View style={StyleSheetMethods.hospitalViews}>
-                            <View
-                              style={{
-                                display: "flex",
-                                // flex: 1,
-                                flexDirection: "row",
-                                justifyContent: "flex-start",
-                                alignItems: "center",
-                              }}
-                            >
-                              <View style={styles.img}>
-                                <Image
-                                  source={value.img}
-                                  style={{
-                                    width: 120,
-                                    height: 100,
-                                    justifyContent: "center",
-                                  }}
-                                />
-                              </View>
-                              <View style={styles.names}>
-                                <Text style={styles.listextra}>
-                                  {value.userName}
-                                </Text>
-                                <Text style={styles.listextra2}>
-                                  Current Patients:{DoctorHospital}
-                                </Text>
-                                {DoctorHospital > 0 && minsD !== "" ? (
-                                  <Text style={styles.listextra2}>
-                                    Estimated Waiting Time:{estTimeDoctorH}:
-                                    {minsD} min
-                                  </Text>
-                                ) : (
-                                  <Text style={styles.listextra2}>
-                                    Estimated Waiting Time:{estTimeDoctorH}:
-                                    {defaultTime} min
-                                  </Text>
-                                )}
-
-                                <Text style={styles.list}>
-                                  {dist.toFixed(2)} KM
-                                </Text>
-                              </View>
-                              <View style={{ width: 90 }}>
-                                <Button
-                                  title="Select"
-                                  disabled={true}
-                                  onPress={() => {
-                                    navigation.navigate("QUEUE", {
-                                      hospital: value.userName,
-                                      user: userName,
-                                      people: DoctorHospital,
-                                      destination: dist,
-                                      patientDisease: patientDisease,
-                                      currentId: currentId,
-                                      estimatedHour: estTimeDoctorH,
-                                      estimatedmins: minsD,
-                                      defaultTime: defaultTime,
-                                    });
-                                  }}
-                                ></Button>
-                              </View>
-                            </View>
-                          </View>
-                        ) : null}
-                        {value.userName === "General Hospital Lahore" ? (
-                          <View style={StyleSheetMethods.hospitalViews}>
-                            <View
-                              style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "flex-start",
-                                alignItems: "center",
-                              }}
-                            >
-                              <View style={styles.img}>
-                                <Image
-                                  source={value.img}
-                                  style={{
-                                    width: 120,
-                                    height: 100,
-                                    justifyContent: "center",
-                                  }}
-                                />
-                              </View>
-                              <View style={styles.names}>
-                                <Text style={styles.listextra}>
-                                  {value.userName}
-                                </Text>
-                                <Text style={styles.listextra2}>
-                                  Current Patients:{generalHPatient}
-                                </Text>
-                                {generalHPatient > 0 && minsG !== "" ? (
-                                  <Text style={styles.listextra2}>
-                                    Estimated Wating Time:{estTimeGeneralH}:
-                                    {minsG} min
-                                  </Text>
-                                ) : (
-                                  <Text style={styles.listextra2}>
-                                    Estimated Wating Time:{estTimeGeneralH}:
-                                    {defaultTime} min
-                                  </Text>
-                                )}
-
-                                <Text style={styles.list}>
-                                  {dist.toFixed(2)} KM
-                                </Text>
-                              </View>
-                              <View style={{ width: 90 }}>
-                                <Button
-                                  title="Select"
-                                  disabled={true}
-                                  onPress={() => {
-                                    navigation.navigate("QUEUE", {
-                                      hospital: value.userName,
-                                      user: userName,
-                                      people: generalHPatient,
-                                      destination: dist,
-                                      patientDisease: patientDisease,
-                                      currentId: currentId,
-                                      estimatedHour: estTimeGeneralH,
-                                      estimatedmins: minsG,
-                                      defaultTime: defaultTime,
-                                    });
-                                  }}
-                                ></Button>
-                              </View>
-                            </View>
-                          </View>
-                        ) : null}
-                        {value.userName === "Sheikh Zaid" ? (
-                          <View style={StyleSheetMethods.hospitalViews}>
-                            <View
-                              style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "flex-start",
-                                alignItems: "center",
-                              }}
-                            >
-                              <View style={styles.img}>
-                                <Image
-                                  source={value.img}
-                                  style={{
-                                    width: 120,
-                                    height: 100,
-                                    justifyContent: "center",
-                                  }}
-                                />
-                              </View>
-                              <View style={styles.names}>
-                                <Text style={styles.listextra}>
-                                  {value.userName}
-                                </Text>
-                                <Text style={styles.listextra2}>
-                                  Current Patients:{sheikhHPatient}
-                                </Text>
-                                {sheikhHPatient > 0 && minsS !== "" ? (
-                                  <Text style={styles.listextra2}>
-                                    Estimated Wating Time:{estTimeSheikhH}:
-                                    {minsS} min
-                                  </Text>
-                                ) : (
-                                  <Text style={styles.listextra2}>
-                                    Estimated Wating Time:{estTimeSheikhH}:
-                                    {defaultTime}min
-                                  </Text>
-                                )}
-
-                                <Text style={styles.list}>
-                                  {dist.toFixed(2)} KM
-                                </Text>
-                              </View>
-                              <View style={{ width: 90 }}>
-                                <Button
-                                  title="Select"
-                                  disabled={true}
-                                  onPress={() => {
-                                    navigation.navigate("QUEUE", {
-                                      hospital: value.userName,
-                                      user: userName,
-                                      people: sheikhHPatient,
-                                      destination: dist,
-                                      patientDisease: patientDisease,
-                                      currentId: currentId,
-                                      estimatedHour: estTimeSheikhH,
-                                      estimatedmins: minsS,
-                                      defaultTime: defaultTime,
-                                    });
-                                  }}
-                                ></Button>
-                              </View>
-                            </View>
-                          </View>
-                        ) : null}
-                        {value.userName === "Jinnah Hospital" ? (
-                          <View style={StyleSheetMethods.hospitalViews}>
-                            <View
-                              style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "flex-start",
-                                alignItems: "center",
-                              }}
-                            >
-                              <View style={styles.img}>
-                                <Image
-                                  source={value.img}
-                                  style={{
-                                    width: 120,
-                                    height: 100,
-                                    justifyContent: "center",
-                                  }}
-                                />
-                              </View>
-                              <View style={styles.names}>
-                                <Text style={styles.listextra}>
-                                  {value.userName}
-                                </Text>
-                                <Text style={styles.listextra2}>
-                                  Current Patients:{jinnahHPatient}
-                                </Text>
-                                {jinnahHPatient > 0 && minsJ !== "" ? (
-                                  <Text style={styles.listextra2}>
-                                    Estimated Wating Time:{estTimejinnah}:
-                                    {minsJ} min
-                                  </Text>
-                                ) : (
-                                  <Text style={styles.listextra2}>
-                                    Estimated Wating Time:{estTimejinnah}:
-                                    {defaultTime} min
-                                  </Text>
-                                )}
-
-                                <Text style={styles.list}>
-                                  {dist.toFixed(2)} KM
-                                </Text>
-                              </View>
-                              <View style={{ width: 90 }}>
-                                <Button
-                                  title="Select"
-                                  disabled={true}
-                                  onPress={() => {
-                                    navigation.navigate("QUEUE", {
-                                      hospital: value.userName,
-                                      user: userName,
-                                      people: jinnahHPatient,
-                                      destination: dist,
-                                      patientDisease: patientDisease,
-                                      currentId: currentId,
-                                      estimatedHour: estTimejinnah,
-                                      estimatedmins: minsJ,
-                                      defaultTime: defaultTime,
-                                    });
-                                  }}
-                                ></Button>
-                              </View>
-                            </View>
-                          </View>
-                        ) : null}
-                      </View>
-                    ) : // }:null
-
-                    null}
-                  </View> */}
                 </View>
               );
             })}
