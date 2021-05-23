@@ -35,9 +35,9 @@ const CountDownTimer = ({
   hospitalname,
 }) => {
   const [timers, setTimers] = useState(10);
-  const [mins, setMins] = useState(58);
+  const [mins, setMins] = useState();
   const [secs, setSecs] = useState(0);
-  const [hrs, setHrs] = useState(2);
+  const [hrs, setHrs] = useState();
   const [getval, setVal] = useState();
   const [isActive, setisActive] = useState(true);
   console.log("userid", userId);
@@ -46,10 +46,21 @@ const CountDownTimer = ({
   const currentId = currentdata.filter((item) => {
     item.id === userId;
   });
-  console.log("foundyourid", currentId);
   var rhourse = Math.floor(hours);
   var minutes = (hours - rhourse) * 60;
   var rminutes = Math.round(minutes);
+
+  //   setMins(estimatedmins);
+  const timeSetting = () => {
+    if (estimatedHour === "" && estimatedmins === "") {
+      setMins(defaultTime);
+    } else {
+      setHrs(estimatedHour);
+      setMins(estimatedmins);
+    }
+  };
+
+  console.log("idddddddddddd", getval);
 
   const alertcreated = () => {
     Alert.alert(
@@ -74,37 +85,31 @@ const CountDownTimer = ({
 
     const currentId = json.filter(
       (filterItems) => filterItems.queueState === "in-Process"
-      // filterItems.hospital === "Doctors Hospital" &&
     );
-    console.log("thisisdata", currentId);
+
     currentId.map((item) => {
       if (item.id === userId) {
-        console.log("cut", item.id);
         setVal(item.id);
       }
     });
   };
+  if (isActive === true) {
+    timeSetting();
+    setisActive(false);
+  }
 
   useEffect(() => {
-    // setHrs(rhourse);
-    // setMins(rminutes);
-
     if (destinationalert > 50) {
       alertcreated();
-      // ModalAlert();
-      // removeQueue();
     }
 
-    // removeQueue();
-
     if (hrs === 0 && mins === 0 && secs === 0) {
-      // clearInterval(interval);
       onProceed();
     }
 
     const timerId = setInterval(() => {
       console.log("timer", secs % 3);
-      if (mins % 3 === 0) {
+      if (secs % 10 === 0) {
         console.log("runnded");
         fetchData();
       }
@@ -142,13 +147,13 @@ const CountDownTimer = ({
       <View style={StyleSheetMethods.text} key={people}>
         <Text style={StyleSheetMethods.viewsText}>
           {people} {item}
-          {people > 0 && estimatedmins !== "" ? (
+          {mins !== "" ? (
             <Text style={StyleSheetMethods.timers}>
-              {estimatedHour}:{estimatedmins} min
+              {hrs}:{mins}:{secs} min
             </Text>
           ) : (
             <Text style={StyleSheetMethods.timers}>
-              {defaulthours}:{defaultTime} min
+              {mins}:{secs} min
             </Text>
           )}
         </Text>

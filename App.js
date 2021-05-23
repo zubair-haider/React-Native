@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import Forms from "./forms/SelectForms";
 import MyApp from "./GetLocation";
 import Charts from "./Charts/React_native_chart";
-import SearchLocation from "./Charts/location";
+import SearchLocation from "./Charts/React_native_chart";
 //import Splash from "./forms/splash";
 import ComponentsHolder from "./ComponentsHolder";
 import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";

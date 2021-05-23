@@ -126,7 +126,7 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
     const notes = "yes i am in ";
     // const  = "30/3/2021";
     // collection.id = id;
-    console.log("added t0 que", startingTime);
+    console.log("added t0 que", queueState);
     console.log("added t0 que", date);
 
     collection.hospital = hospital;
@@ -228,12 +228,14 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
       </View>
       <View key="3">
         {complete.length > 0
-          ? complete.map((item) => (
-              <Complete
-                item={item.completeText}
-                onReset={onDecline}
-                onAddQueues={onUpdateQueue}
-              />
+          ? complete.map((item, index) => (
+              <View key={index}>
+                <Complete
+                  item={item.completeText}
+                  onReset={onDecline}
+                  onAddQueues={onUpdateQueue}
+                />
+              </View>
             ))
           : null}
       </View>
