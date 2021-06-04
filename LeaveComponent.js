@@ -1,5 +1,7 @@
-import React, { Component, useState, useEffect } from "react";
-//import Modal from "react-native-modal";
+import React, { Component, useState, useEffect, useRef } from "react";
+import Constants from "expo-constants";
+import * as Notifications from "expo-notifications";
+import Modal from "react-native-modal";
 import ModalAlert from "./alert";
 //import LinearGradient from "react-native-linear-gradient";
 import StyleSheetMethods from "./Styles/StyleSheet";
@@ -9,18 +11,27 @@ import {
   Text,
   View,
   Alert,
-  Modal,
+  //Modal,
   TouchableOpacity,
   Button,
   SafeAreaView,
+  Platform,
 } from "react-native";
-import ComponentsHolder from "./ComponentsHolder";
+//import ComponentsHolder from "./ComponentsHolder";
 import { min } from "react-native-reanimated";
+import { controllers } from "chart.js";
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 const CountDownTimer = ({
   item,
   id,
-  onDeclineLeave,
+  updateQueue,
   onReset,
   onProceed,
   removeQueue,
@@ -34,6 +45,11 @@ const CountDownTimer = ({
   defaulthours,
   hospitalname,
 }) => {
+  const [expoPushToken, setExpoPushToken] = useState("");
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
   const [timers, setTimers] = useState(10);
   const [mins, setMins] = useState();
   const [secs, setSecs] = useState(0);
@@ -41,14 +57,14 @@ const CountDownTimer = ({
   const [getval, setVal] = useState();
   const [isActive, setisActive] = useState(true);
   console.log("userid", userId);
-  const timerHolder = timers * people;
-  const hours = timerHolder / 60;
-  const currentId = currentdata.filter((item) => {
-    item.id === userId;
-  });
-  var rhourse = Math.floor(hours);
-  var minutes = (hours - rhourse) * 60;
-  var rminutes = Math.round(minutes);
+  // const timerHolder = timers * people;
+  // const hours = timerHolder / 60;
+  // // const currentId = currentdata.filter((item) => {
+  // //   item.id === userId;
+  // // });
+  // var rhourse = Math.floor(hours);
+  // var minutes = (hours - rhourse) * 60;
+  // var rminutes = Math.round(minutes);
 
   //   setMins(estimatedmins);
   const timeSetting = () => {
@@ -61,6 +77,9 @@ const CountDownTimer = ({
   };
 
   console.log("idddddddddddd", getval);
+  // console.log("hrs", hrs);
+  // console.log("mins", mins);
+  // console.log("secs", secs);
 
   const alertcreated = () => {
     Alert.alert(
@@ -80,7 +99,7 @@ const CountDownTimer = ({
   };
 
   const fetchData = async () => {
-    const response = await fetch(`http://127.0.0.1:3000/queues`);
+    const response = await fetch(`http://192.168.2.71:3000/queues`);
     const json = await response.json();
 
     const currentId = json.filter(
@@ -99,12 +118,38 @@ const CountDownTimer = ({
   }
 
   useEffect(() => {
-    if (destinationalert > 50) {
+    //registerForPushNotificationsAsync();
+    let isMounted = true;
+    if (getval === userId) {
+      schedulePushNotification();
+    }
+
+    if (isMounted) {
+      registerForPushNotificationsAsync().then((token) =>
+        setExpoPushToken(token)
+      );
+    }
+
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        setNotification(notification);
+      });
+
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log(response);
+      });
+    if (destinationalert > 50 && mins % 10 === 0) {
       alertcreated();
     }
 
+    if (mins === 0 && secs === 1) {
+      onProceed();
+      updateQueue();
+    }
     if (hrs === 0 && mins === 0 && secs === 0) {
       onProceed();
+      updateQueue();
     }
 
     const timerId = setInterval(() => {
@@ -115,19 +160,31 @@ const CountDownTimer = ({
       }
 
       if (secs <= 0) {
-        if (mins <= 0 && hrs <= 0) console.log("called");
-        else {
+        if (mins <= 0 && hrs <= 0) {
+          onProceed();
+          console.log("called");
+        } else {
           setMins((m) => m - 1);
           setSecs(59);
           if (mins <= 0) {
-            setHrs((h) => h - 1);
+            if (hrs > 0) {
+              setHrs((h) => h - 1);
+            }
+
             setMins(59);
             setSecs(59);
           }
         }
       } else setSecs((s) => s - 1);
     }, 1000);
-    return () => clearInterval(timerId);
+    return () => {
+      clearInterval(timerId);
+      isMounted = false;
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
   }, [secs, mins, hrs]);
 
   return (
@@ -146,11 +203,18 @@ const CountDownTimer = ({
     >
       <View style={StyleSheetMethods.text} key={people}>
         <Text style={StyleSheetMethods.viewsText}>
-          {people} {item}
+          <Text style={StyleSheetMethods.timerss}>{people}</Text>
+          {item}
           {mins !== "" ? (
-            <Text style={StyleSheetMethods.timers}>
-              {hrs}:{mins}:{secs} min
-            </Text>
+            mins !== "" && hrs !== "" ? (
+              <Text style={StyleSheetMethods.timers}>
+                {hrs}:{mins}:{secs} min
+              </Text>
+            ) : (
+              <Text style={StyleSheetMethods.timers}>
+                {mins}:{secs} min
+              </Text>
+            )
           ) : (
             <Text style={StyleSheetMethods.timers}>
               {mins}:{secs} min
@@ -161,6 +225,7 @@ const CountDownTimer = ({
       <View>
         {getval === userId ? (
           <View>
+            {console.log("yyyyyyyyyy")}
             <ModalAlert onProceed={onProceed} />
           </View>
         ) : null}
@@ -178,7 +243,7 @@ const CountDownTimer = ({
           <TouchableOpacity
             disabled={true}
             onPress={() => {
-              onDeclineLeave();
+              updateQueue();
               // removeQueue();
             }}
           >
@@ -212,3 +277,45 @@ const CountDownTimer = ({
   );
 };
 export default CountDownTimer;
+async function schedulePushNotification() {
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "You've got mail! 📬",
+      body: "Here is the notification body",
+      data: { data: "goes here" },
+    },
+    trigger: { seconds: 2 },
+  });
+}
+
+async function registerForPushNotificationsAsync() {
+  let token;
+  if (Constants.isDevice) {
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== "granted") {
+      alert("Failed to get push token for push notification!");
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+  } else {
+    alert("Must use physical device for Push Notifications");
+  }
+
+  if (Platform.OS === "android") {
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
+  }
+
+  return token;
+}

@@ -1,12 +1,14 @@
 import { StatusBar } from "expo-status-bar";
-
+import { useRoute, useFocusEffect } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import StyleSheetMethods from "./Styles/StyleSheet";
 import axios from "axios";
 import ComponentsHolder from "./ComponentsHolder";
 import { useFonts, Inter_900Black } from "expo-font";
 import { PermissionsAndroid, ACCESS_FINE_LOCATION } from "react-native";
+import BackButtonDemo from "./Login";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+// import estimatedTime from "./helperFunctions";
 import {
   Image,
   StyleSheet,
@@ -16,6 +18,8 @@ import {
   Button,
   SafeAreaView,
   Dimensions,
+  BackHandler,
+  ToastAndroid,
 } from "react-native";
 
 const { width, height } = Dimensions.get("window");
@@ -25,10 +29,10 @@ const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-//const Stack = createStackNavigator();
-
 const MyApp = ({ navigation, route }) => {
   const { userName, patientDisease } = route.params;
+  console.log("username", userName);
+  console.log("disease", patientDisease);
   var hoursHolder = "";
   var minHolder = "";
 
@@ -42,7 +46,7 @@ const MyApp = ({ navigation, route }) => {
     latitudeDelta: 0,
     longitudeDelta: 0,
   });
-  const [isLoading, setIsLoading] = useState(true);
+  const [isEnabled, setEnableDisbale] = useState(false);
   const [defaultTime, setDefault] = useState(15);
 
   const [getPatient, setPatitent] = useState([]);
@@ -56,8 +60,8 @@ const MyApp = ({ navigation, route }) => {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          title: "Hospital Management",
-          message: "App access to your location ",
+          // title: "Hospital Management",
+          // message: "App access to your location ",
         }
       );
       console.log("hrfgfg", granted);
@@ -76,12 +80,35 @@ const MyApp = ({ navigation, route }) => {
       console.log("hrfgfg", err);
     }
   }
+
+  // useEffect(() => {
+  //   const backAction = () => {
+  //     Alert.alert("Hold on!", "Are you sure you want to go back?", [
+  //       {
+  //         text: "Cancel",
+  //         onPress: () => null,
+  //         style: "cancel",
+  //       },
+  //       { text: "YES", onPress: () => BackHandler.exitApp() },
+  //     ]);
+  //     return true;
+  //   };
+
+  //   const backHandler = BackHandler.addEventListener(
+  //     "hardwareBackPress",
+  //     backAction
+  //   );
+
+  //   return () => backHandler.remove();
+  // }, []);
+
+  // let response = estimatedTime(first, second);
   const fetchData = async () => {
     try {
-      const result = await axios("http://127.0.0.1:3000/queues");
+      const result = await axios("http://192.168.2.71:3000/queues");
       setPatitent(result.data);
-      const response = await fetch("http://192.168.1.110:3000/allhospital");
-      const json = await response.json();
+      const response = await axios("http://192.168.2.71:3000/allhospital");
+      const json = await response.data;
       setHospital(json);
 
       console.log("data+++++", json);
@@ -92,6 +119,7 @@ const MyApp = ({ navigation, route }) => {
 
   useEffect(() => {
     fetchData();
+
     requestLocationPermission();
     const location = navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -161,13 +189,19 @@ const MyApp = ({ navigation, route }) => {
         value.queueState === "Waiting"
       ) {
         counter++;
+        console.log("counter", counter);
       }
       if (
         value.queueState === "in-Process" &&
         value.hospital === hospitalname &&
         preDate === currentDate
       ) {
-        if (value.processTime !== "" && value.startingTime !== "") {
+        if (
+          value.processTime !== "" &&
+          value.startingTime !== "" &&
+          value.processTime !== null &&
+          value.startingTime !== null
+        ) {
           const timevalue = estimatedTime(
             value.processTime,
             value.startingTime
@@ -176,7 +210,7 @@ const MyApp = ({ navigation, route }) => {
           const numbers = array1.reduce(getSum, 0);
           const division = numbers / array1.length;
           const result = division.toFixed(0);
-          // console.log("result++++", result);
+
           if (result > 59) {
             const hours = result / 60;
             var rhourse = Math.floor(hours);
@@ -244,7 +278,10 @@ const MyApp = ({ navigation, route }) => {
     return array;
   }
   let temp = sorting();
-  console.log("temo", temp);
+  // console.log("temo", temp);
+  function EnableDisabel() {
+    setEnableDisbale(true);
+  }
 
   function estimatedTime(first, second) {
     var hms = first;
@@ -277,51 +314,15 @@ const MyApp = ({ navigation, route }) => {
           }}
         >
           <Titles />
-
+          {/* <BackButtonDemo /> */}
           <View>
             {temp.map((value, index) => {
-              // var lat1 = value.latitude;
-              // var lng1 = value.longitude;
-              // var lat2 = intialPosition.latitude;
-              // var lng2 = intialPosition.longitude;
-              // var radlat1 = (Math.PI * lat1) / 180;
-              // var radlat2 = (Math.PI * lat2) / 180;
-              // var radlon1 = (Math.PI * lng1) / 180;
-              // var radlon2 = (Math.PI * lng2) / 180;
-              // var theta = lng1 - lng2;
-
-              // var radtheta = (Math.PI * theta) / 180;
-              // var dist =
-              //   Math.sin(radlat1) * Math.sin(radlat2) +
-              //   Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-              // dist = Math.acos(dist);
-              // dist = (dist * 180) / Math.PI;
-              // dist = dist * 60 * 1.1515;
-              // let time = getTimeCalc(value.hospital);
-              // const hours1 = time[0];
-              // const mins1 = time[1];
-              // const counter = time[2];
-              // var hoursvalue = "";
-              // var minsValue = "";
-              // if (hours1 === "" && mins1 === "") {
-              //   hoursvalue = 0;
-              //   minsValue = 15;
-              // } else {
-              //   hoursvalue = hours1;
-              //   minsValue = mins1;
-              // }
-
-              // //Get in in kilometers
-              // dist = dist * 1.609344;
-              // let dist1 = dist.toFixed(2);
-              // array.push(dist1);
-              // let temparray = array.sort();
-              console.log("counter", value);
+              // console.log("counter", value);
 
               return (
                 <View key={index}>
                   <View>
-                    {value.dist1 < 0.36 ? (
+                    {value.dist1 < 8500 ? (
                       <View style={StyleSheetMethods.hospitalViewsGr}>
                         <View
                           style={{
@@ -335,7 +336,7 @@ const MyApp = ({ navigation, route }) => {
                             <Image
                               source={require("./assets/hospital.png")}
                               style={{
-                                width: 120,
+                                width: 100,
                                 height: 100,
                                 justifyContent: "center",
                               }}
@@ -348,6 +349,7 @@ const MyApp = ({ navigation, route }) => {
                             <Text style={styles.listextra2}>
                               Current Patients:{value.counter}
                             </Text>
+                            <Text></Text>
                             {value.hours1 !== "" || value.mins1 !== "" ? (
                               <Text style={styles.listextra2}>
                                 Estimated Waiting Time
@@ -368,7 +370,10 @@ const MyApp = ({ navigation, route }) => {
                           <View style={{ width: 90 }}>
                             <Button
                               title="Select"
+                              disabled={isEnabled}
                               onPress={() => {
+                                EnableDisabel();
+
                                 navigation.navigate("QUEUE", {
                                   hospital: value.hospital,
                                   user: userName,
@@ -389,7 +394,7 @@ const MyApp = ({ navigation, route }) => {
                     ) : null}
                   </View>
                   <View>
-                    {value.dist1 >= 0.37 ? (
+                    {value.dist1 >= 8501 ? (
                       <View>
                         <View style={StyleSheetMethods.hospitalViews}>
                           <View
@@ -595,7 +600,7 @@ const styles = {
     color: "black",
   },
   img: {
-    width: "40%",
+    // width: "40%",
   },
   names: {
     width: "30%",

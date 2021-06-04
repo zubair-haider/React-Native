@@ -4,6 +4,7 @@ import React, { Component, useState, useEffect, useRef } from "react";
 //import { Form, Input, Button, Checkbox } from "antd-mobile";
 import ValidationComponent from "react-native-form-validator";
 import Chart from "../Charts/React_native_chart";
+import Notification from "../notification";
 import SearchLocation from "../Charts/location";
 import {
   Text,
@@ -16,11 +17,13 @@ import {
   Platform,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+//import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import { text } from "@fortawesome/fontawesome-svg-core";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const Forms = ({ navigation }) => {
   // const inputRef = useRef(null);
+  const [getData, SetData] = useState("");
   var currentdate = new Date();
   var getCurrentTime =
     "Last Sync: " +
@@ -29,14 +32,8 @@ const Forms = ({ navigation }) => {
     (currentdate.getMonth() + 1) +
     "/" +
     currentdate.getFullYear();
-  //+
-  // " @ " +
-  // currentdate.getHours() +
-  // ":" +
-  // currentdate.getMinutes() +
-  // ":" +
-  // currentdate.getSeconds();
   console.log("date:", getCurrentTime);
+  const [dataValid, setDataValid] = useState("");
   const [checkdisease, setdisease] = useState({
     disease: "",
     errordisease: "",
@@ -67,7 +64,18 @@ const Forms = ({ navigation }) => {
       // data: data,
     });
     console.log("response  post= ", response);
-    // alert("called");
+    if (response) {
+      setDataValid("");
+      setdisease({ disease: "" });
+      setAge({ age: "" });
+      setGender({ gender: "" });
+      setContact({ contact: "" });
+      setcheckName({ name: "" });
+      navigation.navigate("UserList", {
+        userName: checkName.name,
+        patientDisease: checkdisease.disease,
+      });
+    }
   };
   function formatDate(date) {
     var d = new Date(date),
@@ -80,7 +88,23 @@ const Forms = ({ navigation }) => {
 
     return [year, month, day].join("-");
   }
+  const fetchData = async () => {
+    try {
+      const result = await axios("http://192.168.2.71:3000/detail");
+      console.log("queuesdata+++++", result);
+      SetData(result.data);
+      // setPatitent(result.data);
+      // const response = await fetch("http://192.168.2.71:3000/queues");
+      // const json = await response.json();
+      // setHospital(json);
+
+      // console.log("data+++++", json);
+    } catch (error) {
+      console.log("errrrrr0:", error);
+    }
+  };
   useEffect(() => {
+    fetchData();
     const newDate = new Date();
     const me = formatDate(newDate);
     console.log("calledcccc", me);
@@ -94,41 +118,53 @@ const Forms = ({ navigation }) => {
 
     let isValid = namecheck.test(checkName.name);
     let numberValid = numbercheck.test(checkContact.contact);
-    let diseaseValid = diseaseCheck.test(checkdisease.disease);
+    let diseaseValid = namecheck.test(checkdisease.disease);
     let genderValid = gender.test(checkGender.gender);
+    let msg = "";
+    getData.map((value, index) => {
+      if (value.phone === checkContact.contact) {
+        msg = "matched";
+      }
+    });
 
-    if (!isValid || checkName.name == "") {
+    if (!isValid || checkName.name === "") {
       setcheckName({ errorMsg: "* Name required" });
       return false;
     }
-    if (!numberValid || checkContact.contact == "") {
+    if (!numberValid || checkContact.contact === "") {
       setContact({ errorcontact: "* Phone# required" });
       return false;
     }
-    if (!diseaseValid || checkdisease.disease == "") {
+    if (!diseaseValid || checkdisease.disease === "") {
       setdisease({ errordisease: "* required" });
+      return false;
     }
-    if (checkAge.age < 0 || checkAge.age > 120 || checkAge.age == "") {
+    if (checkAge.age < 0 || checkAge.age > 120 || checkAge.age === "") {
       setAge({ errorage: "*Age required" });
       return false;
     }
-    if (!genderValid || checkGender.gender == "") {
+    if (!genderValid || checkGender.gender === "") {
       setGender({ errorgender: "* Gender required" });
       return false;
-    } else {
-      navigation.navigate("HOSPITALS LIST", {
-        userName: checkName.name,
-        patientDisease: checkdisease.disease,
-      });
     }
-    collection.name = checkName.name;
-    collection.phone = checkContact.contact;
-    collection.disease = checkdisease.disease;
-    collection.age = checkAge.age;
-    collection.gender = checkGender.gender;
+    if (msg !== "") {
+      setDataValid("You are Already registered Please go to Login Page");
+      return false;
+    } else {
+      collection.name = checkName.name;
+      collection.phone = checkContact.contact;
+      collection.disease = checkdisease.disease;
+      collection.age = checkAge.age;
+      collection.gender = checkGender.gender;
 
-    var postApiUrl = "http://127.0.0.1:3000/detail"; //192.168.1.107
-    postApiCall(postApiUrl, collection);
+      var postApiUrl = "http://192.168.2.71:3000/detail"; //192.168.1.107
+      postApiCall(postApiUrl, collection);
+    }
+    // navigation.navigate("UserList", {
+    //   userName: checkName.name,
+    //   patientDisease: checkdisease.disease,
+    // });
+
     // getApiCall(getUrl, collection);
     // console.log("collection", collection);
   };
@@ -151,9 +187,25 @@ const Forms = ({ navigation }) => {
         >
           Welcome!
         </Text>
+        {/* <Notification /> */}
+
         <Text style={{ fontWeight: "bold", fontSize: 15, color: "#3fb5bf" }}>
           Please Fill this Form to Register!
         </Text>
+        {dataValid !== "" ? (
+          <Text
+            style={{
+              fontWeight: "bold",
+              fontSize: 15,
+              padding: 10,
+              marginTop: 10,
+              color: "rgb(255,5,5)",
+              backgroundColor: "white",
+            }}
+          >
+            *{dataValid}*
+          </Text>
+        ) : null}
       </View>
       <View style={styles.formsFileds}>
         <View>
@@ -170,7 +222,10 @@ const Forms = ({ navigation }) => {
               value={checkName.name}
               style={{
                 paddingHorizontal: 10,
-                color: "black",
+                color: "#6e6464",
+                fontWeight: "bold",
+                width: 300,
+
                 // outline: "none"
               }}
               placeholder="Enter Patient Name"
@@ -196,6 +251,9 @@ const Forms = ({ navigation }) => {
               style={{
                 paddingLeft: 10,
                 color: "black",
+                color: "#6e6464",
+                fontWeight: "bold",
+                width: 300,
                 // outline: "none",
                 // placeholder: "white",
               }}
@@ -219,7 +277,9 @@ const Forms = ({ navigation }) => {
               value={checkdisease.disease}
               style={{
                 paddingLeft: 10,
-                color: "black",
+                color: "#6e6464",
+                fontWeight: "bold",
+                width: 300,
                 //  outline: "none"
               }}
               placeholder="Enter Patient Disease"
@@ -233,6 +293,7 @@ const Forms = ({ navigation }) => {
           <Text style={styles.text}>Age:</Text>
           <View style={styles.views}>
             <FontAwesome name="user-o" color="#05375a" size={20} />
+
             <TextInput
               placeholderTextColor="#6e6464"
               keyboardType="numeric"
@@ -243,7 +304,9 @@ const Forms = ({ navigation }) => {
               value={checkAge.age}
               style={{
                 paddingLeft: 10,
-                color: "black",
+                color: "#6e6464",
+                fontWeight: "bold",
+                width: 300,
                 //  outline: "none"
               }}
               placeholder="Enter Age"
@@ -266,7 +329,9 @@ const Forms = ({ navigation }) => {
               value={checkGender.gender}
               style={{
                 paddingLeft: 10,
-                color: "black",
+                color: "#6e6464",
+                fontWeight: "bold",
+                width: 300,
                 // outline: "none",
               }}
               placeholder="Enter Gender"
@@ -280,6 +345,26 @@ const Forms = ({ navigation }) => {
               {checkGender.errorgender}
             </Text>
           </View>
+        </View>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignContent: "center",
+            justifyContent: "center",
+            paddingTop: 10,
+          }}
+        >
+          <Text style={{ color: "#6e6464", fontWeight: "bold" }}>
+            Already Registered?
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("LOGIN");
+            }}
+          >
+            <Text style={styles.forgot_button_reg}>Login Here</Text>
+          </TouchableOpacity>
         </View>
         <View
           style={{
@@ -330,6 +415,13 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingHorizontal: 20,
     paddingVertical: 30,
+  },
+  forgot_button_reg: {
+    height: 30,
+    marginBottom: 30,
+    paddingLeft: 5,
+    fontWeight: "bold",
+    color: "red",
   },
   submitButton: {
     backgroundColor: "#EAF1F2",
