@@ -415,6 +415,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingHorizontal: 20,
     paddingVertical: 30,
+
+    // justifyContent: "center",
+    // alignContent: "center",
+    margin: "auto",
   },
   forgot_button_reg: {
     height: 30,

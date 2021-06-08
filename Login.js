@@ -10,13 +10,14 @@ import {
   Button,
   TouchableOpacity,
 } from "react-native";
+import UserList from "./UserQueueList";
 //import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const Login = ({ navigation, route }) => {
   const [number, setNumber] = useState("");
   const [errorNumber, SetErrorNumber] = useState("");
   const [errorMsg, SetErrorMsg] = useState("");
-  const [getPatient, setPatitent] = useState("");
+  const [getPatient, setPatitent] = useState([]);
   const [getHospital, setHospital] = useState("");
 
   const fetchData = async () => {
@@ -37,23 +38,32 @@ const Login = ({ navigation, route }) => {
     fetchData();
   }, []);
 
-  function FindUser() {
+  function findUser() {
     let numbercheck = /^[0-9()-]+$/;
     let numberValid = numbercheck.test(number);
-    let msg = "";
+
     getPatient.map((value, index) => {
       console.log("patient++++", value);
       if (value.phone !== number) {
         SetErrorMsg("Number Not Registered");
       }
+
       if (value.phone === number) {
         const currentUser = getHospital.filter(
           (item, index) => value.name === item.user
         );
-        console.log("******", currentUser);
-        currentUser.map((item, index) => {
+        if (currentUser.length === 0) {
+          console.log("runned");
           navigation.navigate("UserList", {
             user: value.name,
+            patientDisease: value.disease,
+          });
+        }
+
+        console.log("******0000", currentUser);
+        currentUser.map((item, index) => {
+          navigation.navigate("UserList", {
+            user: item.user,
             patientDisease: value.disease,
             hospital: item.hospital,
             userQueueState: item.queueState,
@@ -67,14 +77,7 @@ const Login = ({ navigation, route }) => {
       SetErrorMsg("Enter Valid Number");
 
       return false;
-    } else {
-      // navigation.navigate("HOSPITALS LIST", {});
     }
-
-    // const patient = getPatient.filter((value) => value.phone === number);
-    // patient.map((value, index) => {
-    //   i;
-    // });
   }
 
   return (
@@ -105,7 +108,12 @@ const Login = ({ navigation, route }) => {
         />
       </View>
 
-      <TouchableOpacity style={styles.loginBtn} onPress={FindUser}>
+      <TouchableOpacity
+        style={styles.loginBtn}
+        onPress={() => {
+          findUser();
+        }}
+      >
         <Text style={styles.loginText}>LOGIN</Text>
       </TouchableOpacity>
       <View style={{ display: "flex", flexDirection: "row" }}>

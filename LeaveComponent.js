@@ -56,17 +56,9 @@ const CountDownTimer = ({
   const [hrs, setHrs] = useState();
   const [getval, setVal] = useState();
   const [isActive, setisActive] = useState(true);
+  const [pushNotificaton, setPushNotificatoin] = useState(false);
   console.log("userid", userId);
-  // const timerHolder = timers * people;
-  // const hours = timerHolder / 60;
-  // // const currentId = currentdata.filter((item) => {
-  // //   item.id === userId;
-  // // });
-  // var rhourse = Math.floor(hours);
-  // var minutes = (hours - rhourse) * 60;
-  // var rminutes = Math.round(minutes);
 
-  //   setMins(estimatedmins);
   const timeSetting = () => {
     if (estimatedHour === "" && estimatedmins === "") {
       setMins(defaultTime);
@@ -99,7 +91,7 @@ const CountDownTimer = ({
   };
 
   const fetchData = async () => {
-    const response = await fetch(`http://192.168.2.71:3000/queues`);
+    const response = await fetch(`http://127.0.0.1:3000/queues`);
     const json = await response.json();
 
     const currentId = json.filter(
@@ -120,8 +112,9 @@ const CountDownTimer = ({
   useEffect(() => {
     //registerForPushNotificationsAsync();
     let isMounted = true;
-    if (getval === userId) {
+    if (getval === userId && pushNotificaton === false) {
       schedulePushNotification();
+      setPushNotificatoin(true);
     }
 
     if (isMounted) {

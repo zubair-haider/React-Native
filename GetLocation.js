@@ -30,7 +30,7 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const MyApp = ({ navigation, route }) => {
-  const { userName, patientDisease } = route.params;
+  const { userName, patientDisease, GetQueueState } = route.params;
   console.log("username", userName);
   console.log("disease", patientDisease);
   var hoursHolder = "";
@@ -39,6 +39,12 @@ const MyApp = ({ navigation, route }) => {
   let [fontsLoaded] = useFonts({
     "Oswald-Bold": require("./assets/Fonts/Oswald-Bold.ttf"),
   });
+  const [isEnabled, setEnableDisbale] = useState(false);
+  const [defaultTime, setDefault] = useState(15);
+  const [getPatient, setPatitent] = useState([]);
+  const [estTimeDoctorH, setEstTimeDoctorH] = useState("00");
+  const [sort, setSort] = useState(true);
+  const [hospitals, setHospital] = useState([]);
   var [active, setActive] = useState(false);
   var [intialPosition, setIntialPosition] = useState({
     latitude: 0,
@@ -46,15 +52,15 @@ const MyApp = ({ navigation, route }) => {
     latitudeDelta: 0,
     longitudeDelta: 0,
   });
-  const [isEnabled, setEnableDisbale] = useState(false);
-  const [defaultTime, setDefault] = useState(15);
+  if (
+    (GetQueueState === "Waiting" || GetQueueState === "in-Process") &&
+    sort === true
+  ) {
+    console.log("runnnnnnnned");
+    setEnableDisbale(true);
+    setSort(false);
+  }
 
-  const [getPatient, setPatitent] = useState([]);
-
-  const [estTimeDoctorH, setEstTimeDoctorH] = useState("00");
-  const [sort, setSort] = useState();
-
-  const [hospitals, setHospital] = useState([]);
   async function requestLocationPermission() {
     try {
       const granted = await PermissionsAndroid.request(
@@ -105,9 +111,9 @@ const MyApp = ({ navigation, route }) => {
   // let response = estimatedTime(first, second);
   const fetchData = async () => {
     try {
-      const result = await axios("http://192.168.2.71:3000/queues");
+      const result = await axios("http://127.0.0.1:3000/queues");
       setPatitent(result.data);
-      const response = await axios("http://192.168.2.71:3000/allhospital");
+      const response = await axios("http://127.0.0.1:3000/allhospital");
       const json = await response.data;
       setHospital(json);
 

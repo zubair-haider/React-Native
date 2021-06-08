@@ -120,18 +120,20 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
     userQueueState === "Waiting" &&
     getIdLoading === true
   ) {
+    console.log("waiting runnnnnnnnned");
     setId(id);
     setIdLoading(false);
-    setQueueState("in-Proces");
+    setQueueState("in-Process");
   }
   if (
     id !== undefined &&
     userQueueState === "in-Process" &&
     getIdLoading === true
   ) {
+    console.log("inprocess runnnnnnnnned");
     setId(id);
     setIdLoading(false);
-    setQueueState("Completed");
+    setQueueState("in-Process");
   }
 
   useEffect(() => {
@@ -324,9 +326,9 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
 
   const fetchData = async () => {
     try {
-      const result = await axios("http://192.168.2.71:3000/queues");
+      const result = await axios("http://127.0.0.1:3000/queues");
       setPatitent(result.data);
-      const response = await axios("http://192.168.2.71:3000/allhospital");
+      const response = await axios("http://127.0.0.1:3000/allhospital");
       const json = await response.data;
       setHospital(json);
 
@@ -337,6 +339,7 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
   };
   const [getState, setState] = useState(true);
   if (userQueueState === "Waiting" && getState === true) {
+    console.log("onconfromed run");
     onConformed();
     setState(false);
   }
@@ -442,7 +445,7 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
     collection.startingTime = startingTime;
     collection.date = date;
     const firstid = collection.id;
-    var postQueueApiUrl = "http://192.168.2.71:3000/queue";
+    var postQueueApiUrl = "http://127.0.0.1:3000/queue";
     postQueueApiCall(postQueueApiUrl, collection);
   };
   const onUpdateQueue = async () => {
@@ -457,12 +460,12 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
     collection.priority = patientDisease;
     collection.user = user;
 
-    var putApiUrl = `http://192.168.2.71:3000/queue/${getId}`;
+    var putApiUrl = `http://127.0.0.1:3000/queue/${getId}`;
     putQueueApiCall(putApiUrl, collection);
   };
   const removeQueue = async () => {
     console.log("delelte id", getId);
-    var deleteApiUrl = `http://192.168.2.71:3000/queue/${getId}`;
+    var deleteApiUrl = `http://192.168.1.110:3000/queue/${getId}`;
 
     fetch(deleteApiUrl, { method: "DELETE" });
   };
@@ -473,7 +476,7 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
   console.log("estimatedMins", estimatedMins);
   console.log("distance", distance);
   console.log("people", getPeople);
-  console.log("");
+  console.log("getlaoding", getIdLoading);
 
   return (
     <SafeAreaView style={{ fontFamily: "Inter-Black" }} key={getId}>

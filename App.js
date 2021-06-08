@@ -13,6 +13,7 @@ import UserList from "./UserQueueList";
 import Chart from "./Charts/React_native_chart";
 //import Splash from "./forms/splash";
 import ComponentsHolder from "./ComponentsHolder";
+import ModalInput from "./ModalInput";
 import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
 //import { Menu, ActivityIndicator, NavBar } from "antd-mobile";
 import { Location, Permissions } from "expo";
@@ -32,6 +33,7 @@ import {
   Button,
   Platform,
 } from "react-native";
+import ModalInPut from "./ModalInput";
 
 const Stack = createStackNavigator();
 
@@ -71,6 +73,7 @@ export default function App({ navigation }) {
         <Stack.Screen name="HOSPITALS LIST" component={MyApp} />
         <Stack.Screen name="QUEUE" component={ComponentsHolder} />
         <Stack.Screen name="Chart" component={Chart} />
+        <Stack.Screen name="Disease" component={ModalInPut} />
       </Stack.Navigator>
     </NavigationContainer>
   );
