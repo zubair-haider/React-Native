@@ -103,7 +103,7 @@ const ModalInPut = ({ navigation, route }) => {
                 }
               }}
             >
-              <Text style={styles.textStyle}>Hide Modal</Text>
+              <Text style={styles.textStyle}>Go</Text>
             </Pressable>
           </View>
         </View>

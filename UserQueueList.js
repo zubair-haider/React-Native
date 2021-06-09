@@ -97,13 +97,14 @@ const UserList = ({ navigation, route }) => {
     <View>
       <View
         style={{
+          display: "flex",
           flexDirection: "column",
-          flex: 1,
+          //flex: 1,
           alignItems: "flex-end",
           marginVertical: 10,
           paddingRight: 16,
-          //position: "absolute",
-          zIndex: -1,
+          // //position: "absolute",
+          // zIndex: -1,
         }}
       >
         <TouchableOpacity
@@ -134,20 +135,22 @@ const UserList = ({ navigation, route }) => {
             backgroundColor: "#3fb5bf",
             display: "flex",
             flexDirection: "row",
-            padding: 20,
-            width: "9%",
-            borderRadius: 5,
+            padding: 10,
+            width: "20%",
+            borderRadius: 10,
+            // borderTopRightRadius: 200,
+            // borderBottomRightRadius: 200,
           }}
         >
-          <Icon size={24} color="white" name="add" />
-          <Text
+          <Icon size={44} color="white" name="add" />
+          {/* <Text
             style={{
               //opacity: 0.5,
               fontWeight: "bold",
               fontSize: 20,
               color: "#FFFEFC",
             }}
-          ></Text>
+          ></Text> */}
         </TouchableOpacity>
       </View>
       <KeyboardAwareScrollView>

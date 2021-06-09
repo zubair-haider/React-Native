@@ -64,7 +64,7 @@ export default function App({ navigation }) {
           name="UserList"
           component={UserList}
           options={() => ({
-            title: "Awesome app",
+            title: "Hospitals Visit",
             headerLeft: () => {},
           })}
         />

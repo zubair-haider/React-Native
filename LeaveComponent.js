@@ -50,7 +50,7 @@ const CountDownTimer = ({
   const notificationListener = useRef();
   const responseListener = useRef();
 
-  const [timers, setTimers] = useState(10);
+  const [timers, setTimers] = useState(false);
   const [mins, setMins] = useState();
   const [secs, setSecs] = useState(0);
   const [hrs, setHrs] = useState();

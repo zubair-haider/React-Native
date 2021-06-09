@@ -2,6 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { useRoute, useFocusEffect } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import StyleSheetMethods from "./Styles/StyleSheet";
+import Icon from "react-native-vector-icons/MaterialIcons";
 import axios from "axios";
 import ComponentsHolder from "./ComponentsHolder";
 import { useFonts, Inter_900Black } from "expo-font";
