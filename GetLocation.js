@@ -31,9 +31,10 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const MyApp = ({ navigation, route }) => {
-  const { userName, patientDisease, GetQueueState } = route.params;
+  const { userName, patientDisease, GetQueueState, userNameReg } = route.params;
   console.log("username", userName);
   console.log("disease", patientDisease);
+  console.log("userREg", userNameReg);
   var hoursHolder = "";
   var minHolder = "";
 
@@ -112,9 +113,9 @@ const MyApp = ({ navigation, route }) => {
   // let response = estimatedTime(first, second);
   const fetchData = async () => {
     try {
-      const result = await axios("http://127.0.0.1:3000/queues");
+      const result = await axios("http://192.168.2.71:3000/queues");
       setPatitent(result.data);
-      const response = await axios("http://127.0.0.1:3000/allhospital");
+      const response = await axios("http://192.168.2.71:3000/allhospital");
       const json = await response.data;
       setHospital(json);
 
@@ -384,6 +385,7 @@ const MyApp = ({ navigation, route }) => {
                                 navigation.navigate("QUEUE", {
                                   hospital: value.hospital,
                                   user: userName,
+                                  userNameReg: userNameReg,
                                   people: value.counter,
                                   destination: value.dist1,
                                   patientDisease: patientDisease,

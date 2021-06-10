@@ -23,7 +23,7 @@ const UserList = ({ navigation, route }) => {
     id,
     phone,
   } = route.params;
-  console.log("this should be run", user);
+  console.log("this should be run", userName);
   let UserhospitalList = "";
   let GetQueueState = "";
   let OnStateComplete = "";
@@ -33,10 +33,10 @@ const UserList = ({ navigation, route }) => {
   const [UserHospitalList, SetUserHospitalList] = useState("");
   const fetchData = async () => {
     try {
-      const result = await axios("http://127.0.0.1:3000/detail");
+      const result = await axios("http://192.168.2.71:3000/detail");
       console.log("queuesdata+++++", result.data);
       setPatitent(result.data);
-      const response = await fetch("http://127.0.0.1:3000/queues");
+      const response = await fetch("http://192.168.2.71:3000/queues");
       const json = await response.json();
       setHospital(json);
 
@@ -111,21 +111,16 @@ const UserList = ({ navigation, route }) => {
           // disabled={true}
           onPress={() => {
             if (Enable) {
-              // console.log("returned");
-              // return (
-              //   <View>
-              //     <ModalInPut />
-              //   </View>
-              // );
-
               navigation.navigate("Disease", {
                 userName: user,
+                userNameReg: userName,
                 patientDisease: patientDisease,
                 GetQueueState: GetQueueState,
               });
             } else {
               navigation.navigate("HOSPITALS LIST", {
                 userName: user,
+                userNameReg: userName,
                 patientDisease: patientDisease,
                 GetQueueState: GetQueueState,
               });

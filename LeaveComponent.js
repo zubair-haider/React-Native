@@ -91,7 +91,7 @@ const CountDownTimer = ({
   };
 
   const fetchData = async () => {
-    const response = await fetch(`http://127.0.0.1:3000/queues`);
+    const response = await fetch(`http://192.168.2.71:3000/queues`);
     const json = await response.json();
 
     const currentId = json.filter(
@@ -218,7 +218,6 @@ const CountDownTimer = ({
       <View>
         {getval === userId ? (
           <View>
-            {console.log("yyyyyyyyyy")}
             <ModalAlert onProceed={onProceed} />
           </View>
         ) : null}

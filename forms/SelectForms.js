@@ -65,16 +65,16 @@ const Forms = ({ navigation }) => {
     });
     console.log("response  post= ", response);
     if (response) {
+      navigation.navigate("UserList", {
+        userName: checkName.name,
+        patientDisease: checkdisease.disease,
+      });
       setDataValid("");
       setdisease({ disease: "" });
       setAge({ age: "" });
       setGender({ gender: "" });
       setContact({ contact: "" });
       setcheckName({ name: "" });
-      navigation.navigate("UserList", {
-        userName: checkName.name,
-        patientDisease: checkdisease.disease,
-      });
     }
   };
   function formatDate(date) {

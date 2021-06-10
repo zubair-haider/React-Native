@@ -38,6 +38,7 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
   }
   const {
     hospital,
+    userNameReg,
     user,
     people, //
     // defaulthours,
@@ -54,6 +55,7 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
   const collection = {};
   console.log("hospital", hospital);
   console.log("user", user);
+  console.log("userName Reg", userNameReg);
   console.log("patientDisease", patientDisease);
   console.log("userQueue", userQueueState);
   console.log("id", id);
@@ -73,11 +75,13 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
     latitudeDelta: 0,
     longitudeDelta: 0,
   });
+  const [userName, setUserName] = useState("");
+  const [usernameEnable, setuserNameEnable] = useState(false);
   const [hospitals, setHospital] = useState([]);
   const [getPatient, setPatitent] = useState([]);
   const [getPeople, setPeople] = useState("");
-  const [defaultTime, setDefaultMins] = useState(1);
-  const [defaulthours, setDefaultHrs] = useState("");
+  const [defaultTime, setDefaultMins] = useState(15);
+  const [defaulthours, setDefaultHrs] = useState(0);
   const [estimatedHours, setEstimatedHours] = useState("");
   const [estimatedMins, setEstimatedMins] = useState("");
   const [distance, setDistance] = useState("");
@@ -114,6 +118,16 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
       console.warn(err);
       console.log("hrfgfg", err);
     }
+  }
+  if (user !== undefined && usernameEnable == false) {
+    console.log("userruneed++++++");
+    setUserName(user);
+    setuserNameEnable(true);
+  }
+  if (usernameEnable == false && userNameReg !== undefined) {
+    console.log("userREgruneed++++++");
+    setUserName(userNameReg);
+    setuserNameEnable(true);
   }
   if (
     id !== undefined &&
@@ -326,9 +340,9 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
 
   const fetchData = async () => {
     try {
-      const result = await axios("http://127.0.0.1:3000/queues");
+      const result = await axios("http://192.168.2.71:3000/queues");
       setPatitent(result.data);
-      const response = await axios("http://127.0.0.1:3000/allhospital");
+      const response = await axios("http://192.168.2.71:3000/allhospital");
       const json = await response.data;
       setHospital(json);
 
@@ -441,11 +455,11 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
     collection.queueState = queueState;
     collection.notes = notes;
     collection.priority = patientDisease;
-    collection.user = user;
+    collection.user = userName;
     collection.startingTime = startingTime;
     collection.date = date;
     const firstid = collection.id;
-    var postQueueApiUrl = "http://127.0.0.1:3000/queue";
+    var postQueueApiUrl = "http://192.168.2.71:3000/queue";
     postQueueApiCall(postQueueApiUrl, collection);
   };
   const onUpdateQueue = async () => {
@@ -458,14 +472,14 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
     collection.queueState = queueState;
     // collection.notes = notes;
     collection.priority = patientDisease;
-    collection.user = user;
+    collection.user = userName;
 
-    var putApiUrl = `http://127.0.0.1:3000/queue/${getId}`;
+    var putApiUrl = `http://192.168.2.71:3000/queue/${getId}`;
     putQueueApiCall(putApiUrl, collection);
   };
   const removeQueue = async () => {
     console.log("delelte id", getId);
-    var deleteApiUrl = `http://192.168.1.110:3000/queue/${getId}`;
+    var deleteApiUrl = `http://192.168.2.71:3000/queue/${getId}`;
 
     fetch(deleteApiUrl, { method: "DELETE" });
   };
@@ -477,6 +491,7 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
   console.log("distance", distance);
   console.log("people", getPeople);
   console.log("getlaoding", getIdLoading);
+  console.log("userNameReg__________________________", userName);
 
   return (
     <SafeAreaView style={{ fontFamily: "Inter-Black" }} key={getId}>
