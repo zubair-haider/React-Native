@@ -32,6 +32,7 @@ const CountDownTimer = ({
   item,
   id,
   updateQueue,
+  onResetQueue,
   onReset,
   onProceed,
   removeQueue,
@@ -91,7 +92,7 @@ const CountDownTimer = ({
   };
 
   const fetchData = async () => {
-    const response = await fetch(`http://192.168.2.71:3000/queues`);
+    const response = await fetch(`http://192.168.1.110:3000/queues`);
     const json = await response.json();
 
     const currentId = json.filter(
@@ -132,7 +133,7 @@ const CountDownTimer = ({
       Notifications.addNotificationResponseReceivedListener((response) => {
         console.log(response);
       });
-    if (destinationalert > 50 && mins % 10 === 0) {
+    if (destinationalert > 50 && mins % 10 === 0 && secs === 0) {
       alertcreated();
     }
 
@@ -265,6 +266,13 @@ const CountDownTimer = ({
           </TouchableOpacity>
         </View>
       </View>
+      <View style={StyleSheetMethods.btngoHome}>
+        <TouchableOpacity onPress={onResetQueue}>
+          <Text style={{ fontWeight: "bold", fontSize: 20, color: "white" }}>
+            Go Home
+          </Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
@@ -272,8 +280,8 @@ export default CountDownTimer;
 async function schedulePushNotification() {
   await Notifications.scheduleNotificationAsync({
     content: {
-      title: "You've got mail! 📬",
-      body: "Here is the notification body",
+      title: "An admin approved your Request! 📬",
+      body: "please visit Doctor",
       data: { data: "goes here" },
     },
     trigger: { seconds: 2 },

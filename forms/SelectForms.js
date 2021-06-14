@@ -90,7 +90,7 @@ const Forms = ({ navigation }) => {
   }
   const fetchData = async () => {
     try {
-      const result = await axios("http://192.168.2.71:3000/detail");
+      const result = await axios("http://192.168.1.110:3000/detail");
       console.log("queuesdata+++++", result);
       SetData(result.data);
       // setPatitent(result.data);
@@ -157,7 +157,7 @@ const Forms = ({ navigation }) => {
       collection.age = checkAge.age;
       collection.gender = checkGender.gender;
 
-      var postApiUrl = "http://192.168.2.71:3000/detail"; //192.168.1.107
+      var postApiUrl = "http://192.168.1.110:3000/detail"; //192.168.1.107
       postApiCall(postApiUrl, collection);
     }
     // navigation.navigate("UserList", {

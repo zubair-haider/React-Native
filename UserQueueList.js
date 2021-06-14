@@ -1,9 +1,12 @@
-import React, { Component, useEffect, useState } from "react";
+import "react-native-gesture-handler";
+import React, { Component, useEffect, useState, useCallback } from "react";
+
 import StyleSheetMethods from "./Styles/StyleSheet";
 import axios from "axios";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import ModalInPut from "./ModalInput";
-import { Card, Tooltip } from "react-native-elements";
+import { useIsFocused } from "@react-navigation/native";
+import { Card, ThemeConsumer, Tooltip } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {
   View,
@@ -11,8 +14,10 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
+  RefreshControl,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+
 const UserList = ({ navigation, route }) => {
   const {
     userName,
@@ -22,21 +27,28 @@ const UserList = ({ navigation, route }) => {
     userQueueState,
     id,
     phone,
+    // getthis,
   } = route.params;
-  console.log("this should be run", userName);
+  //const {} = user
+  // console.log("getthis", getthis);
+
   let UserhospitalList = "";
   let GetQueueState = "";
   let OnStateComplete = "";
+
+  const [count, setCount] = useState(0);
+  const [loading, setloading] = useState(true);
   const [getPatient, setPatitent] = useState("");
   const [getHospital, setHospital] = useState("");
   const [Enable, SetEnable] = useState(false);
+  const isFocused = useIsFocused();
   const [UserHospitalList, SetUserHospitalList] = useState("");
   const fetchData = async () => {
     try {
-      const result = await axios("http://192.168.2.71:3000/detail");
+      const result = await axios("http://192.168.1.110:3000/detail");
       console.log("queuesdata+++++", result.data);
       setPatitent(result.data);
-      const response = await fetch("http://192.168.2.71:3000/queues");
+      const response = await fetch("http://192.168.1.110:3000/queues");
       const json = await response.json();
       setHospital(json);
 
@@ -45,10 +57,25 @@ const UserList = ({ navigation, route }) => {
       console.log("errrrrr0:", error);
     }
   };
-
+  // if (getthis !== "" && getthis !== undefined && loading == true) {
+  //   fetchData();
+  //   console.log("ridfdfdf");
+  // }
   useEffect(() => {
     fetchData();
-  }, []);
+
+    const interval = setInterval(() => {
+      setCount((count) => count + 1);
+    }, 1000);
+    const unsubscribe = navigation.addListener("focus", () => {
+      console.log("done");
+    });
+    console.log("this is", interval);
+    return () => {
+      clearTimeout(interval);
+      unsubscribe;
+    };
+  }, [navigation]);
   // if (getPatient !== "") {
   //   Data();
   // }
@@ -73,15 +100,12 @@ const UserList = ({ navigation, route }) => {
           }
         );
         UserhospitalList = [obj];
-        console.log("get", GetUserHospital);
-        console.log("yyyyyyyyy", obj);
       }
     });
 
     // return UserHospitals;
   }
-  console.log("useros", UserhospitalList);
-  console.log("userosdfdf", Enable);
+
   if (UserhospitalList.length > 0 && Enable == false) {
     console.log("length");
     UserhospitalList.map((value, index) => {
@@ -92,7 +116,7 @@ const UserList = ({ navigation, route }) => {
       }
     });
   }
-  console.log("modeal", OnStateComplete);
+
   return (
     <View>
       <View

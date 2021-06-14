@@ -148,7 +148,18 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
     setId(id);
     setIdLoading(false);
     setQueueState("in-Process");
+    setNextState([
+      ...nextState,
+      {
+        text: "people are ahead of you,your estimated time is",
+      },
+    ]);
+    setText("");
+    setIncrement("2");
   }
+  const onResetQueue = () => {
+    navigation.navigate("LOGIN");
+  };
 
   useEffect(() => {
     fetchData();
@@ -309,6 +320,7 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
     return array;
   }
   let temp = sorting();
+
   if (temp !== "" && tempLoading === true) {
     temp.filter((value, index) => {
       if (value.hospital === hospital) {
@@ -340,9 +352,9 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
 
   const fetchData = async () => {
     try {
-      const result = await axios("http://192.168.2.71:3000/queues");
+      const result = await axios("http://192.168.1.110:3000/queues");
       setPatitent(result.data);
-      const response = await axios("http://192.168.2.71:3000/allhospital");
+      const response = await axios("http://192.168.1.110:3000/allhospital");
       const json = await response.data;
       setHospital(json);
 
@@ -353,7 +365,6 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
   };
   const [getState, setState] = useState(true);
   if (userQueueState === "Waiting" && getState === true) {
-    console.log("onconfromed run");
     onConformed();
     setState(false);
   }
@@ -459,7 +470,7 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
     collection.startingTime = startingTime;
     collection.date = date;
     const firstid = collection.id;
-    var postQueueApiUrl = "http://192.168.2.71:3000/queue";
+    var postQueueApiUrl = "http://192.168.1.110:3000/queue";
     postQueueApiCall(postQueueApiUrl, collection);
   };
   const onUpdateQueue = async () => {
@@ -474,24 +485,15 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
     collection.priority = patientDisease;
     collection.user = userName;
 
-    var putApiUrl = `http://192.168.2.71:3000/queue/${getId}`;
+    var putApiUrl = `http://192.168.1.110:3000/queue/${getId}`;
     putQueueApiCall(putApiUrl, collection);
   };
   const removeQueue = async () => {
     console.log("delelte id", getId);
-    var deleteApiUrl = `http://192.168.2.71:3000/queue/${getId}`;
+    var deleteApiUrl = `http://192.168.1.110:3000/queue/${getId}`;
 
     fetch(deleteApiUrl, { method: "DELETE" });
   };
-
-  console.log("++++++++++++++++++++++++");
-  console.log("defaulthourse", defaulthours);
-  console.log("estimatedHOurs", estimatedHours);
-  console.log("estimatedMins", estimatedMins);
-  console.log("distance", distance);
-  console.log("people", getPeople);
-  console.log("getlaoding", getIdLoading);
-  console.log("userNameReg__________________________", userName);
 
   return (
     <SafeAreaView style={{ fontFamily: "Inter-Black" }} key={getId}>
@@ -540,6 +542,7 @@ const ComponentsHolder = ({ route, navigation, currentH }) => {
                   img={item.img}
                   updateQueue={onUpdateQueue}
                   onReset={onReset}
+                  onResetQueue={onResetQueue}
                   removeQueue={removeQueue}
                   people={getPeople}
                   hospitalname={hospital}

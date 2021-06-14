@@ -48,8 +48,8 @@ const ModalInPut = ({ navigation, route }) => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
+          // Alert.alert("Modal has been closed.");
+          // setModalVisible(!modalVisible);
         }}
       >
         <View style={styles.centeredView}>
@@ -100,6 +100,7 @@ const ModalInPut = ({ navigation, route }) => {
                     patientDisease: Disease,
                     GetQueueState: GetQueueState,
                   });
+                  setModalVisible(false);
                 }
               }}
             >

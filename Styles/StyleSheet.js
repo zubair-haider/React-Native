@@ -77,6 +77,26 @@ const StyleSheetMethods = StyleSheet.create({
 
     elevation: 24,
   },
+  btngoHome: {
+    marginLeft: 10,
+    marginEnd: 10,
+    marginTop: 30,
+    width: "95%",
+    backgroundColor: "#317BA5",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 5,
+    padding: 10,
+    shadowColor: "black",
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
+
+    elevation: 24,
+  },
   hospitalViews: {
     marginTop: 10,
     overflow: "hidden",

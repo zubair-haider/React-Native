@@ -22,10 +22,10 @@ const Login = ({ navigation, route }) => {
 
   const fetchData = async () => {
     try {
-      const result = await axios("http://192.168.2.71:3000/detail");
+      const result = await axios("http://192.168.1.110:3000/detail");
       console.log("queuesdata+++++", result.data);
       setPatitent(result.data);
-      const response = await fetch("http://192.168.2.71:3000/queues");
+      const response = await fetch("http://192.168.1.110:3000/queues");
       const json = await response.json();
       setHospital(json);
 

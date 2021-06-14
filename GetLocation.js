@@ -113,9 +113,9 @@ const MyApp = ({ navigation, route }) => {
   // let response = estimatedTime(first, second);
   const fetchData = async () => {
     try {
-      const result = await axios("http://192.168.2.71:3000/queues");
+      const result = await axios("http://192.168.1.110:3000/queues");
       setPatitent(result.data);
-      const response = await axios("http://192.168.2.71:3000/allhospital");
+      const response = await axios("http://192.168.1.110:3000/allhospital");
       const json = await response.data;
       setHospital(json);
 
